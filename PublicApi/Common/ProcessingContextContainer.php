@@ -17,7 +17,7 @@ use ILIAS\UI\Component\Link\Standard as UiStandardLink;
  *
  * @package ILIAS\Services\AssessmentQuestion\PublicApi\Common
  */
-class AuthoringContextContainer
+class ProcessingContextContainer
 {
     /**
      * @var UiStandardLink
@@ -71,24 +71,27 @@ class AuthoringContextContainer
      * @param bool           $writeAccess
      */
     public function __construct(
-        UiStandardLink $backLink,
-        int $refId,
+       /* UiStandardLink $backLink,
+        int $refId,£*/
         int $objId,
-        string $objType,
-        int $actorId,
+        //string $objType,
+        int $actorId/*,
         bool $writeAccess,
         array $afterQuestionCreationCtrlClassPath,
-        string $afterQuestionCreationCtrlCommand
+        string $afterQuestionCreationCtrlCommand*/
     )
     {
-        $this->backLink = $backLink;
+        $this->objId = $objId;
+        $this->actorId = $actorId;
+
+      /*  $this->backLink = $backLink;
         $this->refId = $refId;
         $this->objId = $objId;
         $this->objType = $objType;
-        $this->actorId = $actorId;
+
         $this->writeAccess = $writeAccess;
         $this->afterQuestionCreationCtrlClassPath = $afterQuestionCreationCtrlClassPath;
-        $this->afterQuestionCreationCtrlCommand = $afterQuestionCreationCtrlCommand;
+        $this->afterQuestionCreationCtrlCommand = $afterQuestionCreationCtrlCommand;*/
     }
 
 
