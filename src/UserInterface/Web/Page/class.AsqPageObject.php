@@ -1,11 +1,6 @@
 <?php
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Page;
-
 use ILIAS\UI\Implementation\Component\Link\Standard;
-use ReflectionClass;
-use ilAsqAnswerOptionFeedbackPageGUI;
-use ilAsqQuestionFeedbackEditorGUI;
 
 /**
  * Class AsqPageObject

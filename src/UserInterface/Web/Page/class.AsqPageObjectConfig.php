@@ -1,7 +1,5 @@
 <?php
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Page;
-
 /**
  * Class PageConfig
  *
