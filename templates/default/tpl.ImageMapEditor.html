@@ -1,0 +1,60 @@
+<script src="Services/AssessmentQuestion/src/Questions/ImageMap/ImageMapEditor.js"></script>
+<style>
+	.imagemap_editor {
+		position: relative;
+		margin-bottom: 10px;
+	}
+	
+	.imagemap_editor img {
+		max-width: 100%;
+		max-height: 100%;
+	}
+	
+	.imagemap_editor svg{
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		left: 0px;
+		top: 0px;
+	}
+
+	.imagemap_editor rect,
+	.imagemap_editor ellipse,
+	.imagemap_editor polygon {
+		fill: white;
+		fill-opacity: 0.6;
+		cursor: pointer;
+	}
+	
+    .imagemap_editor rect.selected,
+	.imagemap_editor ellipse.selected,
+	.imagemap_editor polygon.selected {
+		fill-opacity: 0.95;
+		stroke: red;
+		stroke-width: 1px;
+		vector-effect: non-scaling-stroke;
+	}
+	
+	.imagemap_outer {
+		margin-bottom: 10px;
+	}
+</style>
+<div class="imagemap_outer">
+	<div class="imagemap_editor">
+		<!-- BEGIN generic -->
+		<input type="hidden" id="answer" name="{POST_NAME}" value="{VALUE}" />
+		<input type="hidden" id="max_answers" value="{MAX_ANSWERS}" />
+		<img border="0" src="{IMAGE_URL}" />
+		<!-- END generic -->
+		<svg viewBox="0 0 100 100" preserveAspectRatio="none">
+			<!-- BEGIN answer_option -->
+			{OPTION_SHAPE}
+			<!-- END answer_option -->
+		</svg>
+	</div>
+	<!-- BEGIN feedback -->
+	<div>
+		<span class="feedback">{FEEDBACK}</span>
+	</div>
+	<!-- END feedback -->
+</div>

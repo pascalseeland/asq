@@ -1,0 +1,95 @@
+<?php
+
+namespace ILIAS\AssessmentQuestion\Questions\TextSubset;
+
+use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
+use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
+use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerDefinition;
+use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use stdClass;
+
+/**
+ * Class TextSubsetScoringDefinition
+ *
+ * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @author  Martin Studer <ms@studer-raimann.ch>
+ * @author  Theodor Truffer <tt@studer-raimann.ch>
+ */
+class TextSubsetScoringDefinition extends AnswerDefinition {
+    
+    const VAR_TSSD_POINTS = 'tssd_points';
+    const VAR_TSSD_TEXT = 'tsdd_text' ;
+    
+    /**
+     * @var int
+     */
+    protected $points;
+    /**
+     * @var string
+     */
+    protected $text;
+    
+    /**
+     * TextSubsetScoringDefinition constructor.
+     *
+     * @param int $points
+     */
+    public function __construct(int $points, ?string $text)
+    {
+        $this->points = $points;
+        $this->text = $text;
+    }  
+    
+    /**
+     * @return int
+     */
+    public function getPoints(): int {
+        return $this->points;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getText(): string {
+        return $this->text;
+    }
+    
+    public static function getFields(QuestionPlayConfiguration $play): array {
+        global $DIC;
+        
+        $fields = [];
+        $fields[] = new AsqTableInputFieldDefinition(
+            $DIC->language()->txt('asq_label_answer_text'),
+            AsqTableInputFieldDefinition::TYPE_TEXT,
+            self::VAR_TSSD_TEXT
+            );
+        
+        $fields[] = new AsqTableInputFieldDefinition(
+            $DIC->language()->txt('asq_label_points'),
+            AsqTableInputFieldDefinition::TYPE_NUMBER,
+            self::VAR_TSSD_POINTS
+            );
+        
+        return $fields;
+    }
+    
+    public static function getValueFromPost(string $index) {
+        return new TextSubsetScoringDefinition(intval($_POST[self::getPostKey($index, self::VAR_TSSD_POINTS)]),
+            ilAsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TSSD_TEXT)]));
+    }
+    
+    public function getValues(): array {
+        return [self::VAR_TSSD_POINTS => $this->points,
+                self::VAR_TSSD_TEXT => $this->text
+        ];
+    }
+    
+    
+    public static function deserialize(stdClass $data) {
+        return new TextSubsetScoringDefinition(
+            $data->points, $data->text);
+    }
+}

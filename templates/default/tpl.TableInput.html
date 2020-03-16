@@ -1,0 +1,55 @@
+<div class="form-inline aot_table_div" id="{ELEMENT_ID}" <!-- BEGIN hide -->style="display: none;"<!-- END hide -->>
+	<table class="aot_table table table-condensed table-striped">
+		<thead>
+			<tr>
+				<!-- BEGIN header_entry -->
+					<th>{HEADER_TEXT}</th>
+				<!-- END header_entry -->
+				<!-- BEGIN command_header -->
+				<th>
+					{COMMANDS_TEXT}
+				</th>
+				<!-- END command_header -->
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN row -->
+			<tr  class="aot_row">
+				<!-- BEGIN body_entry -->
+				<td class="{ENTRY_CLASS}">
+					{ENTRY}
+				</td>
+				<!-- END body_entry -->
+				<!-- BEGIN command_row -->
+				<td class="ilValignTop">
+					<!-- BEGIN add -->
+					<button type="button" class="js_add btn btn-link">
+						<span class="glyphicon glyphicon-plus"></span>
+					</button>
+					<!-- END add -->
+					<!-- BEGIN remove -->
+					<button type="button" class="js_remove btn btn-link">
+						<span class="glyphicon glyphicon-minus"></span>
+					</button>
+					<!-- END remove -->
+					<!-- BEGIN move -->
+					<button type="button" class="js_up btn btn-link" {X}>
+						<span class="glyphicon glyphicon-chevron-up"></span>
+					</button>
+					<button type="button" class="js_down btn btn-link">
+						<span class="glyphicon glyphicon-chevron-down"></span>
+					</button>
+					<!-- END move -->
+				</td>
+				<!--  END command_row -->
+			</tr>
+		<!-- END row -->
+		</tbody>
+	</table>
+	<!-- BEGIN image_disclaimer -->
+	<div class="ilFormInfo">{TXT_MAX_SIZE} {TXT_ALLOWED_SUFFIXES}</div>
+	<!-- END image_disclaimer -->
+	<!-- BEGIN count -->
+	<input class="js_count" type="hidden" name="{COUNT_POST_VAR}" value="{COUNT}" />
+	<!-- END count -->
+</div>
