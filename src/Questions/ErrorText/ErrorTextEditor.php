@@ -7,6 +7,7 @@ use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ilNumberInputGUI;
@@ -46,7 +47,7 @@ class ErrorTextEditor extends AbstractEditor {
      */
     public function generateHtml() : string
     {
-        $tpl = new ilTemplate("tpl.ErrorTextEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ErrorTextEditor.html', true, true);
         
         $tpl->setCurrentBlock('editor');
         $tpl->setVariable('ERRORTEXT_ID', $this->getPostKey());

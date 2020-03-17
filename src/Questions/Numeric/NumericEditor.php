@@ -6,6 +6,7 @@ use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ilNumberInputGUI;
@@ -42,7 +43,7 @@ class NumericEditor extends AbstractEditor {
      */
     public function generateHtml() : string
     {
-        $tpl = new ilTemplate("tpl.NumericEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.NumericEditor.html', true, true);
 
         $tpl->setCurrentBlock('editor');
         $tpl->setVariable('POST_NAME', $this->question->getId());

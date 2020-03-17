@@ -6,6 +6,7 @@ use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
 use ilCheckboxInputGUI;
@@ -101,7 +102,7 @@ class KprimChoiceEditor extends AbstractEditor {
      */
     public function generateHtml(): string
     {
-        $tpl = new ilTemplate("tpl.KprimChoiceEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.KprimChoiceEditor.html', true, true);
         
         $tpl->setCurrentBlock('header');
         $tpl->setVariable('INSTRUCTIONTEXT', "You have to decide on every statement: [{$this->configuration->getLabelTrue()}] or [{$this->configuration->getLabelFalse()}]");

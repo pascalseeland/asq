@@ -2,6 +2,8 @@
 
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
+use ILIAS\AssessmentQuestion\Gateway\AsqGateway;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\AnswerFeedbackComponent;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\FeedbackComponent;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Scoring\ScoringComponent;
@@ -55,14 +57,14 @@ class ilAsqQuestionPreviewGUI
     {
         global $DIC;
 
-        $question_dto = $DIC->assessment()->question()->getQuestionByQuestionId($this->question_id->getId());
+        $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
         
-        $question_page = $DIC->assessment()->question()->getQuestionPage($question_dto);
+        $question_page = AsqGateway::get()->ui()->getQuestionPage($question_dto);
         $question_page->setRenderPageContainer(false);
         $question_page->setEditPreview(true);
         $question_page->setEnabledTabs(false);
         
-        $question_tpl = new ilTemplate('tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
+        $question_tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
         $question_tpl->setVariable('FORMACTION', $DIC->ctrl()->getFormAction($this, self::CMD_SHOW_PREVIEW));
         $question_tpl->setVariable('QUESTION_OUTPUT', $question_page->showPage());
         $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));

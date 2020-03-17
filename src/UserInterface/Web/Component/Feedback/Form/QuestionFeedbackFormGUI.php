@@ -4,15 +4,15 @@
 
 namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form;
 
+use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
+use ILIAS\AssessmentQuestion\DomainModel\Feedback;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\Services\AssessmentQuestion\DomainModel\Feedback;
 use ilFormSectionHeaderGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTextAreaInputGUI;
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
 
 /**
  * Class QuestionFeedbackFormGUI

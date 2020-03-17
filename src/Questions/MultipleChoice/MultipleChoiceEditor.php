@@ -6,6 +6,7 @@ use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
 use ilSelectInputGUI;
@@ -63,7 +64,9 @@ class MultipleChoiceEditor extends AbstractEditor {
 	 * @return string
 	 */
 	public function generateHtml(): string {
-		$tpl = new ilTemplate("tpl.MultipleChoiceEditor.html", true, true, "Services/AssessmentQuestion");
+	    global $DIC;
+	    
+	    $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.MultipleChoiceEditor.html', true, true);
 
 		if ($this->isMultipleChoice()) {
 			$tpl->setCurrentBlock('selection_limit_hint');
@@ -107,6 +110,8 @@ class MultipleChoiceEditor extends AbstractEditor {
 
 			$tpl->parseCurrentBlock();
 		}
+		
+		$DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceEditor.js');
 
 		return $tpl->get();
 	}

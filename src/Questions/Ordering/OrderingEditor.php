@@ -5,6 +5,7 @@ namespace ILIAS\AssessmentQuestion\Questions\Ordering;
 use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
 use ilNumberInputGUI;
@@ -58,7 +59,9 @@ class OrderingEditor extends AbstractEditor {
      */
     public function generateHtml() : string
     {
-        $tpl = new ilTemplate("tpl.OrderingEditor.html", true, true, "Services/AssessmentQuestion");
+        global $DIC;
+        
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
 
         if (empty($this->answer)) {
             $items = $this->question->getAnswerOptions()->getOptions();
@@ -90,6 +93,8 @@ class OrderingEditor extends AbstractEditor {
         $tpl->setVariable('ANSWER', $this->getAnswerString($items));
         $tpl->parseCurrentBlock();
 
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Ordering/OrderingEditor.js');
+        
         return $tpl->get();
     }
     

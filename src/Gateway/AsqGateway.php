@@ -90,7 +90,7 @@ class AsqGateway
     /**
      * @return UIService
      */
-    public function link() {
+    public function ui() {
         if (is_null($this->ui_service)) {
             $this->ui_service = new UIService();
         }

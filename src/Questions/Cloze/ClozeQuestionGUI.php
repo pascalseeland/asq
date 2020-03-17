@@ -3,6 +3,7 @@
 namespace ILIAS\AssessmentQuestion\Questions\Cloze;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
@@ -44,6 +45,6 @@ class ClozeQuestionGUI extends QuestionFormGUI {
     protected function postInit() {
         global $DIC;
         
-        $DIC->ui()->mainTemplate()->addJavaScript("./Services/AssessmentQuestion/src/Questions/Cloze/ClozeAuthoring.js");
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Cloze/ClozeAuthoring.js');
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2013 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 
-use ILIAS\AssessmentQuestion\PublicApi\Authoring\AuthoringQuestion;
-use ILIAS\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
+use ILIAS\AssessmentQuestion\Gateway\Common\AuthoringContextContainer;
 use srag\CQRS\Aggregate\DomainObjectId;
+use ILIAS\AssessmentQuestion\Gateway\AsqGateway;
 
 /**
  * Class ilAsqQuestionAuthoringGUI
@@ -126,7 +126,7 @@ class ilAsqQuestionAuthoringGUI
                 $this->initAuthoringTabs();
                 $DIC->tabs()->activateTab(self::TAB_ID_PAGEVIEW);
 
-                $gui = $DIC->assessment()->question()->getQuestionPage(
+                $gui = AsqGateway::get()->ui()->getQuestionPage(
                     $DIC->assessment()->question()->getQuestionByQuestionId($this->question_id->getId()));
 
                 if (strlen($DIC->ctrl()->getCmd()) == 0 && !isset($_POST["editImagemapForward_x"]))
@@ -162,7 +162,7 @@ class ilAsqQuestionAuthoringGUI
                 $DIC->tabs()->activateTab(self::TAB_ID_FEEDBACK);
 
                 $gui = new ilAsqQuestionFeedbackEditorGUI(
-                    $DIC->assessment()->question()->getQuestionByQuestionId($this->question_id->getId())
+                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId())
                 );
                 $DIC->ctrl()->forwardCommand($gui);
 
@@ -174,7 +174,7 @@ class ilAsqQuestionAuthoringGUI
                 $this->initAuthoringTabs();
                 $DIC->tabs()->activateTab(self::TAB_ID_HINTS);
 
-                $gui = new AsqQuestionHintEditorGUI($$DIC->assessment()->question()->getQuestionByQuestionId($this->question_id->getId()));
+                $gui = new AsqQuestionHintEditorGUI(AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId()));
                 $DIC->ctrl()->forwardCommand($gui);
 
                 break;
@@ -260,8 +260,7 @@ class ilAsqQuestionAuthoringGUI
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 
-        $question = new AuthoringQuestion();
-        $question_dto = $DIC->assessment()->question()->getQuestionByQuestionId($this->question_id->getId());
+        $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
         
         $DIC->tabs()->clearTargets();
 
@@ -272,24 +271,24 @@ class ilAsqQuestionAuthoringGUI
 
         if(is_object($question_dto->getData()) > 0 && $this->authoring_context_container->hasWriteAccess() )
         {
-            $link = $question->getEditPageLink($this->question_id->getId());
+            $link = AsqGateway::get()->link()->getEditPageLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_PAGEVIEW, $link->getLabel(), $link->getAction());
         }
         if(is_object($question_dto->getData()) > 0) {
-            $link = $question->getPreviewLink($this->question_id->getId());
+            $link = AsqGateway::get()->link()->getPreviewLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_PREVIEW, $link->getLabel(), $link->getAction());
         }
         if( $this->authoring_context_container->hasWriteAccess() )
         {
-            $link = $question->getEditLink($this->question_id->getId());
+            $link = AsqGateway::get()->link()->getEditLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_CONFIG, $link->getLabel(), $link->getAction());
         }
         if(is_object($question_dto->getData()) > 0) {
-            $link = $question->getEditFeedbacksLink($this->question_id->getId());
+            $link = AsqGateway::get()->link()->getEditFeedbacksLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_FEEDBACK, $link->getLabel(), $link->getAction());
         }
         if(is_object($question_dto->getData()) > 0) {
-            $link = $question->getEditHintsLink($this->question_id->getId());
+            $link = AsqGateway::get()->link()->getEditHintsLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_HINTS, $link->getLabel(), $link->getAction());
         }
     }

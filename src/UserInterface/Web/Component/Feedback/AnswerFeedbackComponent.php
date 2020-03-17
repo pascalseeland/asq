@@ -5,6 +5,7 @@ namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ilTemplate;
 
 /**
@@ -49,7 +50,7 @@ class AnswerFeedbackComponent
 
     public function getHtml() : string
     {
-        $tpl = new ilTemplate("tpl.answer_feedback.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.answer_feedback.html', true, true);
 
         include_once("./Services/Style/Content/classes/class.ilObjStyleSheet.php");
 

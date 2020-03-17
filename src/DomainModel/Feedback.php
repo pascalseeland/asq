@@ -2,7 +2,7 @@
 
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\Services\AssessmentQuestion\DomainModel;
+namespace ILIAS\AssessmentQuestion\DomainModel;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 

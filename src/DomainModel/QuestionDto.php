@@ -4,7 +4,6 @@ namespace ILIAS\AssessmentQuestion\DomainModel;
 
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
 use ILIAS\AssessmentQuestion\DomainModel\Hint\QuestionHints;
-use ILIAS\Services\AssessmentQuestion\DomainModel\Feedback;
 
 /**
  * Class QuestionDto

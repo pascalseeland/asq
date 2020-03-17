@@ -45,12 +45,10 @@ class QuestionService extends ASQService
     }
     
     public function getQuestionsOfContainer(int $container_id) : array {
-        global $DIC;
-        
         $questions = [];
         $event_store = new QuestionEventStoreRepository();
         foreach ($event_store->allStoredQuestionIdsForContainerObjId($container_id) as $aggregate_id) {        
-            $questions[] = $DIC->assessment()->question()->getQuestionByQuestionId($aggregate_id);;
+            $questions[] = $this->getQuestionByQuestionId($aggregate_id);;
         }
         
         return $questions;

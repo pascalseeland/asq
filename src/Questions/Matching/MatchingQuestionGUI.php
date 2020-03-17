@@ -3,6 +3,7 @@
 namespace ILIAS\AssessmentQuestion\Questions\Matching;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
@@ -44,6 +45,6 @@ class MatchingQuestionGUI extends QuestionFormGUI {
     protected function postInit() {
         global $DIC;
         
-        $DIC->ui()->mainTemplate()->addJavaScript("./Services/AssessmentQuestion/src/Questions/Matching/MatchingAuthoring.js");
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Matching/MatchingAuthoring.js');
     }
 }

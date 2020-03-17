@@ -6,6 +6,7 @@ use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ilNumberInputGUI;
@@ -45,7 +46,7 @@ class EssayEditor extends AbstractEditor {
     {
         global $DIC;
         
-        $tpl = new ilTemplate("tpl.EssayEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.EssayEditor.html', true, true);
         
         $tpl->setVariable('ESSAY', is_null($this->answer) ? '' : $this->answer->getText());
         $tpl->setVariable('POST_VAR', $this->question->getId());
@@ -69,6 +70,8 @@ class EssayEditor extends AbstractEditor {
             $tpl->parseCurrentBlock();
         }
 
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Essay/EssayEditor.js');
+        
         return $tpl->get();
     }
     

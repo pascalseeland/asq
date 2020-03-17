@@ -6,6 +6,7 @@ use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ilTemplate;
 
 /**
@@ -50,7 +51,7 @@ class SolutionComponent
     {
         global $DIC;
 
-        $tpl = new ilTemplate("tpl.solution.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.solution.html', true, true);
 
         $score_dto = $this->scoring->score($this->answer);
 

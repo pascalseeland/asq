@@ -4,6 +4,7 @@ namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Presenter\AbstractPresenter;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Presenter\DefaultPresenter;
@@ -57,7 +58,7 @@ class QuestionComponent
     {
         global $DIC;
 
-        $tpl = new ilTemplate("tpl.question_view.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');
         $tpl->setVariable('SCORE_COMMAND', self::DEFAULT_SUBMIT_CMD);

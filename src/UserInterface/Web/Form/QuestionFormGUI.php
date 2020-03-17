@@ -18,6 +18,7 @@ use ilSelectInputGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 
 /**
  * Class MultipleChoiceQuestionGUI
@@ -124,7 +125,7 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
             $this->addItem($this->option_form);
         }
         
-        $DIC->ui()->mainTemplate()->addJavaScript('./Services/AssessmentQuestion/js/AssessmentQuestionAuthoring.js');
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
         
         $this->postInit();
     }

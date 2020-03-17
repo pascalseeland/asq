@@ -2,8 +2,9 @@
 
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
+use ILIAS\AssessmentQuestion\Gateway\AsqGateway;
+use ILIAS\AssessmentQuestion\Gateway\Common\AuthoringContextContainer;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionTypeSelectForm;
-use ILIAS\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
 
 /**
  * Class ilAsqQuestionCreationGUI
@@ -96,7 +97,7 @@ class ilAsqQuestionCreationGUI
             return;
         }
         
-        $new_question = $DIC->assessment()->question()->createQuestion(
+        $new_question = AsqGateway::get()->question()->createQuestion(
             $form->getQuestionType(),
             $this->contextContainer->getObjId(),
             $form->getContentEditingMode());

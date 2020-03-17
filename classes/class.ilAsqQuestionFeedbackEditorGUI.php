@@ -3,6 +3,7 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\Gateway\AsqGateway;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 
 /**
@@ -109,7 +110,7 @@ class ilAsqQuestionFeedbackEditorGUI
         {
             $new_feedback = $form->getFeedbackFromPost();
             $this->question_dto->setFeedback($new_feedback);
-            $DIC->assessment()->question()->saveQuestion($this->question_dto);
+            AsqGateway::get()->question()->saveQuestion($this->question_dto);
             ilutil::sendSuccess("Question Saved", true);
         }
             

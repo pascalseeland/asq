@@ -5,6 +5,7 @@ namespace ILIAS\AssessmentQuestion\Questions\FileUpload;
 use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ILIAS\FileUpload\Location;
@@ -150,7 +151,7 @@ class FileUploadEditor extends AbstractEditor {
     {
         global $DIC;
         
-        $tpl = new ilTemplate("tpl.FileUploadEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
         $tpl->setVariable('TXT_UPLOAD_FILE', $DIC->language()->txt('asq_header_upload_file'));
         $tpl->setVariable('TXT_MAX_SIZE', 
                           sprintf($DIC->language()->txt('asq_text_max_size'), 

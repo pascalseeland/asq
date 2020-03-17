@@ -2,6 +2,7 @@
 
 namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Presenter;
 
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ilTemplate;
 
@@ -22,7 +23,7 @@ class DefaultPresenter extends AbstractPresenter {
      * @throws \ilTemplateException
      */
 	public function generateHtml(AbstractEditor $editor): string {
-		$tpl = new ilTemplate("tpl.DefaultPresenter.html", true, true, "Services/AssessmentQuestion");
+	    $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
 
 		$tpl->setCurrentBlock('question');
 		$tpl->setVariable('QUESTIONTEXT', $this->question->getData()->getQuestionText());

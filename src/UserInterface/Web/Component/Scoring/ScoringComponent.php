@@ -6,6 +6,7 @@ use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 
@@ -45,7 +46,7 @@ class ScoringComponent
     {
         global $DIC;
         $DIC->language()->loadLanguageModule('assessment');
-        $tpl = new ilTemplate("tpl.answer_scoring.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.answer_scoring.html', true, true);
 
         $tpl->setCurrentBlock('answer_scoring');
         $tpl->setVariable('ANSWER_SCORE', 

@@ -10,6 +10,7 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTemplate;
 use ilTextInputGUI;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 
 /**
  * Class AsqTableInput
@@ -66,7 +67,7 @@ class AsqTableInput extends ilTextInputGUI {
     public function render($a_mode = '') {
         global $DIC;
         
-        $tpl = new ilTemplate("tpl.TableInput.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
         
         /** @var AsqTableInputFieldDefinition $definition */
         foreach ($this->definitions as $definition) {
@@ -247,7 +248,7 @@ class AsqTableInput extends ilTextInputGUI {
     }
     
     private function generateTextArea(string $post_var, $value) {
-        $tpl = new ilTemplate("tpl.TextAreaField.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/templates/default/tpl.TextAreaField.html', true, true);
         
         $tpl->setCurrentBlock('textarea');
         $tpl->setVariable('POST_NAME', $post_var);

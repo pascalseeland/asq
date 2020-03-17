@@ -3,6 +3,7 @@
 namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback;
 
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Scoring\ScoringComponent;
 use ilTemplate;
 
@@ -42,7 +43,7 @@ class FeedbackComponent
     {
         global $DIC;
 
-        $tpl = new ilTemplate("tpl.feedback.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.feedback.html', true, true);
 
         /*$tpl->setCurrentBlock('inst_resp_id');
         $tpl->setVariable('INSTANT_RESPONSE_FOCUS_ID', self::FEEDBACK_FOCUS_ANCHOR);

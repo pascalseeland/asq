@@ -8,6 +8,7 @@ use ilSelectInputGUI;
 use ilNumberInputGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInput;
@@ -78,10 +79,12 @@ class MatchingEditor extends AbstractEditor
 
     public function generateHtml(): string
     {
+        global $DIC;
+        
         /** @var MatchingEditorConfiguration $config */
         $config = $this->question->getPlayConfiguration()->getEditorConfiguration();
         
-        $tpl = new ilTemplate("tpl.MatchingEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.MatchingEditor.html', true, true);
         $tpl->setVariable('QUESTION_ID', $this->question->getId());
         $tpl->setVariable('ANSWER', is_null($this->answer) ? '' :$this->answer->getAnswerString());
         $tpl->setVariable('MATCHING_TYPE', $config->getMatchingMode());
@@ -89,6 +92,8 @@ class MatchingEditor extends AbstractEditor
         $this->renderDefinitions($config, $tpl);
         
         $this->renderTerms($config, $tpl);
+        
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Matching/MatchingEditor.js');
         
         return $tpl->get();
     }

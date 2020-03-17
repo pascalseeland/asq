@@ -3,7 +3,8 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
+use ILIAS\AssessmentQuestion\Gateway\AsqGateway;
+use ILIAS\AssessmentQuestion\Gateway\Common\AuthoringContextContainer;
 use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
@@ -80,12 +81,10 @@ class ilAsqQuestionConfigEditorGUI
      */
     protected function saveForm()
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         $form = $this->buildForm();
 
         $question = $form->getQuestion();
-        $DIC->assessment()->question()->saveQuestion($question);
+        AsqGateway::get()->question()->saveQuestion($question);
         
         ilutil::sendInfo("Question Saved", true);
         
@@ -103,7 +102,7 @@ class ilAsqQuestionConfigEditorGUI
         $form = $this->buildForm();
         
         $question = $form->getQuestion();
-        $DIC->assessment()->question()->saveQuestion($question);
+        AsqGateway::get()->question()->saveQuestion($question);
         
         if( !$form->checkInput() )
         {
@@ -126,7 +125,7 @@ class ilAsqQuestionConfigEditorGUI
 
         $question = $this->buildQuestion();
 
-        $form = $DIC->assessment()->question()->getQuestionEditForm($question);
+        $form = AsqGateway::get()->ui()->getQuestionEditForm($question);
         $form->setFormAction($DIC->ctrl()->getFormAction($this, self::CMD_SHOW_FORM));
         $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $DIC->language()->txt('save_return'));
         $form->addCommandButton(self::CMD_SAVE_FORM, $DIC->language()->txt('save'));
@@ -143,7 +142,7 @@ class ilAsqQuestionConfigEditorGUI
         global $DIC;
         
         $question_id = $this->questionId->getId();
-        $question = $DIC->assessment()->question()->getQuestionByQuestionId($question_id);
+        $question = AsqGateway::get()->question()->getQuestionByQuestionId($question_id);
 
         return $question;
     }

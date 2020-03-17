@@ -5,6 +5,7 @@ namespace ILIAS\AssessmentQuestion\Questions\TextSubset;
 use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ilNumberInputGUI;
@@ -41,7 +42,7 @@ class TextSubsetEditor extends AbstractEditor {
      */
     public function generateHtml() : string
     {
-        $tpl = new ilTemplate("tpl.TextSubsetEditor.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.TextSubsetEditor.html', true, true);
         
         for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i++) {
             $tpl->setCurrentBlock('textsubset_row');

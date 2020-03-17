@@ -2,6 +2,7 @@
 
 namespace ILIAS\AssessmentQuestion\Questions\ImageMap;
 
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ilTemplate;
 use ilTextInputGUI;
 
@@ -25,7 +26,7 @@ class ImageFormPopup extends ilTextInputGUI {
     public function render($a_mode = '') {
         global $DIC;
         
-        $tpl = new ilTemplate("tpl.ImageMapEditorFormPopUp.html", true, true, "Services/AssessmentQuestion");
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditorFormPopUp.html', true, true);
         $tpl->setVariable('POPUP_TITLE', $DIC->language()->txt('asq_imagemap_popup_title'));
         $tpl->setVariable('IMAGE_SRC', $this->getValue());
         $tpl->setVariable('OK', $DIC->language()->txt('ok'));

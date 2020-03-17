@@ -4,7 +4,7 @@
 
 
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\QuestionComponent;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 
 /**
  * Class ilAsqQuestionPageGUI
@@ -73,7 +73,10 @@ class ilAsqQuestionPageGUI extends ilPageObjectGUI
     private function createPageIfNotExists(string $page_type, int $parent_int_id, int $page_int_id)
     {
         if (ilPageObject::_exists($page_type, $page_int_id) === false) {
-            include_once("./Services/AssessmentQuestion/src/UserInterface/Web/Page/class.AsqPageObject.php");
+            $dir = __DIR__;
+            $dir = substr($dir, strpos($dir, "/Customizing/") + 1);
+            $dir = substr($dir, 0, strpos($dir, "/classes/") + 1);
+            include_once($dir . "/src/UserInterface/Web/Page/class.AsqPageObject.php");
             $page = new AsqPageObject();
             $page->setParentType($page_type);
             $page->setParentId($parent_int_id);

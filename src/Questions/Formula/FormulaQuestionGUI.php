@@ -3,6 +3,7 @@
 namespace ILIAS\AssessmentQuestion\Questions\Formula;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInput;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
 /**
@@ -49,7 +50,7 @@ class FormulaQuestionGUI extends QuestionFormGUI {
         
         $this->option_form->setInfo($DIC->language()->txt('asq_info_results'));
         
-        $DIC->ui()->mainTemplate()->addJavaScript("./Services/AssessmentQuestion/src/Questions/Formula/FormulaAuthoring.js");
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Formula/FormulaAuthoring.js');
     }
     
     private function getParseButton() : string {

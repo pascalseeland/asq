@@ -4,6 +4,7 @@ namespace ILIAS\AssessmentQuestion\Questions\ImageMap;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
 use ILIAS\AssessmentQuestion\Questions\MultipleChoice\MultipleChoiceScoring;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
 use ILIAS\AssessmentQuestion\Questions\MultipleChoice\MultipleChoiceScoringConfiguration;
 
@@ -50,6 +51,6 @@ class ImageMapQuestionGUI extends QuestionFormGUI {
     protected function postInit() {
         global $DIC;
         
-        $DIC->ui()->mainTemplate()->addJavaScript("./Services/AssessmentQuestion/src/Questions/ImageMap/ImageMapAuthoring.js");
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapAuthoring.js');
     }
 }

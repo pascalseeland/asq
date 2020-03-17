@@ -11,6 +11,7 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTextInputGUI;
 use ILIAS\AssessmentQuestion\UserInterface\Web\ImageUploader;
+use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqImageUpload;
 use ilTemplate;
@@ -53,8 +54,10 @@ class ImageMapEditor extends AbstractEditor {
      * @return string
      */
     public function generateHtml() : string
-    {        
-        $tpl = new ilTemplate("tpl.ImageMapEditor.html", true, true, "Services/AssessmentQuestion");
+    {       
+        global $DIC;
+        
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditor.html', true, true);
         
         $tpl->setCurrentBlock('generic');
         $tpl->setVariable('POST_NAME', $this->getPostName());
@@ -72,6 +75,8 @@ class ImageMapEditor extends AbstractEditor {
             $tpl->setVariable('OPTION_SHAPE', $this->generateShape($display_definition, $answer_option->getOptionId()));
             $tpl->parseCurrentBlock();
         }
+        
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapEditor.js');
         
         return $tpl->get();
     }
