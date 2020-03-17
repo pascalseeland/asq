@@ -73,10 +73,7 @@ class ilAsqQuestionPageGUI extends ilPageObjectGUI
     private function createPageIfNotExists(string $page_type, int $parent_int_id, int $page_int_id)
     {
         if (ilPageObject::_exists($page_type, $page_int_id) === false) {
-            $dir = __DIR__;
-            $dir = substr($dir, strpos($dir, "/Customizing/") + 1);
-            $dir = substr($dir, 0, strpos($dir, "/classes/") + 1);
-            include_once($dir . "/src/UserInterface/Web/Page/class.AsqPageObject.php");
+            include_once(PathHelper::getBasePath(__DIR__)  . "/src/UserInterface/Web/Page/class.AsqPageObject.php");
             $page = new AsqPageObject();
             $page->setParentType($page_type);
             $page->setParentId($parent_int_id);

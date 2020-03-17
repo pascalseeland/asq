@@ -15,6 +15,12 @@ namespace ILIAS\AssessmentQuestion\UserInterface\Web;
 class PathHelper {
     public static function getBasePath(string $fullpath) : string {
         $dir = substr($fullpath, strpos($fullpath, "/Customizing/") + 1);
-        return substr($dir, 0, strpos($dir, "/src/") + 1);
+        
+        if (strpos($dir, "/src/")) {
+            return substr($dir, 0, strpos($dir, "/src/") + 1);
+        }
+        else {
+            return substr($dir, 0, strpos($dir, "/classes") + 1);
+        }
     }
 }

@@ -59,20 +59,17 @@ class ilAsqQuestionPreviewGUI
 
         $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
         
-        $question_page = AsqGateway::get()->ui()->getQuestionPage($question_dto);
-        $question_page->setRenderPageContainer(false);
-        $question_page->setEditPreview(true);
-        $question_page->setEnabledTabs(false);
+        $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
         
         $question_tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
         $question_tpl->setVariable('FORMACTION', $DIC->ctrl()->getFormAction($this, self::CMD_SHOW_PREVIEW));
-        $question_tpl->setVariable('QUESTION_OUTPUT', $question_page->showPage());
+        $question_tpl->setVariable('QUESTION_OUTPUT', $question_component->renderHtml());
         $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $feedback_component = new FeedbackComponent(
-                new ScoringComponent($question_dto, $question_page->getQuestionComponent()->readAnswer()), 
-                new AnswerFeedbackComponent($question_dto, $question_page->getQuestionComponent()->readAnswer()));
+                new ScoringComponent($question_dto, $question_component->readAnswer()), 
+                new AnswerFeedbackComponent($question_dto, $question_component->readAnswer()));
             $question_tpl->setCurrentBlock('instant_feedback');
             $question_tpl->setVariable('INSTANT_FEEDBACK',$feedback_component->getHtml());
             $question_tpl->parseCurrentBlock();
