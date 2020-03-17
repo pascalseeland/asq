@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\PublicApi;
+namespace ILIAS\AssessmentQuestion\Gateway;
 
 /**
  * Class ASQService

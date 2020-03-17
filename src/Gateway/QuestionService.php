@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\PublicApi;
+namespace ILIAS\AssessmentQuestion\Gateway;
 
 use ILIAS\AssessmentQuestion\DomainModel\ContentEditingMode;
 use ILIAS\AssessmentQuestion\DomainModel\Question;
@@ -9,15 +9,11 @@ use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionRepository;
 use ILIAS\AssessmentQuestion\DomainModel\Command\CreateQuestionCommand;
 use ILIAS\AssessmentQuestion\DomainModel\Command\SaveQuestionCommand;
-use ILIAS\AssessmentQuestion\UserInterface\Web\AsqGUIElementFactory;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\QuestionComponent;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
-use ilAsqException;
-use ilAsqQuestionPageGUI;
+use ILIAS\AssessmentQuestion\DomainModel\Exception\AsqException;
+use ILIAS\AssessmentQuestion\Infrastructure\Persistence\EventStore\QuestionEventStoreRepository;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Command\CommandBusBuilder;
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\EventStore\QuestionEventStoreRepository;
 
 /**
  * Class QuestionService
@@ -40,7 +36,7 @@ class QuestionService extends ASQService
         }
         else {
             //TODO translate?
-            throw new ilAsqException(sprintf("Question with id %s does not exist", $id));
+            throw new AsqException(sprintf("Question with id %s does not exist", $id));
         }
     }
     
@@ -58,31 +54,6 @@ class QuestionService extends ASQService
         }
         
         return $questions;
-    }
-    
-    public function getQuestionComponent(QuestionDto $question) : QuestionComponent {
-        global $DIC;
-        
-        $DIC->language()->loadLanguageModule('asq');
-        
-        return new QuestionComponent($question);
-    }
-     
-    public function getQuestionEditForm(QuestionDto $question) : QuestionFormGUI {
-        return AsqGUIElementFactory::CreateQuestionForm($question);
-    }
-    
-    public function getQuestionPage(QuestionDto $question_dto) : ilAsqQuestionPageGUI {
-        $page_gui = new ilAsqQuestionPageGUI($question_dto->getContainerObjId(), $question_dto->getQuestionIntId(), $this->lng_key);
-        $page_gui->setRenderPageContainer(false);
-        $page_gui->setEditPreview(true);
-        $page_gui->setEnabledTabs(false);
-        $page_gui->setPresentationTitle($question_dto->getData()->getTitle());
-        
-        $question_component = $this->getQuestionComponent($question_dto);
-        $page_gui->setQuestionComponent($question_component);
-        
-        return $page_gui;
     }
 
     public function createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA): QuestionDto

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\PublicApi;
+namespace ILIAS\AssessmentQuestion\Gateway;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
 use ILIAS\AssessmentQuestion\Infrastructure\Persistence\SimpleStoredAnswer;
-use ilAsqException;
+use ILIAS\AssessmentQuestion\DomainModel\Exception\AsqException;
 
 /**
  * Class AnswerService
@@ -80,7 +80,7 @@ class AnswerService extends ASQService {
         }
         
         if (is_null($stored)) {
-            throw new ilAsqException(sprintf('The requested Answer does not exist UUID = "%s" Version = "%s"', $uuid, $version));
+            throw new AsqException(sprintf('The requested Answer does not exist UUID = "%s" Version = "%s"', $uuid, $version));
         }
         
         return $stored->getAnswer();

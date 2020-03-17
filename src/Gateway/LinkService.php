@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\PublicApi\Authoring;
+namespace ILIAS\AssessmentQuestion\Gateway;
 
 use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 use ilAsqQuestionAuthoringGUI;
@@ -19,9 +19,9 @@ use ilAsqQuestionPreviewGUI;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class AuthoringQuestion
+class LinkService
 {
-    public static function getCreationLink(array $ctrl_stack) :UiStandardLink
+    public function getCreationLink(array $ctrl_stack) :UiStandardLink
     {
         global $DIC;
 
@@ -38,7 +38,7 @@ class AuthoringQuestion
     /**
      * @return UiStandardLink
      */
-    public static function getEditLink(string $question_id, array $ctrl_stack = []) :UiStandardLink
+    public function getEditLink(string $question_id, array $ctrl_stack = []) :UiStandardLink
     {
         global $DIC;
         
@@ -56,7 +56,7 @@ class AuthoringQuestion
     /**
      * @return UiStandardLink
      */
-    public static function getPreviewLink(string $question_id, array $ctrl_stack = []) : UiStandardLink
+    public function getPreviewLink(string $question_id, array $ctrl_stack = []) : UiStandardLink
     {
         global $DIC;
         array_push($ctrl_stack, ilAsqQuestionAuthoringGUI::class);
@@ -73,7 +73,7 @@ class AuthoringQuestion
     /**
      * @return UiStandardLink
      */
-    public static function getEditPageLink(string $question_id) : UiStandardLink
+    public function getEditPageLink(string $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -91,7 +91,7 @@ class AuthoringQuestion
     /**
      * @return UiStandardLink
      */
-    public static function getEditFeedbacksLink(string $question_id) : UiStandardLink
+    public function getEditFeedbacksLink(string $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -109,7 +109,7 @@ class AuthoringQuestion
     /**
      * @return UiStandardLink
      */
-    public static function getEditHintsLink(string $question_id) : UiStandardLink
+    public function getEditHintsLink(string $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -126,7 +126,7 @@ class AuthoringQuestion
     /**
      * sets the question uid parameter for the ctrl hub gui ilAsqQuestionAuthoringGUI
      */
-    protected static function setQuestionUidParameter(string $question_id)
+    protected function setQuestionUidParameter(string $question_id)
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
