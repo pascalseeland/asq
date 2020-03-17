@@ -1,6 +1,6 @@
 <?php
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback;
+namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Scoring;
 
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;

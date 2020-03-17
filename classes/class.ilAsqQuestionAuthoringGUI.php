@@ -4,8 +4,8 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2013 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 
-use ILIAS\Services\AssessmentQuestion\PublicApi\Authoring\AuthoringQuestion;
-use ILIAS\Services\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
+use ILIAS\AssessmentQuestion\PublicApi\Authoring\AuthoringQuestion;
+use ILIAS\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
 use srag\CQRS\Aggregate\DomainObjectId;
 
 /**

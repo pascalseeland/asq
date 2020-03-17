@@ -2,7 +2,7 @@
 
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\Services\AssessmentQuestion\PublicApi\Common;
+namespace ILIAS\AssessmentQuestion\PublicApi\Common;
 
 use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 

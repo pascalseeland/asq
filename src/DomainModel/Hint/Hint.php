@@ -3,8 +3,8 @@
 namespace ILIAS\AssessmentQuestion\DomainModel\Hint;
 
 use JsonSerializable;
-use ilAsqException;
 use stdClass;
+use ILIAS\AssessmentQuestion\DomainModel\Exception\AsqException;
 
 /**
  * Interface Hint
@@ -47,7 +47,7 @@ class Hint implements JsonSerializable
      * @param string $content
      * @param float  $point_deduction
      *
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function __construct(int $order_number, string $content, float $point_deduction)
     {
@@ -124,11 +124,11 @@ class Hint implements JsonSerializable
 
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function validate():void {
         if ($this->getOrderNumber() % self::ORDER_GAP != 0) {
-            throw new ilAsqException('Property hint_order_number - '.$this->getOrderNumber().' - is not valid. It hast be a multiple of '.self::ORDER_GAP);
+            throw new AsqException('Property hint_order_number - '.$this->getOrderNumber().' - is not valid. It hast be a multiple of '.self::ORDER_GAP);
         }
     }
 

@@ -3,7 +3,7 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFeedbackFormGUI;
+use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 
 /**
  * Class AsqQuestionFeedbackEditorGUI

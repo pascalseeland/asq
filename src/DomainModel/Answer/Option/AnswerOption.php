@@ -88,7 +88,7 @@ class AnswerOption implements JsonSerializable {
 	    $my_values = $this->rawValues();
 	    $other_values = $other->rawValues();
 
-	    foreach ($my_values as $key => $value)
+	    foreach (array_keys($my_values) as $key)
 	    {
 	        if ($my_values[$key] !== $other_values[$key]) 
 	        {

@@ -3,6 +3,7 @@
 namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback;
 
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
+use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Scoring\ScoringComponent;
 use ilTemplate;
 
 /**

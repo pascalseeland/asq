@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ILIAS\Services\AssessmentQuestion\PublicApi\Authoring;
+namespace ILIAS\AssessmentQuestion\PublicApi\Authoring;
 
 use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 use ilAsqQuestionAuthoringGUI;

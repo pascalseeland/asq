@@ -3,8 +3,7 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Page\Page;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Page\PageConfig;
+use ILIAS\UI\Component\Layout\Page\Page;
 
 
 /**

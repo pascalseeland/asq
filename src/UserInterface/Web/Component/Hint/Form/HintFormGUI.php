@@ -4,9 +4,9 @@
 
 namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Form;
 
-use ILIAS\AssessmentQuestion\DomainModel\Hint\Hint;
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Page\Page;
+use ILIAS\AssessmentQuestion\DomainModel\Hint\Hint;
+use ILIAS\UI\Component\Layout\Page\Page;
 
 /**
  * Class QuestionHintFormGUI

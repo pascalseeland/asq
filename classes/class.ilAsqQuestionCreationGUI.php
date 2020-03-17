@@ -3,7 +3,7 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionTypeSelectForm;
-use ILIAS\Services\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
+use ILIAS\AssessmentQuestion\PublicApi\Common\AuthoringContextContainer;
 
 /**
  * Class ilAsqQuestionCreationGUI

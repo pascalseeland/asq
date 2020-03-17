@@ -2,7 +2,6 @@
 
 namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\EventStore;
 
-use srag\CQRS\CQRS\Event\AbstractStoredEvent;
 use srag\CQRS\Event\AbstractIlContainerItemStoredEvent;
 
 /**

@@ -17,7 +17,7 @@ use ILIAS\AssessmentQuestion\Questions\Numeric\NumericQuestionGUI;
 use ILIAS\AssessmentQuestion\Questions\Ordering\OrderingQuestionGUI;
 use ILIAS\AssessmentQuestion\Questions\Ordering\OrderingTextQuestionGUI;
 use ILIAS\AssessmentQuestion\Questions\TextSubset\TextSubsetQuestionGUI;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFeedbackFormGUI;
+use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 use Exception;
 use ilPropertyFormGUI;
 

@@ -2,7 +2,7 @@
 
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Form;
+namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form;
 
 use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;

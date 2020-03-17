@@ -2,7 +2,7 @@
 
 namespace ILIAS\AssessmentQuestion\DomainModel\Hint;
 
-use ilAsqException;
+use ILIAS\AssessmentQuestion\DomainModel\Exception\AsqException;
 
 /**
  * Class Hints
@@ -28,7 +28,7 @@ class QuestionHints
      *
      * @param array Hint[]
      *
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function __construct(?array $hints)
     {
@@ -57,7 +57,7 @@ class QuestionHints
      * @param int $order_number
      *
      * @return Hint
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function getSpecificHint(int $order_number) : Hint
     {
@@ -75,7 +75,7 @@ class QuestionHints
      * @param string $json_data
      *
      * @return QuestionHints
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public static function deserialize(string $json_data) : QuestionHints
     {
@@ -128,7 +128,7 @@ class QuestionHints
     }
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function validate():void {
         if(count($this->hints) > 0) {
@@ -139,7 +139,7 @@ class QuestionHints
             foreach($this->getHints() as $hint) {
                 //More than one hint with the smae order number?
                 if(in_array($hint->getOrderNumber(), $order_numbers)) {
-                    throw new ilAsqException('Property hint_order_number - '.$hint->getOrderNumber().' - is not valid. There is a second hint with the same order number');
+                    throw new AsqException('Property hint_order_number - '.$hint->getOrderNumber().' - is not valid. There is a second hint with the same order number');
                 }
                 $order_numbers[] = $hint->getOrderNumber();
 
@@ -153,11 +153,11 @@ class QuestionHints
             }
 
             if($min_hint != Hint::ORDER_GAP) {
-                throw new ilAsqException('Property hint_order_number - '.$min_hint.' - is not valid. This is the minimum Order. Expected would be 10');
+                throw new AsqException('Property hint_order_number - '.$min_hint.' - is not valid. This is the minimum Order. Expected would be 10');
             }
 
             if($max_hint != (Hint::ORDER_GAP * count($this->getHints()))) {
-                throw new ilAsqException('Property hint_order_number - '.$max_hint.' - is not valid. This is the maximum Order. Expected would be  '.Hint::ORDER_GAP * count($this->getHints()));
+                throw new AsqException('Property hint_order_number - '.$max_hint.' - is not valid. This is the maximum Order. Expected would be  '.Hint::ORDER_GAP * count($this->getHints()));
             }
         }
 

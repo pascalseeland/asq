@@ -1,9 +1,9 @@
 <?php
 
-use ILIAS\AssessmentQuestion\Application\AuthoringApplicationService;
+use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
+use ILIAS\AssessmentQuestion\DomainModel\Exception\AsqException;
 use ILIAS\AssessmentQuestion\DomainModel\Hint\Hint;
 use ILIAS\AssessmentQuestion\DomainModel\Hint\QuestionHints;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Form\HintFormGUI;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Table\HintTableFieldSelectHint;
 use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Table\ilAsqHintsTableGUI;
@@ -48,7 +48,7 @@ class AsqQuestionHintEditorGUI
 
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function executeCommand()
     {
@@ -95,7 +95,7 @@ class AsqQuestionHintEditorGUI
 
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function saveOrderNumbers()
     {
@@ -116,7 +116,7 @@ class AsqQuestionHintEditorGUI
 
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     public function showHintForm()
     {
@@ -141,7 +141,7 @@ class AsqQuestionHintEditorGUI
 
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     protected function saveHint()
     {
@@ -221,7 +221,7 @@ class AsqQuestionHintEditorGUI
 
 
     /**
-     * @throws ilAsqException
+     * @throws AsqException
      */
     protected function deleteHints()
     {
@@ -255,7 +255,7 @@ class AsqQuestionHintEditorGUI
      * @param Hint[] $hints_to_save
      *
      * @return QuestionHints
-     * @throws ilAsqException
+     * @throws AsqException
      */
     private function getQuestionHintsFromArray(array $hints_to_save) : QuestionHints
     {
