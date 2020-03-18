@@ -75,11 +75,6 @@ class OrderingEditor extends AbstractEditor {
             $tpl->setCurrentBlock('item');
             $tpl->setVariable('OPTION_ID', array_search($item->getDisplayDefinition()->getText(), $this->display_ids));
             $tpl->setVariable('ITEM_TEXT', $item->getDisplayDefinition()->getText());
-            
-            if (!empty($this->configuration->getMinimumSize())) {
-                $tpl->setVariable('HEIGHT', sprintf(' style="height: %spx" ', $this->configuration->getMinimumSize()));
-            }
-            
             $tpl->parseCurrentBlock();
         }
 
@@ -140,13 +135,7 @@ class OrderingEditor extends AbstractEditor {
         ]);
         $fields[self::VAR_VERTICAL] = $is_vertical;
         
-        $minimum_size = new ilNumberInputGUI($DIC->language()->txt('asq_label_min_size'), self::VAR_MINIMUM_SIZE);
-        $minimum_size->setInfo($DIC->language()->txt('asq_description_min_size'));
-        $minimum_size->setSize(6);
-        $fields[self::VAR_MINIMUM_SIZE] = $minimum_size;
-        
         if ($config !== null) {
-            $minimum_size->setValue($config->getMinimumSize());
             $is_vertical->setValue($config->isVertical() ? self::VERTICAL : self::HORICONTAL);
         }
         else {
@@ -158,9 +147,7 @@ class OrderingEditor extends AbstractEditor {
     
     public static function readConfig()
     {
-        return OrderingEditorConfiguration::create(
-            $_POST[self::VAR_VERTICAL] === self::VERTICAL, 
-            !empty($_POST[self::VAR_MINIMUM_SIZE]) ? intval($_POST[self::VAR_MINIMUM_SIZE]) : null);
+        return OrderingEditorConfiguration::create($_POST[self::VAR_VERTICAL] === self::VERTICAL);
     }
     
     /**

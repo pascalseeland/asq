@@ -21,18 +21,11 @@ class OrderingEditorConfiguration extends AbstractConfiguration
      * @var ?bool
      */
     protected $vertical;
-    /**
-     * @var ?int
-     */
-    protected $minimum_size;
     
-    public static function create(
-        ?bool $vertical = null, 
-        ?int $minimum_size = null) : OrderingEditorConfiguration
+    public static function create(?bool $vertical = null) : OrderingEditorConfiguration
     {
         $object = new OrderingEditorConfiguration();
         $object->vertical = $vertical;
-        $object->minimum_size = $minimum_size;
         return $object;
     }
     
@@ -42,21 +35,5 @@ class OrderingEditorConfiguration extends AbstractConfiguration
     public function isVertical() : ?bool
     {
         return $this->vertical;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMinimumSize() : ?int
-    {
-        return $this->minimum_size;
-    }
-
-    public function equals(AbstractValueObject $other): bool
-    {
-        /** @var OrderingEditorConfiguration $other */
-        return get_class($this) === get_class($other) &&
-               $this->isVertical() === $other->isVertical() &&
-               $this->getMinimumSize() === $other->getMinimumSize();
     }
 }
