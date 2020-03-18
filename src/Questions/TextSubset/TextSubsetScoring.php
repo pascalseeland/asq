@@ -98,7 +98,7 @@ class TextSubsetScoring extends AbstractScoring
     private function caseInsensitiveScoring() : float {
         $reached_points = 0;
         
-        foreach ($this->answer->getAnswers() as $result) {
+        foreach ($this->getAnswers() as $result) {
             foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
                 if (strtoupper($correct->getScoringDefinition()->getText()) === strtoupper($result)) {
                     $reached_points += $correct->getScoringDefinition()->getPoints();
@@ -117,7 +117,7 @@ class TextSubsetScoring extends AbstractScoring
     private function caseSensitiveScoring() : float {
         $reached_points = 0;
  
-        foreach ($this->answer->getAnswers() as $result) {
+        foreach ($this->getAnswers() as $result) {
             foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
                 if ($correct->getScoringDefinition()->getText() === $result) {
                     $reached_points += $correct->getScoringDefinition()->getPoints();
@@ -137,7 +137,7 @@ class TextSubsetScoring extends AbstractScoring
     private function levenshteinScoring(int $distance) : float {
         $reached_points = 0;
 
-        foreach ($this->answer->getAnswers() as $result) {
+        foreach ($this->getAnswers() as $result) {
             foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
                 if (levenshtein($correct->getScoringDefinition()->getText(), $result) <= $distance) {
                     $reached_points += $correct->getScoringDefinition()->getPoints();
@@ -147,6 +147,10 @@ class TextSubsetScoring extends AbstractScoring
         }
 
         return $reached_points;
+    }
+    
+    private function getAnswers() : array {
+        return array_unique($this->answer->getAnswers());
     }
     
     /**
