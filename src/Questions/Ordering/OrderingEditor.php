@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Ordering;
 
-use ilNumberInputGUI;
 use ilSelectInputGUI;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;

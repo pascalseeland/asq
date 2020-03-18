@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Ordering;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\AbstractConfiguration;
 
 /**
