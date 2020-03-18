@@ -124,7 +124,7 @@ class MultipleChoiceEditor extends AbstractEditor {
 		return $this->configuration->getMaxAnswers() > 1;
 	}
 
-	private function getPostName(int $answer_id = null) {
+	private function getPostName(string $answer_id = null) {
 		return $this->isMultipleChoice() ?
 			self::VAR_MC_POSTNAME . $this->question->getId() . '_' . $answer_id :
 			self::VAR_MC_POSTNAME . $this->question->getId();

@@ -26,7 +26,7 @@ class KprimChoiceAnswer extends Answer {
         return $object;
     }
     
-    public function getAnswerForId(int $id) : bool {
+    public function getAnswerForId(string $id) : bool {
         return $this->answers[$id];
     }
 }

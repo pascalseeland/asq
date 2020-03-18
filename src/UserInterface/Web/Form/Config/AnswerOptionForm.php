@@ -111,9 +111,9 @@ class AnswerOptionForm extends AsqTableInput {
 	    for ($i = 1; $i <= $count; $i++) {
 	        $this->options->addOption(new AnswerOption
 	            (
-	                $i,
-	                $dd_class::getValueFromPost($i),
-	                $sd_class::getValueFromPost($i)));
+	                strval($i),
+	                $dd_class::getValueFromPost(strval($i)),
+	                $sd_class::getValueFromPost(strval($i))));
 	    }
 	    
 	    $this->values = $this->getRawOptionValue($this->options->getOptions());

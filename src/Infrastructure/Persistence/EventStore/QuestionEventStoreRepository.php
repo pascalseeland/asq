@@ -66,8 +66,8 @@ class QuestionEventStoreRepository extends EventStore {
 		$event_stream = new DomainEvents();
 		while ($row = $DIC->database()->fetchAssoc($res)) {
 			/**@var AbstractDomainEvent $event */
-			$event_name = "ILIAS\\AssessmentQuestion\\DomainModel\\Event\\".utf8_encode(trim($row['event_name']));
-			$event = new $event_name(new DomainObjectId($row['aggregate_id']), $row['container_id'], $row['initiating_user_id'], $row['item_id']);
+			$event_name = $row['event_class'];
+			$event = new $event_name(new DomainObjectId($row['aggregate_id']), intval($row['container_id']), intval($row['initiating_user_id']), intval($row['item_id']));
 			$event->restoreEventBody($row['event_body']);
 			$event_stream->addEvent($event);
 		}

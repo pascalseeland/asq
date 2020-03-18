@@ -90,7 +90,7 @@ class ImageMapEditor extends AbstractEditor {
      * @param int $id
      * @return string
      */
-    private function generateShape(ImageMapEditorDisplayDefinition $display_definition, int $id) : string {
+    private function generateShape(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
         switch ($display_definition->getType()) {
             case ImageMapEditorDisplayDefinition::TYPE_CIRCLE:
                 return $this->generateCircle($display_definition, $id);
@@ -108,7 +108,7 @@ class ImageMapEditor extends AbstractEditor {
      * @param int $id
      * @return string
      */
-    private function generateCircle(ImageMapEditorDisplayDefinition $display_definition, int $id) : string {
+    private function generateCircle(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
         
         return '<ellipse class="' . $this->getClass($id) . '"
@@ -126,7 +126,7 @@ class ImageMapEditor extends AbstractEditor {
      * @param int $id
      * @return string
      */
-    private function generatePolygon(ImageMapEditorDisplayDefinition $display_definition, int $id) : string {
+    private function generatePolygon(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
         
         return '<polygon class="' . $this->getClass($id) . '" points="' . $values['points'] .'" data-value="' . $id . '">
@@ -139,7 +139,7 @@ class ImageMapEditor extends AbstractEditor {
      * @param int $id
      * @return string
      */
-    private function generateRectangle(ImageMapEditorDisplayDefinition $display_definition, int $id) : string {
+    private function generateRectangle(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
         
         return '<rect class="' . $this->getClass($id) . '" 
@@ -182,7 +182,7 @@ class ImageMapEditor extends AbstractEditor {
      * @param int $id
      * @return string
      */
-    private function getClass(int $id) : string {
+    private function getClass(string $id) : string {
         $class = '';
         
         if (!is_null($this->answer) && in_array($id, $this->answer->getSelectedIds())) {
@@ -201,11 +201,7 @@ class ImageMapEditor extends AbstractEditor {
      */
     public function readAnswer() : AbstractValueObject
     {
-        return MultipleChoiceAnswer::create(
-            array_map(function($item) {
-                return intval($item);
-            }, explode(',', $_POST[$this->getPostName()]))
-        );
+        return MultipleChoiceAnswer::create(explode(',', $_POST[$this->getPostName()]));
     }
     
     public static function generateFields(?AbstractConfiguration $config): ?array {

@@ -103,7 +103,7 @@ class ImageAndTextDisplayDefinition extends AnswerDefinition {
 	    global $DIC;
 	    
 	    for ($i = 1; $i <= $count; $i++) {
-	        if ($_POST[self::getPostKey($i, self::VAR_MCDD_TEXT)] == null)
+	        if ($_POST[self::getPostKey(strval($i), self::VAR_MCDD_TEXT)] == null)
 	        {
 	            self::$error_message = $DIC->language()->txt('msg_input_is_required');
 	            return false;

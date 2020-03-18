@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model\Scoring;
 
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 
 /**
  * Class EmptyScoringDefinition
@@ -15,7 +15,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EmptyScoringDefinition extends AnswerOption {
+class EmptyScoringDefinition extends AnswerDefinition {
     
     public static function getFields(QuestionPlayConfiguration $play): array {
         return [];

@@ -19,7 +19,7 @@ class EssayScoringProcessedAnswerOption {
     private $words;
     
     /**
-     * @var int
+     * @var float
      */
     private $points;
     
@@ -46,7 +46,7 @@ class EssayScoringProcessedAnswerOption {
     /**
      * @return number
      */
-    public function getPoints() : int
+    public function getPoints() : float
     {
         return $this->points;
     }

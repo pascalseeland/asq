@@ -39,7 +39,6 @@ class CreateQuestionCommandHandler implements CommandHandlerContract {
 				$command->getQuestionType(),
 			    $command->getContentEditingMode()
 			),
-		    $command->getQuestionContainerId(),
 		    $command->getIssuingUserId()
 		);
 

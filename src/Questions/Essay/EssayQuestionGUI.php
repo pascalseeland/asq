@@ -54,7 +54,7 @@ class EssayQuestionGUI extends QuestionFormGUI {
             
             while (array_key_exists($this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_TEXT), $_POST)) {
                 $options->addOption(new AnswerOption(
-                        $i,
+                        strval($i),
                         new EmptyDisplayDefinition(),
                         new EssayScoringDefinition(
                             AsqHtmlPurifier::getInstance()->purify($_POST[$this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_TEXT)]),

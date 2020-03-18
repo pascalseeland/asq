@@ -47,6 +47,8 @@ class ErrorTextEditor extends AbstractEditor {
      */
     public function generateHtml() : string
     {
+        global $DIC;
+        
         $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ErrorTextEditor.html', true, true);
         
         $tpl->setCurrentBlock('editor');
@@ -59,6 +61,8 @@ class ErrorTextEditor extends AbstractEditor {
         $tpl->setVariable('ERRORTEXT_VALUE', is_null($this->answer) ? '' : $this->answer->getPostString());
         $tpl->setVariable('ERRORTEXT', $this->generateErrorText());
         $tpl->parseCurrentBlock();
+        
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextEditor.js');
         
         return $tpl->get();
     }

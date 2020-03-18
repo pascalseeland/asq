@@ -86,7 +86,7 @@ class OrderingTextQuestionGUI extends QuestionFormGUI {
             $words = explode(' ', $text_input);
             
             foreach($words as $word) {
-                $options->addOption(new AnswerOption($i,
+                $options->addOption(new AnswerOption(strval($i),
                                                      new ImageAndTextDisplayDefinition($word, ''),
                                                      new EmptyScoringDefinition()));
                 $i += 1;

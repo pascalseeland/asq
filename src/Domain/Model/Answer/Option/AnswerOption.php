@@ -23,7 +23,7 @@ class AnswerOption implements JsonSerializable {
 
 
 	/**
-	 * @var int
+	 * @var string
 	 */
 	private $option_id;
 	/**
@@ -35,7 +35,7 @@ class AnswerOption implements JsonSerializable {
 	 */
 	private $scoring_definition;
 
-	public function __construct(int $id, 
+	public function __construct(string $id, 
 	                            ?AnswerDefinition $display_definition = null, 
 	                            ?AnswerDefinition $scoring_definition = null)
 	{
