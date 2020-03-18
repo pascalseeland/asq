@@ -1,19 +1,19 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor;
+namespace srag\asq\UserInterface\Web\Component\Editor;
 
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerDefinition;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 
 /**
  * Class EmptyDisplayDefinition
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class EmptyDisplayDefinition extends AnswerDefinition {        
     public static function getFields(QuestionPlayConfiguration $play): array {

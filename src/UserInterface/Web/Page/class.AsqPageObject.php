@@ -1,15 +1,13 @@
 <?php
 
-use ILIAS\UI\Implementation\Component\Link\Standard;
-
 /**
  * Class AsqPageObject
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class AsqPageObject extends \ilPageObject
 {
@@ -45,25 +43,5 @@ class AsqPageObject extends \ilPageObject
         $xml .= "</PageObject>";
 
         return $xml;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPageEditingLink():string {
-        global $DIC;
-
-        $DIC->ctrl()->setParameterByClass($DIC->ctrl()->getCmdClass(), 'page_type', $this->getParentType());
-        $DIC->ctrl()->setParameterByClass($DIC->ctrl()->getCmdClass(), 'parent_int_id', $this->getParentId());
-        $DIC->ctrl()->setParameterByClass($DIC->ctrl()->getCmdClass(), 'answer_option_int_id', $this->getId());
-        $label = $DIC->language()->txt('asq_link_edit_feedback_page');
-
-        //TODO
-        $action = $DIC->ctrl()->getLinkTargetByClass([ilAsqQuestionFeedbackEditorGUI::class, ilAsqAnswerOptionFeedbackPageGUI::class], ilAsqAnswerOptionFeedbackPageGUI::CMD_EDIT);
-
-        $link = new Standard($label,$action);
-
-        return $DIC->ui()->renderer()->render($link);
     }
 }

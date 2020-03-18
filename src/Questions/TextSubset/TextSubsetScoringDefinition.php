@@ -1,22 +1,22 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\TextSubset;
+namespace srag\asq\Questions\TextSubset;
 
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerDefinition;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 use stdClass;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
  * Class TextSubsetScoringDefinition
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class TextSubsetScoringDefinition extends AnswerDefinition {
     
@@ -78,7 +78,7 @@ class TextSubsetScoringDefinition extends AnswerDefinition {
     
     public static function getValueFromPost(string $index) {
         return new TextSubsetScoringDefinition(intval($_POST[self::getPostKey($index, self::VAR_TSSD_POINTS)]),
-            ilAsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TSSD_TEXT)]));
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TSSD_TEXT)]));
     }
     
     public function getValues(): array {

@@ -1,25 +1,25 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\EventStore;
+namespace srag\asq\Infrastructure\Persistence\EventStore;
 
 use ILIAS\UI\NotImplementedException;
-use ilAsqException;
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\CQRS\Event\AbstractIlContainerItemDomainEvent;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventID;
 use srag\CQRS\Event\EventStore;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class QuestionEventStoreRepository
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class QuestionEventStoreRepository extends EventStore {
 
@@ -92,7 +92,7 @@ class QuestionEventStoreRepository extends EventStore {
 	    
 	    if(is_null($guid)) {
 	        //TODO translate?
-	        throw new ilAsqException(sprintf("Aggregate with ilias ID %s not found", $id));
+	        throw new AsqException(sprintf("Aggregate with ilias ID %s not found", $id));
 	    }
 	    else {
 	       return new DomainObjectId($guid);

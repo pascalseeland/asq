@@ -1,30 +1,30 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\Essay;
+namespace srag\asq\Questions\Essay;
 
-use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
-use ILIAS\AssessmentQuestion\DomainModel\Scoring\TextScoring;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInput;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 use Exception;
 use ilNumberInputGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Domain\Model\Scoring\TextScoring;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
  * Class EssayScoring
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class EssayScoring extends AbstractScoring { 
     const VAR_TEXT_MATCHING = 'es_text_matching';

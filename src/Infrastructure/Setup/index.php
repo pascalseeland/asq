@@ -1,9 +1,8 @@
 <?php
-use ILIAS\AssessmentQuestion\Infrastructure\Setup\sql\SetupDatabase;
+use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
 //only for development usage!
 
 chdir("../../../../../");
-global $DIC;
 
 if (!file_exists(getcwd() . '/ilias.ini.php')) {
 	header('Location: ./setup/setup.php');

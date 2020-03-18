@@ -1,16 +1,16 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Table;
-
+namespace srag\asq\UserInterface\Web\Component\Hint\Table;
 
 /**
  * Class HintTableFieldOrderNumber
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class HintTableFieldOrderNumber
 {
@@ -28,8 +28,6 @@ class HintTableFieldOrderNumber
 
 
     public function getFieldAsHtml(): string {
-        global $DIC;
-
         $field_order_number = '<input type="text" name="'.self::VAR_HINT_ORDER_NUMBERS.'['.$this->current_order_number.']" value="'.$this->new_order_number.'" maxlength="3" style="width:30px" />';
 
         return $field_order_number;

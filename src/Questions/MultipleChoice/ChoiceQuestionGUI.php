@@ -1,24 +1,24 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\MultipleChoice;
+namespace srag\asq\Questions\MultipleChoice;
 
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
+use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
  * Class ChoiceQuestionGUI
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 abstract class ChoiceQuestionGUI extends QuestionFormGUI {
     protected function readPlayConfiguration(): QuestionPlayConfiguration

@@ -1,31 +1,31 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\MultipleChoice;
+namespace srag\asq\Questions\MultipleChoice;
 
-use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
-use ilSelectInputGUI;
 use JsonSerializable;
 use ilCheckboxInputGUI;
 use ilNumberInputGUI;
+use ilSelectInputGUI;
 use ilTemplate;
 use stdClass;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
 
 /**
  * Class MultipleChoiceEditor
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class MultipleChoiceEditor extends AbstractEditor {
 

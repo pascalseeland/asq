@@ -1,24 +1,24 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\TextSubset;
+namespace srag\asq\Questions\TextSubset;
 
-use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
-use ILIAS\AssessmentQuestion\DomainModel\Scoring\TextScoring;
-use Exception;
+use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Domain\Model\Scoring\TextScoring;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class TextSubsetScoring
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class TextSubsetScoring extends AbstractScoring
 {
@@ -31,8 +31,10 @@ class TextSubsetScoring extends AbstractScoring
     const VAR_TEXT_MATCHING = 'tss_text_matching';
     
     /**
-     * {@inheritDoc}
-     * @see \ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring::score()
+     * 
+     * @param Answer $answer
+     * @throws AsqException
+     * @return float
      */
     public function score(Answer $answer) : float
     {
@@ -58,7 +60,7 @@ class TextSubsetScoring extends AbstractScoring
                 return $this->levenshteinScoring(5);
         }
         
-        throw new Exception("Unknown Test Subset Scoring Method found");
+        throw new AsqException("Unknown Test Subset Scoring Method found");
     }
     
     public function getBestAnswer(): Answer

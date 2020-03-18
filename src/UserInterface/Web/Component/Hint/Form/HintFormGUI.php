@@ -1,23 +1,20 @@
 <?php
+declare(strict_types=1);
 
-/* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
+namespace srag\asq\UserInterface\Web\Component\Hint\Form;
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Form;
-
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\Hint\Hint;
 use ILIAS\UI\Component\Layout\Page\Page;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Hint\Hint;
 
 /**
- * Class QuestionHintFormGUI
+ * Class HintFormGUI
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
- *
- * @package ILIAS\AssessmentQuestion\UserInterface\Web\Form
  */
 class HintFormGUI extends \ilPropertyFormGUI
 {

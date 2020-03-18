@@ -6,9 +6,11 @@ use PHPUnit\Framework\TestSuite;
 /**
  * Class ilServicesAssessmentQuestionSuite
  *
- * @author      Björn Heyser <info@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
  *
- * @package     Services/AssessmentQuestion
+ * @package srag/asq
+ * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
 class ilServicesAssessmentQuestionSuite extends TestSuite
 {

@@ -1,20 +1,19 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Form;
+namespace srag\asq\UserInterface\Web\Component\Hint\Form;
 
 use ilFormPropertyGUI;
 use ilHiddenInputGUI;
-use ILIAS\AssessmentQuestion\DomainModel\Hint\Hint;
-use ilNumberInputGUI;
 
 /**
  * Class HintFieldOrderNumber
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class HintFieldOrderNumber
 {
@@ -31,8 +30,6 @@ class HintFieldOrderNumber
 
 
     public function getField(): ilFormPropertyGUI {
-        global $DIC;
-
         $field_order_number = new ilHiddenInputGUI(self::VAR_HINT_ORDER_NUMBER);
         $field_order_number->setValue($this->order_number);
 

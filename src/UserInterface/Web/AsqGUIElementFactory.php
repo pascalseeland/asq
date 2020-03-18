@@ -1,37 +1,37 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web;
+namespace srag\asq\UserInterface\Web;
 
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\Questions\Cloze\ClozeQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\ErrorText\ErrorTextQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Essay\EssayQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\FileUpload\FileUploadQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Formula\FormulaQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\ImageMap\ImageMapQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Kprim\KprimChoiceQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Matching\MatchingQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\MultipleChoice\MultipleChoiceQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\MultipleChoice\SingleChoiceQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Numeric\NumericQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Ordering\OrderingQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\Ordering\OrderingTextQuestionGUI;
-use ILIAS\AssessmentQuestion\Questions\TextSubset\TextSubsetQuestionGUI;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 use Exception;
 use ilPropertyFormGUI;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Questions\Cloze\ClozeQuestionGUI;
+use srag\asq\Questions\ErrorText\ErrorTextQuestionGUI;
+use srag\asq\Questions\Essay\EssayQuestionGUI;
+use srag\asq\Questions\FileUpload\FileUploadQuestionGUI;
+use srag\asq\Questions\Formula\FormulaQuestionGUI;
+use srag\asq\Questions\ImageMap\ImageMapQuestionGUI;
+use srag\asq\Questions\Kprim\KprimChoiceQuestionGUI;
+use srag\asq\Questions\Matching\MatchingQuestionGUI;
+use srag\asq\Questions\MultipleChoice\MultipleChoiceQuestionGUI;
+use srag\asq\Questions\MultipleChoice\SingleChoiceQuestionGUI;
+use srag\asq\Questions\Numeric\NumericQuestionGUI;
+use srag\asq\Questions\Ordering\OrderingQuestionGUI;
+use srag\asq\Questions\Ordering\OrderingTextQuestionGUI;
+use srag\asq\Questions\TextSubset\TextSubsetQuestionGUI;
+use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 
 const MSG_SUCCESS = "success";
 
 /**
  * Class AsqGUIElementFactory
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class AsqGUIElementFactory {
     const TYPE_SINGLE_CHOICE = 1;

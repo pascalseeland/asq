@@ -1,21 +1,21 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\Essay;
+namespace srag\asq\Questions\Essay;
 
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerDefinition;
 use stdClass;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 
 /**
  * Class EssayScoringDefinition
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class EssayScoringDefinition extends AnswerDefinition {
     const VAR_POINTS = 'esd_points';
@@ -72,7 +72,7 @@ class EssayScoringDefinition extends AnswerDefinition {
     {
         $pointkey = self::getPostKey($index, self::VAR_POINTS);
         
-        return new EssayScoringDefinition(ilAsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TEXT)]),
+        return new EssayScoringDefinition(AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TEXT)]),
                                           array_key_exists($pointkey, $_POST) ? floatval($_POST[$pointkey]) : 0);            
     }
 

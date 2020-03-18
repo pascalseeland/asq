@@ -1,21 +1,21 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback;
+namespace srag\asq\UserInterface\Web\Component\Feedback;
 
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Scoring\ScoringComponent;
 use ilTemplate;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 
 /**
  * Class FeedbackComponent
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class FeedbackComponent
 {

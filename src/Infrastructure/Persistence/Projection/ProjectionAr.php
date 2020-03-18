@@ -1,7 +1,7 @@
 <?php
-/* Copyright (c) 2019 Extended GPL, see docs/LICENSE */
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection;
+namespace srag\asq\Infrastructure\Persistence\Projection;
 
 interface ProjectionAr
 {

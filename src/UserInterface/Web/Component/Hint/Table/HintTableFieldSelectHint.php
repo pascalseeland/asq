@@ -1,16 +1,16 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Table;
-
+namespace srag\asq\UserInterface\Web\Component\Hint\Table;
 
 /**
  * Class HintTableFieldOrderNumber
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class HintTableFieldSelectHint
 {
@@ -27,8 +27,6 @@ class HintTableFieldSelectHint
 
 
     public function getFieldAsHtml(): string {
-        global $DIC;
-
         $field_select_hint = '<input type="checkbox" name="'.self::VAR_HINTS_BY_ORDER_NUMBER.'[]" value="'.$this->order_number.'" id="chb_'. $this->order_number.'" />';
 
         return $field_select_hint;

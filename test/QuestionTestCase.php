@@ -4,17 +4,18 @@
 namespace ILIAS\AssessmentQuestion\Test;
 
 use PHPUnit\Framework\TestCase;
-use ilInitialisation;
 use ilUnitUtil;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Answer\Answer;
 
 /**
- * Class ilClozequestionTest
+ * Class QuestionTestCase
  *
- * @author      Adrian Lüthi <al@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
  *
- * @package     Services/AssessmentQuestion
+ * @package srag/asq
+ * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
 abstract class QuestionTestCase extends TestCase {
     const TEST_CONTAINER = -1;

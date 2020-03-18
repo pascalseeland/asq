@@ -1,23 +1,23 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\Formula;
+namespace srag\asq\Questions\Formula;
 
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Question;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 
 /**
  * Class FormulaEditor
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class FormulaEditor extends AbstractEditor {
     const VAR_UNIT = 'fe_unit';
@@ -54,10 +54,10 @@ class FormulaEditor extends AbstractEditor {
         $unit_postname = $this->getUnitPostVariable($name);
         
         if (array_key_exists($postname, $_POST)) {
-            $answers[$name] = ilAsqHtmlPurifier::getInstance()->purify($_POST[$postname]);
+            $answers[$name] = AsqHtmlPurifier::getInstance()->purify($_POST[$postname]);
             
             if (array_key_exists($unit_postname, $_POST)) {
-                $answers[$name . self::VAR_UNIT] = ilAsqHtmlPurifier::getInstance()->purify($_POST[$unit_postname]);
+                $answers[$name . self::VAR_UNIT] = AsqHtmlPurifier::getInstance()->purify($_POST[$unit_postname]);
             }
             
             return true;

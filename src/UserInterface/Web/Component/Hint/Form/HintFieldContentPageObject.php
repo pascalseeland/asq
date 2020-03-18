@@ -1,20 +1,18 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Hint\Form;
+namespace srag\asq\UserInterface\Web\Component\Hint\Form;
 
 use ilFormPropertyGUI;
-use ILIAS\AssessmentQuestion\DomainModel\Hint\Hint;
-use ilNumberInputGUI;
-use ilObjAdvancedEditing;
 
 /**
  * Class HintPointsDeduction
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class HintFieldContentPageObject
 {

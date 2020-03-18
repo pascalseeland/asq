@@ -1,5 +1,7 @@
 <?php
-namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection;
+declare(strict_types=1);
+
+namespace srag\asq\Infrastructure\Persistence\Projection;
 
 use ActiveRecord;
 use ilException;

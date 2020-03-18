@@ -1,32 +1,32 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\Formula;
+namespace srag\asq\Questions\Formula;
 
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\AssessmentQuestion\DomainModel\Scoring\AbstractScoring;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInput;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 use ILIAS\UI\NotImplementedException;
 use EvalMath;
 use ilNumberInputGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTextInputGUI;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
  * Class FormulaScoring
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class FormulaScoring extends AbstractScoring {
     const VAR_UNITS = 'fs_units';
@@ -231,13 +231,13 @@ class FormulaScoring extends AbstractScoring {
             $variables[] = FormulaScoringVariable::create(
                 floatval($raw_variable[FormulaScoringVariable::VAR_MIN]),
                 floatval($raw_variable[FormulaScoringVariable::VAR_MAX]),
-                ilAsqHtmlPurifier::getInstance()->purify($raw_variable[FormulaScoringVariable::VAR_UNIT]),
+                AsqHtmlPurifier::getInstance()->purify($raw_variable[FormulaScoringVariable::VAR_UNIT]),
                 empty($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]) ? 
                     null: 
                     floatval($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]));
         }
         
-        return FormulaScoringConfiguration::create(ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_UNITS]),
+        return FormulaScoringConfiguration::create(AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_UNITS]),
                                                    intval($_POST[self::VAR_PRECISION]), 
                                                    floatval($_POST[self::VAR_TOLERANCE]), 
                                                    intval($_POST[self::VAR_RESULT_TYPE]),

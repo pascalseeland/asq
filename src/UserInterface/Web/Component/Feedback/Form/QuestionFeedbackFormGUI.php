@@ -1,29 +1,26 @@
 <?php
+declare(strict_types=1);
 
-/* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
+namespace srag\asq\UserInterface\Web\Component\Feedback\Form;
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Component\Feedback\Form;
-
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\Feedback;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOption;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
 use ilFormSectionHeaderGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTextAreaInputGUI;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Feedback;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 
 /**
  * Class QuestionFeedbackFormGUI
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
  *
- * @package ILIAS\AssessmentQuestion\UserInterface\Web\Form
+ * @package srag/asq
+ * @author  Martin Studer <ms@studer-raimann.ch>
  */
 class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
 {
@@ -107,8 +104,8 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
      */
     public function getFeedbackFromPost() {
 
-        $feedback_correct = ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_ANSWER_FEEDBACK_CORRECT]);
-        $feedback_wrong = ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_ANSWER_FEEDBACK_WRONG]);
+        $feedback_correct = AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_ANSWER_FEEDBACK_CORRECT]);
+        $feedback_wrong = AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_ANSWER_FEEDBACK_WRONG]);
         $answer_option_feedback_mode = intval($_POST[self::VAR_ANSWER_OPTION_FEEDBACK_MODE]);
 
         $answer_option_feedbacks = [];
@@ -118,7 +115,7 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
             
             if(!empty($_POST[$post_key])) {
                 $answer_option_feedbacks[$answer_option->getOptionId()] = 
-                    ilAsqHtmlPurifier::getInstance()->purify($_POST[$post_key]);
+                    AsqHtmlPurifier::getInstance()->purify($_POST[$post_key]);
             }
         }
         

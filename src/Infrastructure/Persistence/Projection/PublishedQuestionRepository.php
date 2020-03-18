@@ -1,13 +1,15 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection;
+namespace srag\asq\Infrastructure\Persistence\Projection;
 
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionLegacyData;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\Services\AssessmentQuestion\DomainModel\Feedback;
+use ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection\QuestionAr;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Feedback;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\QuestionLegacyData;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 
 class PublishedQuestionRepository
 {
@@ -61,7 +63,7 @@ class PublishedQuestionRepository
    
     /**
      * @param QuestionAr $question
-     * @return \ILIAS\AssessmentQuestion\DomainModel\QuestionDto
+     * @return QuestionDto
      */
     private function GenerateDtoFromAr(QuestionAr $question)
     {
@@ -72,7 +74,7 @@ class PublishedQuestionRepository
         $dto->setQuestionIntId($question->getQuestionIntId());
         $dto->setData(AbstractValueObject::deserialize($question->getQuestionData()));
         $dto->setPlayConfiguration(AbstractValueObject::deserialize($question->getQuestionConfiguration()));
-        $dto->setAnswerOptions(Answeroptions::deserialize($question->getAnswerOptions()));
+        $dto->setAnswerOptions(AnswerOptions::deserialize($question->getAnswerOptions()));
         $dto->setLegacyData(QuestionLegacyData::create(0, $question->getContainerObjId(), $question->getObjectId()));
         $dto->setFeedback(Feedback::deserialize($question->getFeedback()));
         return $dto;

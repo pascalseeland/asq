@@ -1,28 +1,28 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\Essay;
+namespace srag\asq\Questions\Essay;
 
-use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Answer;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ilNumberInputGUI;
 use ilTemplate;
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 
 /**
  * Class EssayEditor
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class EssayEditor extends AbstractEditor {
       
@@ -80,7 +80,7 @@ class EssayEditor extends AbstractEditor {
      */
     public function readAnswer() : AbstractValueObject
     {
-        return EssayAnswer::create(ilAsqHtmlPurifier::getInstance()->purify($_POST[$this->question->getId()]));
+        return EssayAnswer::create(AsqHtmlPurifier::getInstance()->purify($_POST[$this->question->getId()]));
     }
     
     public static function generateFields(?AbstractConfiguration $config): ?array {

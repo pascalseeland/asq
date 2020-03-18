@@ -1,26 +1,26 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Fields;
+namespace srag\asq\UserInterface\Web\Fields;
 
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
 use Exception;
 use ilNumberInputGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTemplate;
 use ilTextInputGUI;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 
 /**
  * Class AsqTableInput
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class AsqTableInput extends ilTextInputGUI {
     const OPTION_ORDER = 'AnswerOptionOrder';
@@ -165,7 +165,7 @@ class AsqTableInput extends ilTextInputGUI {
                 
                 if (array_key_exists($item_post_var, $_POST)) {
                     $new_value[$definition->getPostVar()] =
-                    ilAsqHtmlPurifier::getInstance()->purify(
+                    AsqHtmlPurifier::getInstance()->purify(
                         $_POST[$item_post_var]);                    
                 }
 

@@ -1,14 +1,8 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\UserInterface\Web\Form;
+namespace srag\asq\UserInterface\Web\Form;
 
-use ILIAS\AssessmentQuestion\ilAsqHtmlPurifier;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionData;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Answer\Option\AnswerOptions;
-use ILIAS\AssessmentQuestion\UserInterface\Web\AsqGUIElementFactory;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Form\Config\AnswerOptionForm;
 use Exception;
 use ilDurationInputGUI;
 use ilHiddenInputGUI;
@@ -18,17 +12,23 @@ use ilSelectInputGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\QuestionData;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\UserInterface\Web\AsqGUIElementFactory;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
 
 /**
- * Class MultipleChoiceQuestionGUI
+ * Abstract Class QuestionFormGUI
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 abstract class QuestionFormGUI extends ilPropertyFormGUI {
     const VAR_AGGREGATE_ID = 'aggregate_id';
@@ -271,10 +271,10 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
      */
     private function readQuestionData(): QuestionData {
         return QuestionData::create(
-            ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_TITLE]),
-            ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_QUESTION]),
-            ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_AUTHOR]),
-            ilAsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_DESCRIPTION]),
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_TITLE]),
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_QUESTION]),
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_AUTHOR]),
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_DESCRIPTION]),
             $this->readWorkingTime($_POST[self::VAR_WORKING_TIME]),
             intval($_POST[self::VAR_LIFECYCLE])
             );

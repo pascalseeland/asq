@@ -1,20 +1,21 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\FileUpload;
+namespace srag\asq\Questions\FileUpload;
 
-use ILIAS\AssessmentQuestion\DomainModel\AbstractConfiguration;
-use ILIAS\AssessmentQuestion\DomainModel\Question;
-use ILIAS\AssessmentQuestion\DomainModel\QuestionDto;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\AbstractEditor;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
 use ilNumberInputGUI;
 use ilTemplate;
 use ilTextInputGUI;
-use srag\CQRS\Aggregate\Guid;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\CQRS\Aggregate\Guid;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Question;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 
 /**
  * Class FileUploadEditor

@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Infrastructure\Setup\sql;
+namespace srag\asq\Infrastructure\Setup\sql;
 
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\SimpleStoredAnswer;
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
 use ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection\QuestionAr;
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection\QuestionListItemAr;
+use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
+use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
+use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
 
 /**
  * Class SetupDatabase

@@ -2,18 +2,18 @@
 
 namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection;
 
-use ILIAS\AssessmentQuestion\DomainModel\Question;
 use ilDateTime;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Infrastructure\Persistence\Projection\AbstractProjectionAr;
 
 /**
  * Class QuestionAr
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class QuestionAr extends AbstractProjectionAr
 {

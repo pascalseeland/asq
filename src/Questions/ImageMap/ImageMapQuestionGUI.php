@@ -1,22 +1,22 @@
 <?php
+declare(strict_types=1);
 
-namespace ILIAS\AssessmentQuestion\Questions\ImageMap;
+namespace srag\asq\Questions\ImageMap;
 
-use ILIAS\AssessmentQuestion\DomainModel\QuestionPlayConfiguration;
-use ILIAS\AssessmentQuestion\Questions\MultipleChoice\MultipleChoiceScoring;
-use ILIAS\AssessmentQuestion\UserInterface\Web\PathHelper;
-use ILIAS\AssessmentQuestion\UserInterface\Web\Form\QuestionFormGUI;
-use ILIAS\AssessmentQuestion\Questions\MultipleChoice\MultipleChoiceScoringConfiguration;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Questions\MultipleChoice\MultipleChoiceScoring;
+use srag\asq\Questions\MultipleChoice\MultipleChoiceScoringConfiguration;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
  * Class ImageMapQuestionGUI
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ * @copyright 1998-2020 ILIAS open source
+ *
+ * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class ImageMapQuestionGUI extends QuestionFormGUI {
     protected function createDefaultPlayConfiguration(): QuestionPlayConfiguration
