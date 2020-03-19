@@ -90,8 +90,8 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI {
     /**
      * @return bool
      */
-    public function getContentEditingMode() : ?string
+    public function getContentEditingMode() : string
     {
-        return $this->hasContentEditingMode() ?  $this->getInput(self::VAR_CONTENT_EDIT_MODE) : null;
+        return $this->hasContentEditingMode() ?  $this->getInput(self::VAR_CONTENT_EDIT_MODE) : ContentEditingMode::RTE_TEXTAREA;
     }
 }
