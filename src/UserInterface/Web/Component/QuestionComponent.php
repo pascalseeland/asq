@@ -78,6 +78,6 @@ class QuestionComponent
 
     public function setAnswer(Answer $answer)
     {
-        $this->editor->setAnswer($answer->getValue());
+        $this->editor->setAnswer($answer);
     }
 }
