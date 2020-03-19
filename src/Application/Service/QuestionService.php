@@ -121,11 +121,4 @@ class QuestionService extends ASQService
             CommandBusBuilder::getCommandBus()->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
         }
     }
-    
-    /**
-     * @param QuestionDto $question
-     */
-    public function deleteQuestion(QuestionDto $question) {
-        
-    }
 }
