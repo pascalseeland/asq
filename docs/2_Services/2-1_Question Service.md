@@ -9,6 +9,7 @@
 <br>
 <br>
 
+
 ## Question Creation
 There are two ways to create questions:
 1.  Recommended: Get the Question Creation Link and delegate the creation to the authoring environment _Assessment Question Service_.
@@ -130,6 +131,7 @@ AsqGateway::get()->question()->createQuestion(int $type, int $container_id, stri
 
 <br>
 <br>
+
 
 ## Get Questions
 
