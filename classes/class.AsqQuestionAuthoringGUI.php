@@ -272,7 +272,7 @@ class AsqQuestionAuthoringGUI
             $this->authoring_context_container->getBackLink()->getAction()
         );
 
-        if(is_object($question_dto->getData()) > 0 && $this->authoring_context_container->hasWriteAccess() )
+        if(is_object($question_dto->getData()) > 0)
         {
             $link = AsqGateway::get()->link()->getEditPageLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_PAGEVIEW, $link->getLabel(), $link->getAction());
@@ -281,11 +281,10 @@ class AsqQuestionAuthoringGUI
             $link = AsqGateway::get()->link()->getPreviewLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_PREVIEW, $link->getLabel(), $link->getAction());
         }
-        if( $this->authoring_context_container->hasWriteAccess() )
-        {
-            $link = AsqGateway::get()->link()->getEditLink($this->question_id->getId());
-            $DIC->tabs()->addTab(self::TAB_ID_CONFIG, $link->getLabel(), $link->getAction());
-        }
+
+        $link = AsqGateway::get()->link()->getEditLink($this->question_id->getId());
+        $DIC->tabs()->addTab(self::TAB_ID_CONFIG, $link->getLabel(), $link->getAction());
+
         if(is_object($question_dto->getData()) > 0) {
             $link = AsqGateway::get()->link()->getEditFeedbacksLink($this->question_id->getId());
             $DIC->tabs()->addTab(self::TAB_ID_FEEDBACK, $link->getLabel(), $link->getAction());

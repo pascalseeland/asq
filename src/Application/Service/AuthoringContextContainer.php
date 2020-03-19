@@ -42,11 +42,6 @@ class AuthoringContextContainer
     protected $actorId;
 
     /**
-     * @var bool
-     */
-    protected $writeAccess;
-
-    /**
      * @var array
      */
     protected $afterQuestionCreationCtrlClassPath;
@@ -72,8 +67,7 @@ class AuthoringContextContainer
         int $refId,
         int $objId,
         string $objType,
-        int $actorId,
-        bool $writeAccess
+        int $actorId
     )
     {
         $this->backLink = $backLink;
@@ -81,7 +75,6 @@ class AuthoringContextContainer
         $this->objId = $objId;
         $this->objType = $objType;
         $this->actorId = $actorId;
-        $this->writeAccess = $writeAccess;
     }
 
 
@@ -127,14 +120,5 @@ class AuthoringContextContainer
     public function getActorId() : int
     {
         return $this->actorId;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function hasWriteAccess() : bool
-    {
-        return $this->writeAccess;
     }
 }
