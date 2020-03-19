@@ -2,10 +2,11 @@
 
 ## Table of Contents
 
-- [Question Creation](question-creation)
-    - [Get the Question Creation Link](get-the-quesetion-creation-link)
-    - [Create the Question without using the authoring environment](create-the-question-without-using-the-authoring-environment)  
-
+- [Question Creation](#question-creation)
+    - [Get the Question Creation Link](#get-the-quesetion-creation-link)
+    - [Create the Question without using the authoring environment](#create-the-question-without-using-the-authoring-environment)  
+<br>
+<br>
 ## Question Creation
 There are two ways to create questions:
 1.  Recommended: Get the Question Creation Link and delegate the creation to the authoring environment _Assessment Question Service_.
@@ -124,7 +125,8 @@ Alternatively and normally not needed, questions can be created directly without
 ```php
 AsqGateway::get()->question()->createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA)
 ```
-***
+<br>
+<br>
 ## Get Questions
 
 There are two ways to fetch questions:
