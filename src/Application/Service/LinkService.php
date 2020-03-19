@@ -23,6 +23,9 @@ use ILIAS\UI\Component\Link\Standard as UiStandardLink;
  */
 class LinkService
 {
+    /**
+     * @return UiStandardLink
+     */
     public function getCreationLink() :UiStandardLink
     {
         global $DIC;

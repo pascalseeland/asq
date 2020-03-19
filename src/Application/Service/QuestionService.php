@@ -26,6 +26,11 @@ use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreRepository;
  */
 class QuestionService extends ASQService
 {
+    /**
+     * @param string $id
+     * @throws AsqException
+     * @return QuestionDto
+     */
     public function getQuestionByQuestionId(string $id) : QuestionDto {
         $question = QuestionRepository::getInstance()->getAggregateRootById(new DomainObjectId($id));
         
@@ -38,10 +43,18 @@ class QuestionService extends ASQService
         }
     }
     
+    /**
+     * @param int $id
+     * @return QuestionDto
+     */
     public function getQuestionByIliasObjectId(int $id) : QuestionDto {
         return QuestionDto::CreateFromQuestion(QuestionRepository::getInstance()->getAggregateByIliasId($id));
     }
     
+    /**
+     * @param int $container_id
+     * @return QuestionDto[]
+     */
     public function getQuestionsOfContainer(int $container_id) : array {
         $questions = [];
         $event_store = new QuestionEventStoreRepository();
@@ -52,6 +65,12 @@ class QuestionService extends ASQService
         return $questions;
     }
 
+    /**
+     * @param int $type
+     * @param int $container_id
+     * @param string $content_editing_mode
+     * @return QuestionDto
+     */
     public function createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA): QuestionDto
     {
         $id = new DomainObjectId();
@@ -68,6 +87,9 @@ class QuestionService extends ASQService
         return $this->getQuestionByQuestionId($id->getId());
     }
 
+    /**
+     * @param QuestionDto $question_dto
+     */
     public function saveQuestion(QuestionDto $question_dto)
     {
         // check changes and trigger them on question if there are any
@@ -100,6 +122,9 @@ class QuestionService extends ASQService
         }
     }
     
+    /**
+     * @param QuestionDto $question
+     */
     public function deleteQuestion(QuestionDto $question) {
         
     }

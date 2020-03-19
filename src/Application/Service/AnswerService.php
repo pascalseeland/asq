@@ -84,6 +84,10 @@ class AnswerService extends ASQService {
         return $stored->getAnswer();
     }
     
+    /**
+     * @param string $uuid
+     * @return Answer[]
+     */
     public function getAnswerHistory(string $uuid) : array {
         $history = SimpleStoredAnswer::where(['uuid' => $uuid])->get();
         

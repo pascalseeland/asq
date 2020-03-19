@@ -20,6 +20,10 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
 class UIService {
+    /**
+     * @param QuestionDto $question
+     * @return QuestionComponent
+     */
     public function getQuestionComponent(QuestionDto $question) : QuestionComponent {
         global $DIC;
         
@@ -28,10 +32,18 @@ class UIService {
         return new QuestionComponent($question);
     }
     
+    /**
+     * @param QuestionDto $question
+     * @return QuestionFormGUI
+     */
     public function getQuestionEditForm(QuestionDto $question) : QuestionFormGUI {
         return AsqGUIElementFactory::CreateQuestionForm($question);
     }
     
+    /**
+     * @param QuestionDto $question_dto
+     * @return AsqQuestionPageGUI
+     */
     public function getQuestionPage(QuestionDto $question_dto) : AsqQuestionPageGUI {
         $page_gui = new AsqQuestionPageGUI($question_dto->getContainerObjId(), $question_dto->getQuestionIntId(), $this->lng_key);
         $page_gui->setRenderPageContainer(false);
