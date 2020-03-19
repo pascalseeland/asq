@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Setup\sql;
 
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection\QuestionAr;
+use srag\Plugins\AssessmentTest\Persistence\AssessmentResultEventStoreAr;
 use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
+use srag\asq\Infrastructure\Persistence\Projection\QuestionAr;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
 
 /**
@@ -35,7 +36,8 @@ class SetupDatabase {
 	    QuestionListItemAr::updateDB();
 	    QuestionAr::updateDB();
 	    SimpleStoredAnswer::updateDB();
-
+        AssessmentResultEventStoreAr::updateDB();
+	    
 	    //Migration
         //Migrate Contentpage Definition (here for the implementation the migration)
         $DIC->database()->query("UPDATE copg_pobj_def SET parent_type = 'asqq' where component = 'Modules/TestQuestionPool' AND class_name = 'ilAssQuestionPage'");
