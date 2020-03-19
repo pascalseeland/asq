@@ -23,53 +23,44 @@ use ILIAS\UI\Component\Link\Standard as UiStandardLink;
  */
 class LinkService
 {
-    public function getCreationLink(array $ctrl_stack) :UiStandardLink
+    public function getCreationLink() :UiStandardLink
     {
         global $DIC;
 
-        array_push($ctrl_stack, AsqQuestionAuthoringGUI::class);
-        array_push($ctrl_stack, AsqQuestionCreationGUI::class);
-        
         $DIC->language()->loadLanguageModule('asq');
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_create_question_link'),
-            $DIC->ctrl()->getLinkTargetByClass($ctrl_stack)
+            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionCreationGUI::class])
         );
     }
 
     /**
      * @return UiStandardLink
      */
-    public function getEditLink(string $question_id, array $ctrl_stack = []) :UiStandardLink
+    public function getEditLink(string $question_id) :UiStandardLink
     {
         global $DIC;
-        
-        array_push($ctrl_stack, AsqQuestionAuthoringGUI::class);
-        array_push($ctrl_stack, AsqQuestionConfigEditorGUI::class);
 
         self::setQuestionUidParameter($question_id);
 
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_config'),
-            $DIC->ctrl()->getLinkTargetByClass($ctrl_stack));
+            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionConfigEditorGUI::class]));
     }
 
 
     /**
      * @return UiStandardLink
      */
-    public function getPreviewLink(string $question_id, array $ctrl_stack = []) : UiStandardLink
+    public function getPreviewLink(string $question_id) : UiStandardLink
     {
         global $DIC;
-        array_push($ctrl_stack, AsqQuestionAuthoringGUI::class);
-        array_push($ctrl_stack, AsqQuestionPreviewGUI::class);
 
         self::setQuestionUidParameter($question_id);
 
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_preview'),
-            $DIC->ctrl()->getLinkTargetByClass($ctrl_stack)
-        );
+            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class]));
     }
 
     /**
