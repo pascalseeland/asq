@@ -1,0 +1,51 @@
+{
+  "name": "srag/Plugins/SrDemoTest",
+  "description": "",
+  "type": "project",
+  "keywords": [
+    "ILIAS",
+    "Plugin"
+  ],
+  "homepage": "https://github.com/studer-raimann/SrDemoTest",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Martin Studer",
+      "email": "ms@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://studer-raimann.ch"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/studer-raimann/asq.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/studer-raimann/cqrs.git"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "srag/asq": "dev-review",
+    "srag/cqrs": "dev-review"
+  },
+  "autoload": {
+    "psr-4": {
+      "srag\\Plugins\\SrDemoTest\\": "src/"
+    },
+    "classmap": [
+      "classes/",
+      "vendor/srag/asq/classes"
+    ]
+  },
+  "config": {
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
