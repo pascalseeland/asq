@@ -24,7 +24,7 @@ If you use this option for creating a question all requests to the authoring env
 
 #### Usage
 
-<input type="checkbox"> 1. Add the ilCtrl Call _AsqQuestionAuthoringGUI_ to your GUI Class
+[ ] **1. Add the ilCtrl Call _AsqQuestionAuthoringGUI_ to your GUI Class**
 
 ```php
 <?php
@@ -41,7 +41,7 @@ class AsqDemoGUI {
 ```
 >Please reload the control structure - by plugins increase the version of the plugin and update the plugin via the _ILIAS Administration_.
 
-<input type="checkbox"> 2. Add the _Creation Link_
+[ ] **2. Add the _Creation Link_**
 
 E.g add the link as a toolbar button
 ```php
@@ -57,7 +57,7 @@ public function renderToolbar()
 }
 ```
 
-<input type="checkbox"> 3. Catch any redirects to the `ilAsqQuestionAuthoringGUI` class
+[ ] **3. Catch any redirects to the `ilAsqQuestionAuthoringGUI` class**
 
 Catch any redirects to the `ilAsqQuestionAuthoringGUI` class within the `executeCommand()` and forward to ilAsqQuestionAuthoringGUI.
 
@@ -114,6 +114,14 @@ private function forwardCommandToAuthoringGui()
         $DIC->ctrl()->forwardCommand($asq);
 }
 ```
+
+#### Example
+**Button Creation Question**
+![](../Examples/create_question_button.png)
+**Authoring environment - choose question type**
+![](../Examples/create_question_button.png)
+**Authoring environment - choose question type**
+![](../Examples/asq_authoring_environment.png)
 ---
 ### Create the Question without using the authoring environment
 
