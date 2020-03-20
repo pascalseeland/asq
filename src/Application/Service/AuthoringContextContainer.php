@@ -19,39 +19,43 @@ class AuthoringContextContainer
     /**
      * @var UiStandardLink
      */
-    protected $backLink;
+    private $backLink;
 
     /**
      * @var int
      */
-    protected $refId;
+    private $refId;
 
     /**
      * @var int
      */
-    protected $objId;
+    private $objId;
 
     /**
      * @var string
      */
-    protected $objType;
+    private $objType;
 
     /**
      * @var int
      */
-    protected $actorId;
+    private $actorId;
 
     /**
      * @var array
      */
-    protected $afterQuestionCreationCtrlClassPath;
+    private $afterQuestionCreationCtrlClassPath;
 
     /**
      * @var string
      */
-    protected $afterQuestionCreationCtrlCommand;
+    private $afterQuestionCreationCtrlCommand;
 
-
+    /**
+     * @var ?IAuthoringCaller
+     */
+    private $caller;
+    
     /**
      * AuthoringContextContainer constructor.
      *
@@ -67,7 +71,8 @@ class AuthoringContextContainer
         int $refId,
         int $objId,
         string $objType,
-        int $actorId
+        int $actorId,
+        ?IAuthoringCaller $caller = null
     )
     {
         $this->backLink = $backLink;
@@ -75,6 +80,7 @@ class AuthoringContextContainer
         $this->objId = $objId;
         $this->objType = $objType;
         $this->actorId = $actorId;
+        $this->caller = $caller;
     }
 
 
@@ -120,5 +126,10 @@ class AuthoringContextContainer
     public function getActorId() : int
     {
         return $this->actorId;
+    }
+    
+    public function getCaller(): ?IAuthoringCaller
+    {
+        return $this->caller;
     }
 }

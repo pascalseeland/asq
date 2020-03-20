@@ -103,6 +103,10 @@ class AsqQuestionCreationGUI
             $this->contextContainer->getObjId(),
             $form->getContentEditingMode());
 
+        if (!is_null($this->contextContainer->getCaller())) {
+            $this->contextContainer->getCaller()->afterQuestionCreated($new_question);
+        }
+        
         $DIC->ctrl()->setParameterByClass(
             AsqQuestionConfigEditorGUI::class,
             AsqQuestionAuthoringGUI::VAR_QUESTION_ID,
