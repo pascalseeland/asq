@@ -41,7 +41,7 @@ class Setup
             SetupDatabase::new()->run();
             SetupLanguages::new()->run();
         } catch (Exception $e) {
-            echo "Setup Failed: " . $e->getMessage();
+            echo "Setup Failed: " . $e->getMessage();exit;
         }
     }
 }

@@ -1,141 +1,75 @@
-## 1 Setting Up
-[1.1 Setting Up a Repository Plugin](docs/1_SettingUp/1-1_RepositoryPlugin.md)
+# ILIAS - ASQ - Assessment Question Service
+
+The ILIAS ASQ is designed as a component that offers services around assessment questions. The way other components can interact with asq is as easy and flexible as possible. The asq provides a complete authoring and scoring environment for assessment questions.
+
+![](asq_authoring_environment.png)
+
+ASQ provides no higher level business logic. Those must be handled by the consumer. E.g. the business logic that a question can only be answered once or the business logic for handling a group of questions such as that a question can only be answered once. 
+  
+<br>
+<br>
 
 
+# Status
+BETA
+
+ 
+<br>
+<br>
 
 
-## Authoring Environment
-The question service offers a complete authoring environment with the following features:
-* Create Question Link
+# Features
 
-### Implement Create Question Link
-To create a question, you must implement the Create Question button in your application. All requests to the authoring environment are routed through your application. Therefore you must guarantee the ILIAS Ctrl-Flow. Please note that you are responsible for checking the permissions for every authoring action!
+## Authoring of Question Types
 
-**Add the ilCtrl Call _AsqQuestionAuthoringGUI_ to your GUI class. Please reload the control structure - by plugins increase the version of the plugin and update the plugin via the ILIAS Administration.**
-```
-<?php
+* Cloze
+* Error
+* Essay
+* FileUpload
+* Formula
+* Kprim
+* Matching
+* MultipleChoice
+* Numeric
+* Ordering
+* TextSubset
 
-use srag\asq\AsqGateway;
-
-/**
- * Class AsqDemoGUI
- *
- * @ilCtrl_Calls AsqDemoGUI: AsqQuestionAuthoringGUI
- */
-class AsqDemoGUI {
-[...]
-```
-
-**Add a _Create Question Button_ as a toolbar button**
-```
-public function renderToolbar()
-{
-        global $DIC;
-
-        $link = AsqGateway::get()->link()->getCreationLink(
-            $this->plugin->txt('create_question')
-        );
-        $button = ilLinkButton::getInstance();
-        $button->setUrl($link->getAction());
-        $button->setCaption($link->getLabel(), false);
-        $DIC->toolbar()->addButtonInstance($button);
-}
-```
-**Catch any redirects to the `ilAsqQuestionAuthoringGUI` class within the `executeCommand()` or `performCommand()` methods, depending on whether you're working with a plugin or not and forward to ilAsqQuestionAuthoringGUI.**
-
-It is highly advised to verify the permissions of users trying to access link the ilAsqQuestionAuthoringGUI.
+## Scoring of Answers
+* Score User Answer
+* Get Max Score
+* Get Best Answer
+  
+<br>
+<br>
 
 
-
-TODO TODO TODO
-
-require_once "./Customizing/global/plugins/Services/Repository/RepositoryObject/SrDemoTest/vendor/srag/asq/classes/class.AsqQuestionCreationGUI.php";
-
-TODO TODO TODO
-
-
-An AuthoringContextContainer object is required to hold this metadata. The following parameters are required:
-```
-UiStandardLink $backLink,
-int $refId,
-int $objId,
-string $objType,
-int $actorId,
-bool $writeAccess,
-```
-
-The context has to be passed on to an `ilAsqQuestionAuthoringGUI` object. The last step is to forward the `ilAsqQuestionAuthoringGUI` object. An implementation of this functionality may look like this:
+# Architecture
+* Event Sourcing
+* CQRS
+  
+<br>
+<br>
 
 
-```
-[...]
-class AsqDemoGUI
-{
-[...]
+# How to use?
+* [1 Setting Up](docs/1_Setting_Up/README.md)
+* [2 Create Questions](docs/2 Create_Questions]/README.md)
+* [3 Edit Questions](docs/3_Edit_Questions/README.md)
+* [4 Get Questions](docs/4_Get_Questions/README.md)
+* [5_Score_Answer](docs/5_Score_Answer/README.md)
 
 
-/**
- * @return void
- */
-public function executeCommand()
-{
-    global $DIC;
+# Credits
 
-    $next_class = $DIC->ctrl()->getNextClass($this);
+## Development and Software Architecture
+* al@studer-raimann.ch
+* bh@bjoernheyser.de
+* ms@studer-raimann.ch
+* tt@studer-raimann.ch
 
-    switch (strtolower($next_class)) {
-        case strtolower(AsqQuestionAuthoringGUI::class):
-            if($DIC->access()->checkAccess('write', '', $this->object->getRefId())) {
-                $this->forwardCommandToAuthoringGui();
-            }
-            // Handle permission mismatch;
-            [...]
-            break;
+## Quality control
+* dw@studer-raimann.ch
 
-[...]
-
-private function forwardCommandToAuthoringGui()
-    {
-        global $DIC;
-
-        $backLink = $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('back'),
-            $DIC->ctrl()->getLinkTarget($this, self::CMD_EDIT_QUESTIONS));
-
-        $authoring_context_container = new AuthoringContextContainer(
-            $backLink,
-            $this->object->getRefId(),
-            $this->object->getId(),
-            $this->object->getType(),
-            $DIC->user()->getId(),
-            $DIC->access()->checkAccess('write', '', $this->object->getRefId()));
-
-        $asq = new AsqQuestionAuthoringGUI($authoring_context_container);
-
-        $DIC->ctrl()->forwardCommand($asq);
-    }
-```
-
-
-
-```
-protected function forwardToAsqAuthoring()
-{
-	$backLink = self::dic()->ui()->factory()->link()->standard(
-	    self::dic()->language()->txt('back'), 
-	    self::dic()->ctrl()->getLinkTarget($this, self::CURRENT_COMMAND)); 
-	
-	$authoring_context_container = new AuthoringContextContainer(
-	    $backLink,
-	    $this->object->getRefId(),
-	    $this->object->getId(),
-	    $this->object->getType(),
-	    self::dic()->user()->getId(),
-	    self::dic()->access()->checkAccess('write', '', $this->object->getRefId()));
-	    
-	$asq = new ilAsqQuestionAuthoringGUI($authoring_context_container);
-	
-	self::dic()->ctrl()->forwardCommand($asq);
-}
-```
-
+## Supervision
+* ILIAS SIG E-Assessment, https://docu.ilias.de/goto_docu_grp_5174.html - first of all denis.strassner@uni-hohenheim.de
+* ILIAS Technical Board, https://docu.ilias.de/goto_docu_grp_5089.html - first of all stephan.winiker@hslu.ch

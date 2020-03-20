@@ -86,10 +86,10 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
 
         foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
             /** @var AnswerOption $answer_option */
-            $field = new ilTextAreaInputGUI($i, $this->getPostKey($answer_option));
+            $field = new ilTextAreaInputGUI($answer_option->getOptionId(), $this->getPostKey($answer_option));
             
-            if ($this->feedback->hasAnswerOptionFeedback($answer_option->getOptionId())) {
-                $field->setValue($this->feedback->getFeedbackForAnswerOption($answer_option->getOptionId()));
+            if ($this->feedback->hasAnswerOptionFeedback((int)($answer_option->getOptionId()))) {
+                $field->setValue($this->feedback->getFeedbackForAnswerOption((int)$answer_option->getOptionId()));
             }
             
             $this->addItem($field);

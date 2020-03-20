@@ -1,7 +1,7 @@
 # Create Questions
 
 There are two ways to create questions:
-1.  Recommended: Get the Question Creation Link and delegate the creation to the authoring environment _Assessment Question Service_.
+1.  Recommended: Get the _Question Creation Link_ and delegate the creation to the authoring environment of ASQ.
 2. Normally not Recommended: Create the Question without using the authoring environment.
 
 <br>
@@ -120,13 +120,13 @@ private function forwardCommandToAuthoringGui()
 
 **Button: Create Question**
 
-![](create_question_button.png)
+![](asq_create_question_button.png)
 
 **Authoring environment: Choose Question Type**
 
 ![](asq_create_question.png)
 
-**Authoring environment - Edit Questions**
+**Authoring environment - Edit Question**
 
 ![](asq_authoring_environment.png)
 
@@ -140,7 +140,7 @@ private function forwardCommandToAuthoringGui()
 
 Alternatively and normally not needed, questions can be created directly without using the authoring environment.
 
-> This API Call will be changed in future. The Question Type Parameter will be a _Fqdn class name_
+> This API Call will changed in future. The Question Type Parameter will be a _Fqdn class name_
 
 ### Usage
 
