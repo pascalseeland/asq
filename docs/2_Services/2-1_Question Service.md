@@ -117,11 +117,11 @@ private function forwardCommandToAuthoringGui()
 
 #### Example
 **Button Creation Question**
-![](../Examples/create_question_button.png)
+![](create_question_button.png)
 **Authoring environment - choose question type**
-![](../Examples/create_question_button.png)
+![](asq_create_question.png)
 **Authoring environment - choose question type**
-![](../Examples/asq_authoring_environment.png)
+![](asq_authoring_environment.png)
 ---
 ### Create the Question without using the authoring environment
 
