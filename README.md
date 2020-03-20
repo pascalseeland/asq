@@ -13,7 +13,13 @@ The ASQ provides no higher level business logic. Those must be handled by the co
 # Status
 BETA
 
- 
+<br>
+<br>
+
+
+# History
+[History](docs/0_History/README.md)
+
 <br>
 <br>
 
@@ -87,6 +93,18 @@ This project is licensed under the GPL v3 License
 
 
 # Credits
+
+## Funding
+* ILIAS eV
+* Universität Bern
+* DHBW
+* FH Aachen
+* Universität Freiburg
+* PH Freiburg
+* Universität zu Köln
+* Universität Marburg
+* Universität Hohenheim
+* studer + raimann ag, Burgdorf
 
 ## Development and software architecture
 * al@studer-raimann.ch
