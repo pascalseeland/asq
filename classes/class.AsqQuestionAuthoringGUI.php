@@ -4,12 +4,6 @@ declare(strict_types=1);
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
-use \AsqQuestionConfigEditorGUI;
-use \AsqQuestionCreationGUI;
-use \AsqQuestionFeedbackEditorGUI;
-use \AsqQuestionHintEditorGUI;
-use \AsqQuestionPageGUI;
-use \AsqQuestionPreviewGUI;
 
 /**
  * Class AsqQuestionAuthoringGUI
