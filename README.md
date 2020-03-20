@@ -65,7 +65,7 @@ BETA
 * [2 Create Questions](docs/2_Create_Questions/README.md)
 * [3 Edit Questions](docs/3_Edit_Questions/README.md)
 * [4 Get Questions](docs/4_Get_Questions/README.md)
-* [5_Score_Answer](docs/5_Score_Answer/README.md)
+* [5 Score Answer](docs/5_Score_Answer/README.md)
  
 <br>
 <br>

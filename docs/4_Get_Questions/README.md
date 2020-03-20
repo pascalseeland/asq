@@ -10,7 +10,7 @@ There are two ways to fetch questions:
 
 ## Table of Contents
 
-- [Get all questions of a container by ILIAS Object ID](#get-all-questions of-a-container-by-ilias-object-id)
+- [Get all questions of a container by ILIAS Object ID](#get-all-questions-of-a-container-by-ilias-object-id)
 - [Get a single question by UUID](#get-a-single-question-by-uuid)  
 - [Get question component for test runs](#get-question-component-for-test-runs)  
     
@@ -27,7 +27,7 @@ This method is a basic way to get questions.
 
 ### Usage
 
-```
+```php
 $question_dtos = AsqGateway::get()->question()->getQuestionsOfContainer($this->object->getId());
 ```
     
@@ -43,7 +43,7 @@ The ASQ identifies question by a Version 4 UUID. You may get any question of the
 
 ### Usage
 
-```
+```php
 $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId('7464973d-6cf3-4142-949a-3d7fd4d48169');
 ```
     
