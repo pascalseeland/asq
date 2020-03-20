@@ -1,6 +1,6 @@
 # Score Answer
 
-ASQ provides the following informations and possibilites for scoring answers.
+ASQ provides the following information and possibilites for scoring answers.
 * Get the score of a given Answer
 * Get the max score of a question
 * Get the best possible answer
@@ -18,7 +18,7 @@ ASQ provides the following informations and possibilites for scoring answers.
 ## Get score
 
 ### Note
-Get the reached score for the provided answer and question.
+Get the achieved score for the provided answer and question.
 
 ### Usage
 
@@ -51,7 +51,7 @@ $max_score =  AsqGateway::get()->answer()->getMaxScore($question)
 ### Note
 
 Gets the best answer that is possible on that question.
-caveat. some question types do not have a best possible answer (FileUploadQuestions ...)
+A caveat is that some question types do not have a best possible answer (FileUploadQuestions, ...)
 
 ### Usage
 

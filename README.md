@@ -4,7 +4,7 @@ The ILIAS ASQ is designed as a component that offers services around assessment 
 
 ![](asq_authoring_environment.png)
 
-The ASQ provides no higher level business logic. Those must be handled by the consumer. E.g. the business logic that a question can only be answered once or the business logic for handling a group of questions such as that a question can only be answered once. 
+The ASQ provides no higher level business logic. Those must be handled by the consumer. E.g. the business logic that a single question can only be answered once or the business logic for handling a group of questions so that questions can only have a single answer. 
   
 <br>
 <br>

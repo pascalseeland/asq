@@ -16,9 +16,9 @@ If you want to use the Assessment Question Service within a Repository Objects P
 
 
 ## Get the ASQ Library and the CQRS dependency by composer
-Your have to load the two libraries asq und cqrs from github and make sure the classmap includes the directory "vendor/srag/asq/classes" .
+Load the two libraries "asq" und "cqrs" from github and make sure the classmap includes the directory "vendor/srag/asq/classes".
 
-For this just integrate the following lines in your composer.json of your plugin and update the dependencies.
+For this just integrate the following lines into the composer.json of your plugin and update the dependencies.
 
 ```json
 "repositories": [
@@ -52,13 +52,13 @@ Example: [composer.json_example](composer.json_example)
 
 
 ## Install Data Tables and Update Languages
-Use the following setup statement in your sql/dbupdate.php
+Use the following setup statement in your sql/dbupdate.php:
 ```php
 <#1>
 [...]
 <#2>
 <?php
-\srag\asq\Infrastructure\Setup\Setup::new()->run();
+\srag\asq\{YourPluginName}\Infrastructure\Setup\Setup::new()->run();
 ?>
 ```
 
@@ -67,7 +67,7 @@ Use the following setup statement in your sql/dbupdate.php
 
 
 ## Enable TinyMCE
-You **MUST** enable TinyMCE
+You **MUST** enable TinyMCE.
    
 ![](enable_tiny_mce.png) 
 
