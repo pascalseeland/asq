@@ -74,8 +74,7 @@ class QuestionService extends ASQService
     public function createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA): QuestionDto
     {
         $id = new DomainObjectId();
-        
-        // CreateQuestion.png
+
         CommandBusBuilder::getCommandBus()->handle(
             new CreateQuestionCommand(
                 $id,

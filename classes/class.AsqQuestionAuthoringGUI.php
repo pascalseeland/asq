@@ -130,7 +130,7 @@ class AsqQuestionAuthoringGUI
                 $DIC->tabs()->activateTab(self::TAB_ID_PAGEVIEW);
 
                 $gui = AsqGateway::get()->ui()->getQuestionPage(
-                    $DIC->assessment()->question()->getQuestionByQuestionId($this->question_id->getId()));
+                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId()));
 
                 if (strlen($DIC->ctrl()->getCmd()) == 0 && !isset($_POST["editImagemapForward_x"]))
                 {
@@ -290,8 +290,8 @@ class AsqQuestionAuthoringGUI
             $DIC->tabs()->addTab(self::TAB_ID_FEEDBACK, $link->getLabel(), $link->getAction());
         }
         if(is_object($question_dto->getData()) > 0) {
-            $link = AsqGateway::get()->link()->getEditHintsLink($this->question_id->getId());
-            $DIC->tabs()->addTab(self::TAB_ID_HINTS, $link->getLabel(), $link->getAction());
+            //$link = AsqGateway::get()->link()->getEditHintsLink($this->question_id->getId());
+            //$DIC->tabs()->addTab(self::TAB_ID_HINTS, $link->getLabel(), $link->getAction());
         }
     }
 }

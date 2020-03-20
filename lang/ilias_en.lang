@@ -1,0 +1,215 @@
+correct_value#:#Correct value:
+textfield_size#:#Textfield size:
+max_characters#:#Max characters:
+char_count#:#Character count:
+ordering_text#:#Ordering Text
+label_wrong_deduction#:#Wrong deduction
+question_essay#:#Essay Question
+question_cloze#:#Cloze Question
+question_ordering_text#:#Text Order Question
+label_cloze_text#:#Cloze Text
+description_cloze_text#:#To add a new gap set the cursor to the position of your choice and use the dropdown ‘Text Gap’. Corresponding editing sections will appear below. You can also edit gaps by clicking on the gaps within the gap text.
+label_gap_type#:#Type
+label_gap_items#:#Values
+header_value#:#Answer Text
+label_gap_type_dropdown#:#Select Gap
+label_gap_type_text#:#Text Gap
+label_gap_type_number#:#Numeric Gap
+parse_question#:#Parse Question
+info_question#:#You can define variables by inserting $v1, $v2 ... $vn, results by inserting $r1, $r2 .... $rn at the desired position in the question text. Click on the button ‘Parse Question’ to create editing forms for variables and results.
+info_results#:#You may enter predefined variables ($v1 to $vn), defined results (e.g. $r1), braces for expressions, mathematical operators + (addition), - (subtraction), * (multiplication), / (division), ^ (nth power), the constants ‘pi’ for pi and ‘e’ for euler's constant, as well as the functions ‘sin’, ‘sinh’, ‘arcsin’, ‘asin’, ‘arcsinh’, ‘asinh’, ‘cos’, ‘cosh’, ‘arccos’, ‘acos’, ‘arccosh’, ‘acosh’, ‘tan’, ‘tanh’, ‘arctan’, ‘atan’, ‘arctanh’, ‘atanh’, ‘sqrt’, ‘abs’, ‘ln’ and ‘log’.
+label_units#:#Available Units
+description_units#:#The selected units are offered to the learner as part of an answer. The learner has to choose one unit.
+label_precision#:#Precision
+description_precision#:#Enter the number of desired decimal places.
+label_tolerance#:#Tolerance (%)
+description_tolerance#:#The tolerance specifies an allowable percentage deviation from the result value. With a tolerance of 0, only the exact result value is evaluated to be correct.
+label_result_type#:#Result Type Selection
+label_result_all#:#No Restrictions
+description_result_all#:#Both decimals and fractions are accepted as input.
+label_result_decimal#:#Decimal
+description_result_decimal#:#Valid results are i.e.: 2,3 and 2.3
+label_result_fraction#:#Fraction
+description_result_fraction#:#i.e.: 1/3 and 2/6 are valid results
+label_result_coprime_fraction#:#Coprime Fraction
+description_result_coprime_fraction#:#Canceled out fraction i.e.: only 1/3 is a valid result
+label_variables#:#Variables
+header_min#:#Range (Minimum)
+header_max#:#Range (Maximum)
+header_multiple_of#:#Divisible By
+header_unit#:#Unit
+header_formula#:#Formula
+imagemap_popup_title#:#Choose Area
+label_answering_limitation#:#Limit Answers
+info_answering_limitation#:#With this setting the number of answers choosable by the participiants can be limited
+label_max_length#:#Maximum Number of Characters
+info_max_length#:#If nothing entered the maximum number of characters for this text answer is unlimited.
+label_manual_scoring#:#No Automatic Scoring
+info_manual_scoring#:#No points are granted unless the tutor's manual scoring.
+label_automatic_any#:#Automatic Scoring with Keywords on Finding ANY
+info_automatic_any#:#For any found keyword the corresponding points are granted automatically.
+label_automatic_all#:#Automatic Scoring with Keywords on Finding ALL
+info_automatic_all#:#The points are granted automatically, if all keywords are found.
+label_answers#:#Answers
+label_automatic_one#:#Automatic Scoring with Keywords on Finding ONE
+info_automatic_one#:#The points are granted automatically, if at least one keyword is found.
+label_shuffle_answers#:#Shuffle Answers
+option_shuffle_none#:#No
+option_shuffle_definitions#:#Definitions only
+option_shuffle_terms#:#Terms only
+option_shuffle_both#:#Both (Terms and Definitions)
+label_thumbnail#:#Thumbnail Geometry
+label_matching_mode#:#Matching Mode
+option_one_to_one#:#One definition matches one term (1:1)
+option_many_to_one#:#One definition matches one or more terms (1:n)
+option_many_to_many#:#One or more definitions matches one or more terms (n:m)
+label_definitions#:#Definitions
+header_definition_text#:#Definition Text
+header_definition_image#:#Definition Image
+label_terms#:#Terms
+header_term_text#:#Term Text
+header_term_image#:#Term Image
+label_matches#:#Matching Pairs
+header_matches_definition#:#Definition
+header_matches_term#:#Term
+header_points#:#Points
+label_process_error_text#:#Analyze Error Text
+feedback_button_title#:#Request Feedback
+label_max_points#:#Maximum Available Points
+kprim_information#:#The multiple choice question type ‘four times decision right/wrong’ (Type K’, also known as Kprim) gives four answers or additions to a question or an incomplete statement. A decision about the correctness is to be done on all four answers/additions. The maximum points are granted only, if all decisions are correct.
+header_upload_file#:#Choose File to Upload
+text_max_size#:#Maximum Filesize: %d byte
+text_allowed_extensions#:#Allowed Extensions: %s
+label_max_upload#:#Maximum file upload size
+label_allowed_extensions#:#Allowed File Extensions
+label_upload_type#:#Type
+label_single_file#:#Single File
+label_many_file#:#Multiple Files
+label_completed_by_submition#:#Completed by Submission
+description_max_upload#:#Enter the maximum size in bytes that should be allowed for file uploads. If you leave this field empty, the maximum size of this installation will be chosen instead.
+description_allowed_extensions#:#Enter a comma separated list of allowed file extensions if you want to restrict the upload to a given set of file extensions (e.g. doc,xls,odt).
+description_completed_by_submition#:#If enabled, the submission of at least one file causes the completion of this question by granting the maximum score for this question. The score could be manually changed later. Switching this setting does not effect already submitted solutions.
+label_select_coordinates#:#Select Coordinates
+option_rectangle#:#Rectangle
+option_circle#:#Circle
+option_polygon#:#Polygon
+label_coordinates#:#Coordinates
+label_type#:#Type
+label_tooltip#:#Tooltip
+label_multiple_choice#:#Multiple Choice
+label_single_choice#:#Single Choice
+label_mode#:#Mode
+label_image#:#Image
+label_lifecycle#:#Lifecycle
+lifecycle_draft#:#Draft
+lifecycle_to_be_reviewed#:#To be Reviewed
+lifecycle_rejected#:#Rejected
+lifecycle_final#:#Final
+lifecycle_sharable#:#Sharable
+lifecycle_outdated#:#Outdated
+info_points_wrong#:#Enter the negative points for each selected word that is not in the list of the marked errors.
+pixel#:#Pixel
+editor_title#:#Edit Question
+question_generic#:#Generic Question
+question_single_answer#:#Multiple Choice Question (Single Answer)
+question_multiple_answer#:#Multiple Choice Question (Multiple Answer)
+question_kprim_answer#:#Multiple Choice Question (Kprim Answer)
+question_error_text#:#Error Text
+question_image_map#:#Hot Spot / Image Map Question
+question_numeric#:#Numeric Question
+question_formula#:#Formula Question
+question_text_subset#:#Text Subset Question
+question_ordering#:#Ordering Question
+question_file_upload#:#File Upload Question
+question_matching#:#Matching Question
+label_answer#:#Answers
+label_title#:#Title
+label_author#:#Author
+label_description#:#Description
+label_question#:#Question
+label_working_time#:#Working Time
+label_selected_editor#:#Editor
+label_selected_presenter#:#Presenter
+label_selected_scoring#:#Scoring
+label_checked#:#Checked
+label_unchecked#:#Unchecked
+label_answer_text#:#Answer Text
+label_answer_image#:#Answer Image
+label_shuffle#:#Shuffle Answers
+label_max_answer#:#Answering Lmitation
+label_editor#:#Editor for Answers
+label_thumb_size#:#Thumbnail Size
+label_actions#:#Actions
+label_right#:#right
+label_wrong#:#wrong
+label_options#:#Options
+label_points#:#Points
+label_half_points#:#Activate Half-Point Scoring
+label_obtion_labels#:#Option Labels
+label_right_wrong#:#right / wrong
+label_plus_minus#:#+ / -
+label_applicable#:#applicable / not applicable
+label_adequate#:#adequate / not adequate
+label_userdefined#:#Userdefined Labels
+label_user_true#:#Label for 'TRUE'
+label_user_false#:#Label for 'FALSE'
+label_error_text#:#Error Text
+label_text_size#:#Text Size
+label_points_wrong#:#Wrong Selections
+label_wrong_text#:#Wrong Text
+label_correct_text#:#Correct Text
+label_max_nr_of_chars#:#Maximum Number of Characters
+label_upper_bound#:#Upper Bound
+label_lower_bound#:#Lower Bound
+label_is_vertical#:#Ordering Direction
+label_vertical#:#Vertical
+label_horicontal#:#Horicontal
+label_min_size#:#Minimum Height
+label_geometry#:#Geometry
+label_text_matching#:#Text Matching Method
+label_requested_answers#:#Number of Requested Answers
+option_single_line#:#Single Line Answers
+option_multi_line#:#Multi Line Answers
+option_case_insensitive#:#Case Insensitive
+option_case_sensitive#:#Case Sensitive
+option_levenshtein_1#:#Levenshtein Distance of 1
+option_levenshtein_2#:#Levenshtein Distance of 2
+option_levenshtein_3#:#Levenshtein Distance of 3
+option_levenshtein_4#:#Levenshtein Distance of 4
+option_levenshtein_5#:#Levenshtein Distance of 5
+description_max_answer#:#With this setting the number of answers choosable by the participants can be limited.
+description_thumb_size#:#If you enter a thumbnail size, a thumbnail of this size will be generated for uploaded images. Without a thumbnail size, the original image size will be used.
+description_half_points#:#Usually the participant has to answer the question fully correct to get the configured points. With this option the participant gets the half of the configured points with at least three correct decisions.
+description_options#:#The configured phrases will be used as label for the options selectable by the participant.
+description_error_text#:#Please enter the error text. To mark a word as an error please insert a hash sign (#) in front of the word. To mark a group of words as an error please encapsulate the words group between double brackets (i.e.: here is ((an example)) of it). If you press the "Analyze Error Text" button, all marked words will be extracted for further processing.
+description_max_nr_chars#:#If you enter a value, the field for the numerical answer will be created with a fixed length of this value, so entering more than the allowed characters is not possible. Note, that for numeric gaps the decimal separator is counted as a regular character.
+description_min_size#:#This is the minimum height in pixels for term and definition/picture items during the test output.
+error_points#:#The maximum available points must be greater than 0! Please enter sufficient positive points for your answers.
+error_numeric#:#Please enter a numeric value.
+authoring_tab_preview#:#Preview
+authoring_tab_pageview#:#Edit Page
+authoring_tab_config#:#Edit Question
+authoring_tab_feedback#:#Feedback
+authoring_tab_hints#:#Hints
+authoring_tab_recapitulation#:#Content for Recapitulation
+authoring_tab_statistics#:#Statistics
+authoring_create_question_link#:#Create Question
+create_question_form#:#Create Question
+input_question_type#:#Question Type
+input_cont_edit_mode#:#Editor for Feedback and Hints
+input_cont_edit_mode_rte_textarea#:#Use rich-text editor for editing feedback and hints
+input_cont_edit_mode_page_object#:#Use ILIAS page editor for editing feedback and hints
+feedback_form_title#:#Common Solution Feedback
+input_feedback_correct#:#Correct Solution
+input_feedback_wrong#:#At Least One Answer is Not Correct
+link_edit_feedback_page#:#Edit Content
+back_to_question_link#:#Back To Calling Question
+header_feedback_answers#:#Feedback for Every Answer
+label_feedback_setting#:#Mode of answer specific feedback.
+option_feedback_all#:#Show answer specific feedback for all answers.
+option_feedback_checked#:#Show answer specific feedback for all chosen/selected answers.
+option_feedback_correct#:#Show answer specific feedback for all correct answers.
+question_hints_form_header#:#Hint for Question: %s
+question_hints_label_hint#:#Hint
+question_hints_label_points_deduction#:#Point Deduction
+answer_feedback_header#:#Feedback
