@@ -43,6 +43,15 @@ BETA
 <br>
 
 
+# Requirements
+* PHP 7.2
+* ILIAS 6 - ILIAS 7
+* https://github.com/studer-raimann/cqrs
+  
+<br>
+<br>
+
+
 # Architecture
 * Event Sourcing
 * CQRS
@@ -57,6 +66,20 @@ BETA
 * [3 Edit Questions](docs/3_Edit_Questions/README.md)
 * [4 Get Questions](docs/4_Get_Questions/README.md)
 * [5_Score_Answer](docs/5_Score_Answer/README.md)
+ 
+<br>
+<br>
+
+
+# Authors
+This is an OpenSource project by studer + raimann ag (https://studer-raimann.ch)
+ 
+<br>
+<br>
+
+
+# License
+This project is licensed under the GPL v3 License
  
 <br>
 <br>

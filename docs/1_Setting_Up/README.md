@@ -8,7 +8,8 @@ If you want to use the Assessment Question Service within a Repository Objects P
 
 ## Table of Contents
 - [Get the ASQ Library and the CQRS dependency by composer](#get-the-asq-library-and-the-cqrs-dependency-by-composer)
-- [Install Data Tables and Update Languages](#install-data-tables-and-update-languages)  
+- [Install Data Tables and Update Languages](#install-data-tables-and-update-languages) 
+- [Enable TinyMCE](#enable-tinymce)
     
 <br>
 <br>
@@ -60,3 +61,15 @@ Use the following setup statement in your sql/dbupdate.php
 \srag\asq\Infrastructure\Setup\Setup::new()->run();
 ?>
 ```
+
+<br>
+<br>
+
+
+## Enable TinyMCE
+You **MUST** enable TinyMCE
+   
+![](enable_tiny_mce.png) 
+
+
+
