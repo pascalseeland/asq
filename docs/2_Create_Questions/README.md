@@ -25,7 +25,7 @@ If you use this option for creating a question all requests to the authoring env
 
 ### Usage
 
-[ ] **1. Add the ilCtrl Call _AsqQuestionAuthoringGUI_ to your GUI Class**
+- [ ] **1. Add the ilCtrl Call _AsqQuestionAuthoringGUI_ to your GUI Class**
 
 ```php
 <?php
