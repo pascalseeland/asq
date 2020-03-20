@@ -52,7 +52,7 @@ BETA
 
 # Requirements
 * PHP 7.2
-* ILIAS 6 - ILIAS 7
+* ILIAS 5.4 - ILIAS 7
 * https://github.com/studer-raimann/cqrs
   
 <br>
