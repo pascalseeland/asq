@@ -1,6 +1,7 @@
 # Score answer
 
 ASQ provides the following information and possibilites for scoring answers.
+* Get the answer associated with the given UUID
 * Get the score of a given Answer
 * Get the max score of a question
 * Get the best possible answer
