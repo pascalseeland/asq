@@ -63,7 +63,7 @@ The entered answer of the user can be extracted from the component through the m
 
 ### Usage
 
-```
+```php
 $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
         
 $save_button = ilSubmitButton::getInstance();

@@ -22,7 +22,7 @@ Get the reached score for the provided answer and question.
 
 ### Usage
 
-```
+```php
 $score = AsqGateway::get()->answer()->getScore($question, $answer)
 ```
     
@@ -38,7 +38,7 @@ Get the maximal possible score of a question.
 
 ### Usage
 
-```
+```php
 $max_score =  AsqGateway::get()->answer()->getMaxScore($question)
 ```
     
@@ -55,7 +55,7 @@ caveat. some question types do not have a best possible answer (FileUploadQuesti
 
 ### Usage
 
-```
+```php
 $best_answer =  AsqGateway::get()->answer()->getBestAnswer($question)
 ```
 <br>

@@ -25,13 +25,13 @@ Additionally it's possible to use a single independent edit form
 ### Note
 
 You can get the links by passing the Question UUID
-```
+```php
 AsqGateway::get()->link()->getEditLink('7464973d-6cf3-4142-949a-3d7fd4d48169')
 ```
 
 ### Usage
 This example show how you display all questions of your container with an unordered list including an action menu.
-```
+```php
 private function showQuestions()
     {
         global $DIC;
@@ -80,7 +80,7 @@ Returns the form used to edit the question. The form is of the type ilPropertyFo
 It is easyer to use the provided classes that you can get by using AuthoringQuestion.
 
 ### Usage
-```
+```php
 $form = AsqGateway::get()->ui()->getQuestionEditForm($question_dto);
 $form->setFormAction($DIC->ctrl()->getFormAction($this, self::CMD_SHOW_FORM));
 $form->addCommandButton(self::CMD_SAVE_FORM, $DIC->language()->txt('save'));
@@ -89,7 +89,7 @@ $DIC->ui()->mainTemplate()->setContent($form->getHTML());
 
 to save:
 
-```
+```php
 $question = $form->getQuestion();
 AsqGateway::get()->question()->saveQuestion($question);
 ```

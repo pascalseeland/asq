@@ -19,7 +19,7 @@ Your have to load the two libraries asq und cqrs from github and make sure the c
 
 For this just integrate the following lines in your composer.json of your plugin and update the dependencies.
 
-```
+```json
 "repositories": [
     {
       "type": "vcs",
@@ -52,7 +52,7 @@ Example: [composer.json_example](composer.json_example)
 
 ## Install Data Tables and Update Languages
 Use the following setup statement in your sql/dbupdate.php
-```
+```php
 <#1>
 [...]
 <#2>

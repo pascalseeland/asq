@@ -42,7 +42,7 @@ class AsqDemoGUI {
 ```
 >Please reload the control structure - by plugins increase the version of the plugin and update the plugin via the _ILIAS Administration_.
 
-[ ] **2. Add the _Creation Link_**
+- [ ] **2. Add the _Creation Link_**
 
 E.g add the link as a toolbar button
 ```php
@@ -58,7 +58,7 @@ public function renderToolbar()
 }
 ```
 
-[ ] **3. Catch any redirects to the `ilAsqQuestionAuthoringGUI` class**
+- [ ] **3. Catch any redirects to the `ilAsqQuestionAuthoringGUI` class**
 
 Catch any redirects to the `ilAsqQuestionAuthoringGUI` class within the `executeCommand()` and forward to ilAsqQuestionAuthoringGUI.
 
