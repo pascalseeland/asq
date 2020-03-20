@@ -1,6 +1,6 @@
 <?php
 
-namespace ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection;
+namespace srag\asq\Infrastructure\Persistence\Projection;
 
 use ilDateTime;
 use srag\asq\Domain\Model\Question;

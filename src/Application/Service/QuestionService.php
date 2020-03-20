@@ -47,9 +47,10 @@ class QuestionService extends ASQService
      * @param int $id
      * @return QuestionDto
      */
+    /*
     public function getQuestionByIliasObjectId(int $id) : QuestionDto {
         return QuestionDto::CreateFromQuestion(QuestionRepository::getInstance()->getAggregateByIliasId($id));
-    }
+    }*/
     
     /**
      * @param int $container_id
@@ -74,8 +75,7 @@ class QuestionService extends ASQService
     public function createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA): QuestionDto
     {
         $id = new DomainObjectId();
-        
-        // CreateQuestion.png
+
         CommandBusBuilder::getCommandBus()->handle(
             new CreateQuestionCommand(
                 $id,

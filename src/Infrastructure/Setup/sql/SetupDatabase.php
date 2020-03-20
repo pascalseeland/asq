@@ -3,135 +3,36 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Setup\sql;
 
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection\QuestionAr;
-use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
+use srag\asq\Infrastructure\Persistence\Projection\QuestionAr;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
+use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
 
 /**
  * Class SetupDatabase
  *
  * @author Martin Studer <ms@studer-raimann.ch>
  */
-class SetupDatabase {
-	public function __contstruct() {
+class SetupDatabase
+{
 
-	}
+    private function __construct()
+    {
 
-	public function run():void {
-	    global $DIC;
-
-
-        $DIC->database()->dropTable(QuestionEventStoreAr::STORAGE_NAME, false);
-        $DIC->database()->dropTable(QuestionListItemAr::STORAGE_NAME, false);
-        $DIC->database()->dropTable(QuestionAr::STORAGE_NAME, false);
-        $DIC->database()->dropTable(SimpleStoredAnswer::STORAGE_NAME, false);
-        $DIC->database()->dropTable("asq_user_answer_scpre", false);
-        $DIC->database()->dropTable("asq_user_test_score", false);
+    }
 
 
-        
+    public static function new() : SetupDatabase
+    {
+        return new self();
+    }
+
+
+    public function run() : void
+    {
         QuestionEventStoreAr::updateDB();
-	    QuestionListItemAr::updateDB();
-	    QuestionAr::updateDB();
-	    SimpleStoredAnswer::updateDB();
-
-	    //Migration
-        //Migrate Contentpage Definition (here for the implementation the migration)
-        $DIC->database()->query("UPDATE copg_pobj_def SET parent_type = 'asqq' where component = 'Modules/TestQuestionPool' AND class_name = 'ilAssQuestionPage'");
-        $DIC->database()->query("UPDATE copg_pobj_def SET component = 'Services/AssessmentQuestion',  class_name = 'AsqPageObject', directory = 'src/UserInterface/Web/Page' where parent_type = 'asqq'");
-
-        $this->cleanupContentPages();
-
-        ////////////////////////////////////////////////////
-        /// Test Object Tables
-        $this->changeTestObjectTables();
-        $this->cleanTestObjectTables();
-        ////////////////////////////////////////////////////
-
-        echo "Setup wurde durchgefüht. Datentabellen wurden installiert / aktualisiert. ACHTUNG allenfalls muss vorher via setup/setup.php die Ctrl-Struktur neu geladen werden. In diesem Fall dieses Setup erneut ausführen.<br><br>";
-        echo "Es müsste nun neben dem Setup / Resetup ASQ ein neuer Tab 'exAsqExamplesGUI' angezeigt werden<br><br>";
-
-        echo "<a href='../../../../../'>zurück zu ILIAS</a>";
-
-	}
-
-	protected function cleanupContentPages()
-    {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
-        // question pages
-        // old
-        $DIC->database()->manipulateF(
-            "DELETE FROM page_object WHERE parent_type = %s",
-            ['text'], ['qpl']
-        );
-        // new
-        $DIC->database()->manipulateF(
-            "DELETE FROM page_object WHERE parent_type = %s",
-            ['text'], ['asq']
-        );
-
-
-        // generic (correct/wrong) feedback pages
-        // old
-        $DIC->database()->manipulateF(
-            "DELETE FROM page_object WHERE parent_type = %s",
-            ['text'], ['afbg']
-        );
-        //new
-        $DIC->database()->manipulateF(
-            "DELETE FROM page_object WHERE parent_type = %s",
-            ['text'], ['asqq']
-        );
-
-        // answer specific feedbacks
-        // old
-        $DIC->database()->manipulateF(
-            "DELETE FROM page_object WHERE parent_type = %s",
-            ['text'], ['qfbs']
-        );
-        // new
-        $DIC->database()->manipulateF(
-            "DELETE FROM page_object WHERE parent_type = %s",
-            ['text'], ['asqa']
-        );
-    }
-
-    protected function changeTestObjectTables()
-    {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
-        if( $DIC->database()->tableColumnExists('tst_test_question', 'question_uid') )
-        {
-            $DIC->database()->dropTableColumn('tst_test_question', 'question_uid');
-        }
-
-        if( !$DIC->database()->tableColumnExists('tst_test_question', 'question_uid') )
-        {
-            $DIC->database()->addTableColumn('tst_test_question', 'question_uid', array(
-                'type' => 'text',
-                'notnull' => false,
-                'length' => 64,
-                'default' => ''
-            ));
-        }
-
-        if( !$DIC->database()->tableColumnExists('tst_test_question', 'revision_id') )
-        {
-            $DIC->database()->addTableColumn('tst_test_question', 'revision_id', array(
-                'type' => 'text',
-                'notnull' => false,
-                'length' => 64,
-                'default' => ''
-            ));
-        }
-    }
-
-    protected function cleanTestObjectTables()
-    {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
-        $DIC->database()->manipulate("TRUNCATE TABLE tst_test_question");
+        QuestionListItemAr::updateDB();
+        QuestionAr::updateDB();
+        SimpleStoredAnswer::updateDB();
     }
 }

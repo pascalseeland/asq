@@ -1,0 +1,206 @@
+correct_value#:#Resultat:
+textfield_size#:#Feldgrösse:
+max_characters#:#Max Zeichen:
+char_count#:#Anzahl Zeichen:
+ordering_text#:#Sortiertext
+label_wrong_deduction#:#Fehlerabzug
+question_essay#:#Essayfrage
+question_cloze#:#Lückentextfrage
+question_ordering_text#:#Textordnungsfrage
+label_cloze_text#:#Lückentextfrage
+description_cloze_text#:#Um eine Lücke in den Text einzufügen, setzen Sie den Cursor an die entsprechende Position und nutzen Sie die Schaltfläche "Textlücke". Anschließend stehen weiter unten entsprechende Bearbeitungsbereiche zur Verfügung. Ebenso können Sie die Lücken zur Bearbeitung im Lückentext direkt anklicken.
+label_gap_type#:#Typ
+label_gap_items#:#Werte
+header_value#:#Antwort-Text
+label_gap_type_dropdown#:#Auswahl-Lücke
+label_gap_type_text#:#Textlücke
+label_gap_type_number#:#Numerische Lücke
+parse_question#:#Frage analysieren
+info_question#:#Sie definieren Variablen durch die Angabe von $v1, $v2 ... $vn, Ergebnisfelder mit $r1, $r2 .... $rn an den gewünschten Positionen im Text. Klicken Sie dann auf die Schaltfläche "Frage analysieren", um Bearbeitungsformulare für alle Variablen und Ergebnisse zu erzeugen.
+info_results#:#Erlaubt ist die Verwendung von bereits definierten Variablen ($v1 bis $vn), von bereits definierten Ergebnissen (z.B. $r1), das beliebige Klammern von Ausdrücken, die mathematischen Operatoren + (Addition), - (Subtraktion), * (Multiplikation), / (Division), ^ (Potenzieren), die Verwendung der Konstanten 'pi' für die Zahl Pi und 'e‘ für die Eulersche Zahl, sowie die mathematischen Funktionen 'sin', 'sinh', 'arcsin', 'asin', 'arcsinh', 'asinh', 'cos', 'cosh', 'arccos', 'acos', 'arccosh', 'acosh', 'tan', 'tanh', 'arctan', 'atan', 'arctanh', 'atanh', 'sqrt', 'abs', 'ln', 'log'.
+label_units#:#Auswählbare Einheiten
+description_units#:#Die hier ausgewählten Einheiten werden dem Lernenden zur Antwort angeboten. Der Lernende muss sich hier für eine Einheit entscheiden.
+label_precision#:#Präzision
+description_precision#:#Geben Sie hier die Anzahl der gewünschten Nachkommastellen an.
+label_tolerance#:#Toleranz (%)
+description_tolerance#:#Die Toleranz legt eine erlaubte prozentuale Abweichung vom Ergebniswert fest. Bei einer Toleranz von 0 wird nur der exakte Ergebniswert als korrekt bewertet.
+label_result_type#:#Ergebnistypauswahl
+label_result_all#:#Keine Einschränkung
+description_result_all#:#Sowohl Dezimalzahlen als auch Brüche werden als Eingabe akzeptiert.
+label_result_decimal#:#Dezimal
+description_result_decimal#:#Gültige Dezimalzahlen sind beispielsweise 2,3 und 2.3
+label_result_fraction#:#Bruch
+description_result_fraction#:#Die Eingaben 1/3 und 2/6 sind beides gültige Ergebnisse
+label_result_coprime_fraction#:#Teilerfremder Bruch
+description_result_coprime_fraction#:#Nur ein vollständig gekürzter Bruch (z.B. 1/3) ist ein gültiges Ergebnis
+label_variables#:#Variablen
+header_min#:#Bereich (Minimum)
+header_max#:#Bereich (Maximum)
+header_multiple_of#:#Teilbar durch
+header_unit#:#Einheit
+header_formula#:#Formel
+imagemap_popup_title#:#Bereich Auswählen
+label_answering_limitation#:#Antworten Limitieren
+info_answering_limitation#:#Mit dieser einstellung kann die Anzahl der Antworten pro Teilnehmer limitiert werden
+label_max_length#:#Maximale Anzahl von Zeichen
+info_max_length#:#Wenn nichts eingegeben wird, ist die maximale Anzahl von Zeichen für diese Textantwort unbegrenzt.
+label_manual_scoring#:#Keine automatische Bewertung
+info_manual_scoring#:#Es werden keine Punkte automatisiert vergeben. Die Punktevergabe ist nur mit manueller Bewertung möglich.
+label_automatic_any#:#Automatische Bewertung bei Nennung einzelner Begriffe
+info_automatic_any#:#Für jeden gefundenen Begriff werden die entsprechenden Punkte vergeben.
+label_automatic_all#:#Automatische Bewertung bei Nennung aller Begriffe
+info_automatic_all#:#Die Punkte werden automatisch vergeben, wenn alle Begriffe gefunden werden.
+label_answers#:#Antworten
+label_automatic_one#:#Automatische Bewertung bei Nennung eines Begriffs
+info_automatic_one#:#Die Punkte werden automatisch vergeben, wenn mindestens ein Begriff gefunden wird.
+label_shuffle_answers#:#Antworten mischen
+option_shuffle_none#:#Nein
+option_shuffle_definitions#:#Nur Definitionen
+option_shuffle_terms#:#Nur Terme
+option_shuffle_both#:#Beides (Terme und Definitionen)
+label_thumbnail#:#Vorschaugröße
+label_matching_mode#:#Zuordnungsmodus
+option_one_to_one#:#Einer Definition kann ein Term zugeordnet werden (1:1)
+option_many_to_one#:#Einer Definition können mehrere Terme zugeordnet werden (n:1)
+option_many_to_many#:#Einer oder mehreren Definitionen können ein oder mehrere Terme zugeordnet werden (n:m)
+label_definitions#:#Definitionen
+header_definition_text#:#Text
+header_definition_image#:#Bild
+label_terms#:#Terme
+header_term_text#:#Text
+header_term_image#:#Bild
+label_matches#:#Zuordnungspaare
+header_matches_definition#:#Definition
+header_matches_term#:#Term
+header_points#:#Punkte
+label_process_error_text#:#Text analysieren
+feedback_button_title#:#Rückmeldung anfordern
+label_max_points#:#Maximal erreichbare Punktezahl
+kprim_information#:#Der Multiple Choice-Fragetyp "Vierfache Entscheidung richtig/falsch" (Typ K', genannt Kprim) zeichnet sich dadurch aus, dass auf eine Frage oder unvollständige Aussage vier Antworten oder Ergänzungen folgen. Für jede dieser vier Möglichkeiten muss jeweils entschieden werden, ob sie zutrifft (richtig/+) oder nicht zutrifft (falsch/-). Um die maximal erreichbare Punktezahl zu erhalten, müssen alle vier Antworten korrekt sein.
+header_upload_file#:#Wählen sie eine Datei zum Hochladen
+text_max_size#:#Maximale Dateigrössen: %d Byte
+text_allowed_extensions#:#Erlaubte Endungen: %s
+label_max_upload#:#Maximale Dateigröße
+label_allowed_extensions#:#Erlaubte Dateierweiterungen
+label_upload_type#:#Typ
+label_single_file#:#Eine Datei
+label_many_file#:#Mehrere Dateien
+label_completed_by_submition#:#Bestehen durch Abgabe
+description_max_upload#:#Geben Sie die maximale Größe in Bytes an, die eine hochgeladene Datei haben darf. Wenn Sie das Feld leer lassen, wird die Einstellung des zugrunde liegenden Systems verwendet.
+description_allowed_extensions#:#Geben Sie eine kommagetrennte Liste der erlaubten Dateierweiterungen an, wenn Sie das Hochladen auf bestimmte Dateitypen einschränken wollen (z.B. doc, pdf, odt).
+description_completed_by_submition#:#Falls aktiviert, führt die Abgabe einer Lösungsdatei zur Vergabe der Maximalpunktzahl für diese Frage. Die Bewertung kann jederzeit manuell angepasst werden. Das Ändern dieser Einstellung hat keine nachträglichen Auswirkungen auf bereits eingereichte Lösungen.
+label_select_coordinates#:#Koordinaten Auswählen
+option_rectangle#:#Rechteck
+option_circle#:#Kreis
+option_polygon#:#Polygon
+label_coordinates#:#Koordinaten
+label_type#:#Typ
+label_tooltip#:#Tooltip
+label_multiple_choice#:#Multiple Choice
+label_single_choice#:#Single Choice
+label_mode#:#Modus
+label_image#:#Bild
+label_lifecycle#:#Lebenszyklus
+lifecycle_draft#:#Entwurf
+lifecycle_to_be_reviewed#:#Zum Review
+lifecycle_rejected#:#Zurückgewiesen
+lifecycle_final#:#Final
+lifecycle_sharable#:#Teilbar
+lifecycle_outdated#:#Veraltet
+info_points_wrong#:#Geben Sie Punkte für die Auswahl von Wörtern an, die nicht in der Liste der markierten Fehler enthalten sind.
+pixel#:#Pixel
+editor_title#:#Frage Editieren
+question_generic#:#Generische Frage
+question_single_answer#:#Single Choice
+question_multiple_answer#:#Multiple Choice
+question_kprim_answer#:#Kprim Choice
+question_error_text#:#Fehler/Worte markieren
+question_image_map#:#Hotspot/Imagemap
+question_numeric#:#Numerische Antwort
+question_formula#:#Formelfrage
+question_text_subset#:#Begriffe benennen
+question_ordering#:#Anordnungsfrage
+question_file_upload#:#Datei hochladen
+question_matching#:#Zuordnungsfrage
+label_answer#:#Antworten
+label_title#:#Titel
+label_author#:#Autor
+label_description#:#Beschreibung
+label_question#:#Frage
+label_working_time#:#Bearbeitungsdauer
+label_selected_editor#:#Editor
+label_selected_presenter#:#Presenter
+label_selected_scoring#:#Scoring
+label_checked#:#Ausgewählt
+label_unchecked#:#Nicht Ausgewählt
+label_answer_text#:#Antwort-Text
+label_answer_image#:#Antwort-Grafik
+label_shuffle#:#Antworten michen
+label_max_answer#:#Antwortbeschränkung
+label_editor#:#Antwort-Editor
+label_thumb_size#:#Vorschaugröße
+label_actions#:#Aktionen
+label_right#:#richtig
+label_wrong#:#falsch
+label_options#:#Obtionen
+label_points#:#Punkte
+label_half_points#:#Halbpunktebewertung
+label_obtion_labels#:#Optionsbezeichnungen
+label_right_wrong#:#richtig / falsch
+label_plus_minus#:#+ / -
+label_applicable#:#zutreffend / nicht zutreffend
+label_adequate#:#adäquat / nicht adäquat
+label_userdefined#:#Benutzerdefinierte Bezeichnungen
+label_user_true#:#Bezeichnung für "WAHR"
+label_user_false#:#Bezeichnung für "FALSCH"
+label_error_text#:#Fehler/Worte markieren
+label_text_size#:#Textgröße
+label_points_wrong#:#Falsche Selektionen
+label_wrong_text#:#Fehlerhafter Text
+label_correct_text#:#Korrekter Text
+label_max_nr_of_chars#:#Maximale Anzahl von Zeichen
+label_upper_bound#:#Obere Schranke
+label_lower_bound#:#Untere Schranke
+label_is_vertical#:#Richtung der Ordnung
+label_vertical#:#Vertikal
+label_horicontal#:#Horizontal
+label_min_size#:#Minimale Höhe
+label_geometry#:#Geometrie
+label_text_matching#:#Methode für Textvergleiche
+label_requested_answers#:#Anzahl der erwünschten Antworten
+option_single_line#:#Einzeilige Antworten
+option_multi_line#:#Mehrzeilige Antworten
+option_case_insensitive#:#Zwischen Groß- und Kleinschreibung wird nicht unterschieden
+option_case_sensitive#:#Groß- und Kleinschreibung beachten
+option_levenshtein_1#:#Levenshtein-Abstand von 1
+option_levenshtein_2#:#Levenshtein-Abstand von 2
+option_levenshtein_3#:#Levenshtein-Abstand von 3
+option_levenshtein_4#:#Levenshtein-Abstand von 4
+option_levenshtein_5#:#Levenshtein-Abstand von 5
+description_max_answer#:#Mit dieser Einstellung lässt sich die Anzahl durch den Teilnehmer wählbarer Antworten einschränken.
+description_thumb_size#:#Wenn Sie eine Vorschaugröße angeben, werden hochgeladene Bilder automatisch auf diese Größe verkleinert. Ohne Vorschaugröße werden die Bilder in ihrer Originalgröße verwendet.
+description_half_points#:#Es hat sich als sinnvoll erwiesen, drei korrekte Antworten bereits mit der Hälfte der maximal erreichbaren Punktezahl zu honorieren. Bei weniger als drei korrekten Antworten werden keine Punkte vergeben.
+description_options#:#Die hier konfigurierten Bezeichnungen werden als Beschriftung für die Entscheidungsoptionen verwendet.
+description_error_text#:#Bitte geben Sie einen Text ein. Um ein Wort als fehlerhaft zu markieren, setzen Sie bitte eine Raute (#) direkt vor das gewünschte Wort. Um eine Gruppe von Fehlerwörtern zu definieren, umklammern Sie die Wörter mit doppelten Klammern (z.B.: Dies ist ((ein Beispiel)) für mehrere Wörter). Wenn Sie auf die Schaltfläche "Text analysieren" klicken, werden die markierten Wörter für die weitere Bearbeitung extrahiert.
+description_max_nr_chars#:#Wenn Sie hier einen Wert eintragen, wird das Feld für die numerische Antwort mit der angegebenen Länge erzeugt, so dass es nicht möglich ist eine größere Anzahl an Zeichen einzugeben. Zu beachten ist dabei, dass das Dezimaltrennzeichen dabei mit gezählt wird.
+description_min_size#:#Geben Sie bitte die Größe des Textes in Prozent der Normalgröße an. Wenn Sie keinen Wert angeben, wird die Normalgröße (100 Prozent) verwendet.
+error_points#:# Die maximale Punktezahl für die Frage muss größer als Null sein! Bitte geben Sie ausreichend viele nicht-negative Punkte für die Antworten ein.
+error_numeric#:#Bitte geben Sie einen numerischen Wert ein.
+authoring_tab_preview#:#Vorschau
+authoring_tab_pageview#:#Seite bearbeiten
+authoring_tab_config#:#Eigenschaften
+authoring_tab_feedback#:#Rückmeldung
+authoring_tab_hints#:#Lösungshinweise
+authoring_tab_recapitulation#:#Inhalte zur Wiederholung
+authoring_tab_statistics#:#Statistik
+authoring_create_question_link#:#Frage estellen
+create_question_form#:#Frage erstellen
+input_question_type#:#Fragetyp
+input_cont_edit_mode#:#Editor für Rückmeldungen und Lösungshinweise
+input_cont_edit_mode_rte_textarea#:#Rich-Text-Editor für das Editieren von Rückmeldungen und Lösungshinweisen nutzen
+input_cont_edit_mode_page_object#:#ILIAS-Seiteneditor für das Editieren von Rückmeldungen und Lösungshinweisen nutzen
+feedback_form_title#:#Common Solution Feedback
+input_feedback_correct#:#Richtige Lösung
+input_feedback_wrong#:#Mindestens eine Antwort ist nicht richtig
+link_edit_feedback_page#:#Inhalt bearbeiten
+back_to_question_link#:#Zurück zur aufrufenden Frage
