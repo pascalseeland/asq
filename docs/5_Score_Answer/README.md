@@ -1,15 +1,30 @@
-# Score Answer
+# Score answer
 
 ASQ provides the following information and possibilites for scoring answers.
 * Get the score of a given Answer
 * Get the max score of a question
 * Get the best possible answer
 
-## Table of Contents
+## Table of contents
 
+- [Get answer](#get-answer)
 - [Get score](#get-score)
 - [Get max score](#get-max-score)  
 - [Get best answer](#get-best-answer)  
+    
+<br>
+<br>
+
+## Get answer
+
+### Note
+Get the answer associated to the provided UUID.
+
+### Usage
+
+```php
+$answer = AsqGateway::get()->answer()->getAnswer($uuid)
+```
     
 <br>
 <br>
@@ -18,6 +33,7 @@ ASQ provides the following information and possibilites for scoring answers.
 ## Get score
 
 ### Note
+
 Get the achieved score for the provided answer and question.
 
 ### Usage
@@ -34,7 +50,7 @@ $score = AsqGateway::get()->answer()->getScore($question, $answer)
 
 ### Note
 
-Get the maximal possible score of a question.
+Get the maximum possible score of a question.
 
 ### Usage
 

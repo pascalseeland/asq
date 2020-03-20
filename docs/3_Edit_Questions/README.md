@@ -1,4 +1,4 @@
-# Edit Questions
+# Edit questions
 
 ASQ provides the following links to the authoring environment:
 * Edit Question
@@ -11,7 +11,7 @@ Additionally, it's possible to use a single independent edit form.
 <br>
 
 
-## Table of Contents
+## Table of contents
 
 - [Usage of the Edit Links](#usage-of-the-edit-links)
 - [Get question edit form](#get-question-edit-form)
@@ -20,7 +20,7 @@ Additionally, it's possible to use a single independent edit form.
 <br>
 
 
-## Usage of the Edit Links
+## Usage of the edit links
 
 ### Note
 

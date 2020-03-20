@@ -1,4 +1,4 @@
-# Get Questions
+# Get questions
 
 There are two ways to fetch questions:
 * Get all questions of a container by their ILIAS Object ID
@@ -8,7 +8,7 @@ There are two ways to fetch questions:
 <br>
 
 
-## Table of Contents
+## Table of contents
 
 - [Get all questions of a container by ILIAS Object ID](#get-all-questions-of-a-container-by-ilias-object-id)
 - [Get a single question by UUID](#get-a-single-question-by-uuid)  
@@ -18,7 +18,7 @@ There are two ways to fetch questions:
 <br>
 
 
-## Get all questions of a container by ILIAS Object ID
+## Get all questions of a container by its ILIAS Object ID
 
 ### Note
 

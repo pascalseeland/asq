@@ -20,7 +20,7 @@ BETA
 
 # Features
 
-## Authoring of Question Types
+## Authoring of question types
 
 * Cloze
 * Error
@@ -34,7 +34,8 @@ BETA
 * Ordering
 * TextSubset
 
-## Scoring of Answers
+## Scoring of answers
+* Get Answer
 * Score User Answer
 * Get Max Score
 * Get Best Answer
@@ -87,7 +88,7 @@ This project is licensed under the GPL v3 License
 
 # Credits
 
-## Development and Software Architecture
+## Development and software architecture
 * al@studer-raimann.ch
 * bh@bjoernheyser.de
 * ms@studer-raimann.ch

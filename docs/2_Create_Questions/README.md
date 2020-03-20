@@ -1,4 +1,4 @@
-# Create Questions
+# Create questions
 
 There are two ways to create questions:
 1.  Recommended: Get the _Question Creation Link_ and delegate the creation to the authoring environment of ASQ.
@@ -8,7 +8,7 @@ There are two ways to create questions:
 <br>
 
 
-## Table of Contents
+## Table of contents
 - [Get the Question Creation Link](#get-the-quesetion-creation-link)
 - [Create the Question without using the authoring environment](#create-the-question-without-using-the-authoring-environment)  
     
@@ -16,7 +16,7 @@ There are two ways to create questions:
 <br>
 
 
-## Get the Question Creation Link
+## Get the question creation link
 
 ### Note
 
@@ -30,7 +30,7 @@ If you use this option for creating a question all requests to the authoring env
 ```php
 <?php
 
-use srag\asq\{YourPluginName}\AsqGateway;
+use srag\asq\AsqGateway;
 
 /**
  * Class AsqDemoGUI
@@ -134,7 +134,7 @@ private function forwardCommandToAuthoringGui()
 <br>
 
 
-## Create the Question without using the authoring environment
+## Create the question without using the authoring environment
 
 ### Note
 
