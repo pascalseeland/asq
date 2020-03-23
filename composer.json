@@ -1,52 +1,25 @@
-
-
 {
-
-  "name": "srag/asq",
-
-  "description": "Assessment Question",
-
-  "type": "library",
-
-  "keywords": [
-
-    "ILIAS",
-
-    "AssessmentQuestion"
-
-  ],
-
-  "homepage": "https://github.com/studer-raimann/srAssessmentQuestion",
-
-  "license": "GPL v3",
-
-  "authors": [],
-
-  "require": {
-
-    "php": ">=7.2"
-
-  },
-
-  "autoload": {
-
-    "psr-4": {
-
-      "srag\\asq\\": "src/"
-
-    }
-
-  },
-
-  "config": {
-
-    "classmap-authoritative": true,
-
-    "optimize-autoloader": true,
-
-    "sort-packages": true
-
-  }
-
+	"name" : "srag/asq",
+	"description" : "Assessment Question",
+	"type" : "library",
+	"keywords" : [
+		"ILIAS",
+		"AssessmentQuestion"
+	],
+	"homepage" : "https://github.com/studer-raimann/srAssessmentQuestion",
+	"license" : "GPL v3",
+	"require" : {
+		"php" : ">=7.2",
+		"ramsey/uuid" : "~4.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"srag\\asq\\" : "src/"
+		}
+	},
+	"config" : {
+		"classmap-authoritative" : true,
+		"optimize-autoloader" : true,
+		"sort-packages" : true
+	}
 }
-
