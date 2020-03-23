@@ -1,9 +1,7 @@
 (function($){
-    let has_tiny = false;
+    let has_tiny;
     
-    let add_row = function() {
-        has_tiny = tinymce.editors.length > 1;
-    
+    let add_row = function() {    
         let row = $(this).parents(".aot_row").eq(0);
         let table = $(this).parents(".aot_table").children("tbody");
         
@@ -35,9 +33,7 @@
             if(!editor) {
                 return;
             }
-            
-            has_tiny = true;
-            
+
             element.val(editor.getContent());
             element.show();
     
@@ -48,6 +44,10 @@
     };
     
     let save_tiny = function() {
+        if (!has_tiny) {
+            return;
+        }
+        
         let i;
         for (i = 0; i < tinymce.editors.length; i += 1) {
             let editor = tinymce.editors[i];
@@ -58,8 +58,6 @@
     };
     
     let remove_row = function() {
-        has_tiny = tinymce.editors.length > 1;
-    
         let row = $(this).parents(".aot_row");
         let table = $(this).parents(".aot_table").children("tbody");
         
@@ -165,6 +163,7 @@
     $(document).ready(function() {
         // hack to prevent image verification error
         $('[name=ilfilehash]').remove();
+        has_tiny = typeof(tinymce) !== "undefined";
     });
     
     $(document).on("click", ".js_add", add_row);

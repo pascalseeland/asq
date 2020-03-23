@@ -43,6 +43,10 @@
     }
     
     let update_editor = function() {
+        if (typeof(tinymce) === "undefined") {
+            return;
+        }
+        
         if ($('#singleline').val() == 'true') {
             hide_multiline_editor();
         }

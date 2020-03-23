@@ -3,7 +3,7 @@ let max_length;
 let has_max_length = false;
 
 let update_counts = function (e) {
-    if (!tinymce) {
+    if (typeof(tinymce) === "undefined") {
         return;
     }
 
@@ -28,6 +28,10 @@ $(document).on('keyup', '#ilAsqQuestionView', update_counts);
 $(document).on('submit', 'main form', check_values);
 
 $(document).ready(function () {
+    if (typeof(tinymce) === "undefined") {
+        return;
+    }
+    
     tinymce.init({
         selector : 'textarea',
         init_instance_callback : function (editor) {
