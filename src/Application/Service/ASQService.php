@@ -21,7 +21,7 @@ abstract class ASQService {
     protected function getActiveUser() : int{
         global $DIC;
         
-        return $this->user_id ?? $DIC->user()->getId();
+        return $this->user_id ?? intval($DIC->user()->getId());
     }
     
     public function setActiveUser(int $id) {
