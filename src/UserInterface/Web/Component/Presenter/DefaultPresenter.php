@@ -23,6 +23,8 @@ class DefaultPresenter extends AbstractPresenter {
      * @throws \ilTemplateException
      */
 	public function generateHtml(AbstractEditor $editor): string {
+	    global $DIC;
+	    
 	    $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
 
 		$tpl->setCurrentBlock('question');
@@ -30,6 +32,8 @@ class DefaultPresenter extends AbstractPresenter {
 		$tpl->setVariable('EDITOR', $editor->generateHtml());
 		$tpl->parseCurrentBlock();
 
+		$DIC->ui()->mainTemplate()->addCss(PathHelper::getBasePath(__DIR__) . 'css/asq.css');
+		
 		return $tpl->get();
 	}
 }

@@ -114,6 +114,18 @@ class KprimChoiceEditor extends AbstractEditor {
             /** @var ImageAndTextDisplayDefinition $display_definition */
             $display_definition = $answer_option->getDisplayDefinition();
             
+            if (!empty($display_definition->getImage())) {
+                $tpl->setCurrentBlock('answer_image');
+                $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
+                $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
+                $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
+                $tpl->setVariable('THUMB_SIZE',
+                    is_null($this->configuration->getThumbnailSize()) ?
+                    '' :
+                    sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize()));
+                $tpl->parseCurrentBlock();
+            }
+            
             $tpl->setCurrentBlock('answer_row');
             $tpl->setVariable('ANSWER_TEXT', $display_definition->getText());
             $tpl->setVariable('ANSWER_ID', $this->getPostName($answer_option->getOptionId()));

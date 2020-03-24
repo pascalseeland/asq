@@ -1,34 +1,19 @@
-<style>
-	.answertext {
-		margin-left: 8px;
-	}
-</style>
-<div class="ilc_answers answers answer-table ilClearFloat js_multiple_choice">
+<div class="js_multiple_choice">
 	<!-- BEGIN selection_limit_hint -->
-	<p class="ilAdditionalAssQuestionInstruction js_limit">{SELECTION_LIMIT_HINT}</p>
+	<p class="js_limit">{SELECTION_LIMIT_HINT}</p>
 	<!-- END selection_limit_hint -->
 	<input type="hidden" class="js_max_answers" value="{MAX_ANSWERS}" />
 	<!-- BEGIN answer_row -->
-	<div class="ilc_qanswer_Answer">
+	<div class="answer_option">
 		<div>
-			<input type="{TYPE}" name="{POST_NAME}" value="{ANSWER_ID}" id="answer_{ANSWER_ID}" class="ilAssMultipleChoiceOption ilAssMultipleChoiceResult js_multiple_choice_answer" {CHECKED} />
+			<input type="{TYPE}" name="{POST_NAME}" value="{ANSWER_ID}" id="answer_{ANSWER_ID}" class="js_multiple_choice_answer" {CHECKED} />
 		</div>
 		<div>
-			<label for="answer_{ANSWER_ID}" class="answertext">
-				<!-- BEGIN preview -->
-				<div class="ilc_media_cont_MediaContainer">
-					<div class="ilc_qimg_QuestionImage ilc_Mob"><img border="0" src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" /></div>
-					<div class="ilc_qimgd_ImageDetailsLink ilc_media_caption_MediaCaption"><a target="_blank" href="{URL_PREVIEW}" title="{TEXT_PREVIEW}"><img border="0" align="right" src="{IMG_PREVIEW}"/></a></div>
-				</div>
-				<!-- END preview -->
+			<label for="answer_{ANSWER_ID}" class="answer_text">
 				<!-- BEGIN answer_image -->
-				<div class="ilc_media_cont_MediaContainer">
-					<div class="ilc_qimg_QuestionImage ilc_Mob">
-						<img src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" {THUMB_SIZE} />
-					</div>
-				</div>
+			    <img src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" {THUMB_SIZE} />
 				<!-- END answer_image -->
-				{ANSWER_TEXT}
+				<div>{ANSWER_TEXT}</div>
 			</label>
 		</div>
 	</div>

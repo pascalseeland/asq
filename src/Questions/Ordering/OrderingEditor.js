@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.js_list').sortable({
+    $('.order_list').sortable({
         placeholder: "placeholder",
         tolerance: "pointer",
         start: function (e, ui) {
