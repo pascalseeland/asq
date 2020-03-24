@@ -115,18 +115,17 @@
 }
 
 .list_item {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-left: 0px;
 	background-color: #f5f7fa;
 	cursor: move;
-	padding: 10px;
+}
+
+.list_item div {
+	margin: 10px;
 }
 
 .placeholder {
 	background-color: #E8F8F5;
 	border: 1px #A3E4D7 dashed;
-	padding: 10px;
 }
 
 .horizontal {
@@ -136,5 +135,5 @@
 
 .horizontal li {
 	min-width: 100px;
-	margin-right: 4px;
+	margin-right: 16px;
 }

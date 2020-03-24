@@ -16,5 +16,5 @@ $(document).ready(function () {
 
             $(this).siblings('input').val(ids.join(','));
         }
-    });
+    }).disableSelection();
 });
