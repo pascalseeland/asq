@@ -56,7 +56,7 @@ class AsqGUIElementFactory {
      * @throws Exception
      */
 	public static function CreateQuestionForm(QuestionDto $question):ilPropertyFormGUI {
-	    switch($question->getLegacyData()->getAnswerTypeId()) {
+	    switch($question->getType()) {
 	        case self::TYPE_SINGLE_CHOICE:
 	            return new SingleChoiceQuestionGUI($question);
 	        case self::TYPE_MULTIPLE_CHOICE:

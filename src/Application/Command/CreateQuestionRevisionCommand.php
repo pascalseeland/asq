@@ -15,7 +15,7 @@ use srag\CQRS\Command\CommandContract;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class CreateQuestionRevisionCommand extends AbstractCommand implements CommandContract {
+class CreateQuestionRevisionCommand extends AbstractCommand {
 
 	/**
 	 * @var string

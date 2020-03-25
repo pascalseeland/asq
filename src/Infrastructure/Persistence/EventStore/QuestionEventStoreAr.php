@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\EventStore;
 
-use srag\CQRS\Event\AbstractIlContainerItemStoredEvent;
+use srag\CQRS\Event\AbstractStoredEvent;
 
 /**
  * Class questionEventStore
@@ -14,7 +14,7 @@ use srag\CQRS\Event\AbstractIlContainerItemStoredEvent;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionEventStoreAr extends AbstractIlContainerItemStoredEvent {
+class QuestionEventStoreAr extends AbstractStoredEvent {
 
 	const STORAGE_NAME = "asq_qst_event_store";
 

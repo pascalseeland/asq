@@ -79,7 +79,7 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
         
         $this->initForm($question);
         $this->setMultipart(true);
-        $this->setTitle(AsqGUIElementFactory::getQuestionTypes()[$question->getLegacyData()->getAnswerTypeId()]);
+        $this->setTitle(AsqGUIElementFactory::getQuestionTypes()[$question->getType()]);
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->setValuesByPost();
@@ -98,10 +98,6 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
         $id = new ilHiddenInputGUI(self::VAR_AGGREGATE_ID);
         $id->setValue($question->getId());
         $this->addItem($id);
-
-        $legacy = new ilHiddenInputGUI(self::VAR_LEGACY);
-        $legacy->setValue(json_encode($question->getLegacyData()));
-        $this->addItem($legacy);
         
         $this->initQuestionDataConfiguration($question);
         
@@ -164,8 +160,6 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
     {
         $question = new QuestionDto();
         $question->setId($_POST[self::VAR_AGGREGATE_ID]);
-        
-        $question->setLegacyData(AbstractValueObject::deserialize($_POST[self::VAR_LEGACY]));
         
         $question->setData($this->readQuestionData());
         
@@ -234,7 +228,6 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
         $question_text->addPlugin("latex");
         $question_text->addButton("latex");
         $question_text->addButton("pastelatex");
-        $question_text->setRTESupport($question->getQuestionIntId(), $question->getIlComponentid(), "assessment");
         $this->addItem($question_text);
         
         $working_time = new ilDurationInputGUI($this->lang->txt('asq_label_working_time'), self::VAR_WORKING_TIME);

@@ -8,7 +8,7 @@ use srag\CQRS\Aggregate\AggregateRoot;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventStore;
 use srag\asq\Domain\Model\Question;
-use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreRepository;
+use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
 
 /**
  * Class QuestionRepository
@@ -22,7 +22,7 @@ use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreRepository;
 class QuestionRepository extends AbstractEventSourcedAggregateRepository {
 
 	/**
-	 * @var QuestionEventStoreRepository
+	 * @var QuestionEventStore
 	 */
 	private $event_store;
 
@@ -31,7 +31,7 @@ class QuestionRepository extends AbstractEventSourcedAggregateRepository {
      */
 	protected function __construct() {
 		parent::__construct();
-		$this->event_store = new QuestionEventStoreRepository();
+		$this->event_store = new QuestionEventStore();
 	}
 
 	/**

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
-use ILIAS\AssessmentQuestion\Infrastructure\Persistence\Projection\QuestionAr;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Feedback;
@@ -27,16 +26,6 @@ class PublishedQuestionRepository
                 return;
             }
         }
-
-        //TODO we should compare the content with creating revision ids and not at this place here!
-            /*
-            if ($old_question->getRevisionId() === $question->getRevisionId() ||
-                $this->contentEquals($question, $this->GenerateDtoFromAr($old_question))) {
-                //same question already published
-                return;
-            }
-
-        }*/
         
         $question_ar = QuestionAr::createNew($question);
         $question_ar->create();

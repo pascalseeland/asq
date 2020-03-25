@@ -17,7 +17,7 @@ use srag\CQRS\Command\CommandContract;
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  * 
  */
-class CreateQuestionCommand extends AbstractCommand implements CommandContract {
+class CreateQuestionCommand extends AbstractCommand {
 
 	/**
 	 * @var  DomainObjectId
@@ -31,10 +31,6 @@ class CreateQuestionCommand extends AbstractCommand implements CommandContract {
 	 * @var int
 	 */
     protected $question_type_id;
-	/**
-	 * @var ?string
-	 */
-	protected $content_editing_mode;
 	
     /**
      * @param DomainObjectId $question_uuid
@@ -46,14 +42,11 @@ class CreateQuestionCommand extends AbstractCommand implements CommandContract {
 		DomainObjectId $question_uuid,
 	    int $question_type_id,
 		int $initiating_user_id,
-		?int $container_id = null,
-	    ?string $content_editing_mode = null
-	) {
+		?int $container_id = null) {
 		parent::__construct($initiating_user_id);
 		$this->question_uuid = $question_uuid;
 		$this->container_id = $container_id;
 		$this->question_type_id = $question_type_id;
-		$this->content_editing_mode = $content_editing_mode;
 	}
 
 	/**
@@ -75,12 +68,5 @@ class CreateQuestionCommand extends AbstractCommand implements CommandContract {
 	 */
 	public function getQuestionType(): int {
 	    return $this->question_type_id;
-	}
-	
-	/**
-     * @return string|null
-	 */
-	public function getContentEditingMode(): ?string {
-	    return $this->content_editing_mode;
 	}
 }

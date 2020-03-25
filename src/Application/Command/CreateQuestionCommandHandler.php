@@ -7,7 +7,6 @@ use srag\CQRS\Command\CommandContract;
 use srag\CQRS\Command\CommandHandlerContract;
 use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\Question;
-use srag\asq\Domain\Model\QuestionLegacyData;
 
 /**
  * Class CreateQuestionCommandHandler
@@ -29,17 +28,8 @@ class CreateQuestionCommandHandler implements CommandHandlerContract {
         /** @var Question $question */
 		$question = Question::createNewQuestion(
 			$command->getQuestionUuid(),
-            $command->getQuestionContainerId(),
 			$command->getIssuingUserId(),
-		    QuestionRepository::getInstance()->getNextId()
-		);
-
-		$question->setLegacyData(
-			QuestionLegacyData::create(
-				$command->getQuestionType(),
-			    $command->getContentEditingMode()
-			),
-		    $command->getIssuingUserId()
+		    $command->getQuestionType()
 		);
 
 		QuestionRepository::getInstance()->save($question);

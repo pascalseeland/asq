@@ -5,8 +5,9 @@ namespace srag\asq\Domain\Event;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Aggregate\DomainObjectId;
-use srag\CQRS\Event\AbstractIlContainerItemDomainEvent;
+use srag\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use ilDateTime;
 
 /**
  * Class QuestionPlayConfigurationSetEvent
@@ -17,9 +18,7 @@ use srag\asq\Domain\Model\QuestionPlayConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionPlayConfigurationSetEvent extends AbstractIlContainerItemDomainEvent {
-
-	public const NAME = 'QuestionPlayConfigurationSetEvent';
+class QuestionPlayConfigurationSetEvent extends AbstractDomainEvent {
 	/**
 	 * @var QuestionPlayConfiguration
 	 */
@@ -27,34 +26,20 @@ class QuestionPlayConfigurationSetEvent extends AbstractIlContainerItemDomainEve
 
 
     /**
-     * QuestionPlayConfigurationSetEvent constructor.
-     *
-     * @param DomainObjectId                 $id
-     * @param int                            $container_obj_id
-     * @param int                            $initiating_user_id
-     * @param QuestionPlayConfiguration|null $play_configuration
-     *
-     * @throws \ilDateTimeException
+     * 
+     * @param DomainObjectId $aggregate_id
+     * @param ilDateTime $occured_on
+     * @param int $initiating_user_id
+     * @param QuestionPlayConfiguration $play_configuration
      */
-	public function __construct(DomainObjectId $aggregate_id, 
-	                            int $container_obj_id, 
-	                            int $initiating_user_id, 
-	                            int $question_int_id, 
-	                            QuestionPlayConfiguration $play_configuration = null)
+	public function __construct(DomainObjectId $aggregate_id,
+	    ilDateTime $occured_on,
+	    int $initiating_user_id, 
+	    QuestionPlayConfiguration $play_configuration = null)
 	{
-	    parent::__construct($aggregate_id, $question_int_id, $container_obj_id, $initiating_user_id);
+	    parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
 	    
 		$this->play_configuration = $play_configuration;
-	}
-
-	/**
-	 * @return string
-	 *
-	 * Add a Constant EVENT_NAME to your class: Name it: Classname
-	 * e.g. 'QuestionCreatedEvent'
-	 */
-	public function getEventName(): string {
-		return self::NAME;
 	}
 
 	/**

@@ -13,7 +13,7 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\ContentEditingMode;
 use srag\asq\Domain\Model\Question;
-use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreRepository;
+use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
 
 /**
  * Class QuestionService
@@ -42,22 +42,14 @@ class QuestionService extends ASQService
             throw new AsqException(sprintf("Question with id %s does not exist", $id));
         }
     }
-    
-    /**
-     * @param int $id
-     * @return QuestionDto
-     */
-    public function getQuestionByIliasObjectId(int $id) : QuestionDto {
-        return QuestionDto::CreateFromQuestion(QuestionRepository::getInstance()->getAggregateByIliasId($id));
-    }
-    
+
     /**
      * @param int $container_id
      * @return QuestionDto[]
      */
     public function getQuestionsOfContainer(int $container_id) : array {
         $questions = [];
-        $event_store = new QuestionEventStoreRepository();
+        $event_store = new QuestionEventStore();
         foreach ($event_store->allStoredQuestionIdsForContainerObjId($container_id) as $aggregate_id) {        
             $questions[] = $this->getQuestionByQuestionId($aggregate_id);;
         }

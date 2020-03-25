@@ -16,7 +16,7 @@ use srag\asq\Domain\Model\Question;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class SaveQuestionCommand extends AbstractCommand implements CommandContract {
+class SaveQuestionCommand extends AbstractCommand {
 
 	/**
 	 * @var Question
