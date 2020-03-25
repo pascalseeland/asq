@@ -22,10 +22,15 @@ class CreateQuestionRevisionCommand extends AbstractCommand {
 	 */
 	private $question_id;
 
+	/**
+	 * @var string
+	 */
+	private $revision_name;
 
-	public function __construct(string $question_id, int $issuer_id) {
+	public function __construct(string $question_id, string $revision_name, int $issuer_id) {
 		parent::__construct($issuer_id);
 		$this->question_id = $question_id;
+		$this->revision_name = $revision_name;
 	}
 
 
@@ -34,5 +39,12 @@ class CreateQuestionRevisionCommand extends AbstractCommand {
 	 */
 	public function getQuestionId(): string {
 		return $this->question_id;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getRevisionName(): string {
+	    return $this->revision_name;
 	}
 }

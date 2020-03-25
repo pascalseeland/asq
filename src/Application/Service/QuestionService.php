@@ -14,6 +14,7 @@ use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\ContentEditingMode;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
+use srag\asq\Application\Command\CreateQuestionRevisionCommand;
 
 /**
  * Class QuestionService
@@ -43,6 +44,14 @@ class QuestionService extends ASQService
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $question_id
+     */
+    public function createQuestionRevision(string $name, string $question_id) {
+        CommandBusBuilder::getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+    }
+    
     /**
      * @param int $container_id
      * @return QuestionDto[]
