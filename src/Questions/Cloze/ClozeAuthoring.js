@@ -1,101 +1,101 @@
-(function($){
-    let cloze_regex = /{[^}]*}/g;
+(function ($) {
+    const clozeRegex = /{[^}]*}/g;
 
-    let add_gap_items = function() {
-        let cloze_text = $('#cze_text');
-        let matches = $('#cze_text').val().match(cloze_regex);
-        let gap_count = matches ? matches.length : 0;
+    function createNewTextGap(i) {
+        const template = $('.cloze_template .text').clone();
 
-        let cursor = cloze_text[0].selectionStart;
-        let text = cloze_text.val();
-        cloze_text.val(text.substring(0, cursor) + "{" + (gap_count + 1) + "}" + text.substring(cursor));
-        
-        let last_non_gap = $('#il_prop_cont_cze_text');
-        
-        last_non_gap.nextUntil('.ilFormFooter').remove();
-        
-        for (let i = 0; i <= gap_count; i += 1) {
-            last_non_gap.siblings('.ilFormFooter').before(create_new_text_gap(i + 1));
+        template.find('select, input[type=hidden]').each((index, item) => {
+            asqAuthoring.processItem($(item), i);
+        });
+
+        $(template.find('.aot_table input')).each((index, item) => {
+            const input = $(item);
+            input.prop('id', input.prop('id').replace('0', i));
+            input.prop('name', input.prop('name').replace('0', i));
+        });
+
+        return template.children();
+    }
+
+    function createNewSelectGap(i) {
+        const template = $('.cloze_template .select').clone();
+
+        template.find('select, input[type=hidden]').each((index, item) => {
+            asqAuthoring.processItem($(item), i);
+        });
+
+        $(template.find('.aot_table input')).each((index, item) => {
+            const input = $(item);
+            input.prop('id', input.prop('id').replace('0', i));
+            input.prop('name', input.prop('name').replace('0', i));
+        });
+
+        return template.children();
+    }
+
+    function createNewNumberGap(i) {
+        const template = $('.cloze_template .number').clone();
+
+        asqAuthoring.processRow(template, i);
+
+        return template.children();
+    }
+
+    function addGapItems() {
+        const clozeText = $('#cze_text');
+        const matches = $('#cze_text').val().match(clozeRegex);
+        const gapIndex = matches ? matches.length + 1 : 1;
+
+        const cursor = clozeText[0].selectionStart;
+        const text = clozeText.val();
+        const beforeCursor = text.substring(0, cursor);
+        const afterCursor = text.substring(cursor);
+        clozeText.val(`${beforeCursor}{${gapIndex}}${afterCursor}`);
+
+        const lastNonGap = $('#il_prop_cont_cze_text');
+
+        lastNonGap.nextUntil('.ilFormFooter').remove();
+
+        for (let i = 0; i < gapIndex; i += 1) {
+            lastNonGap.siblings('.ilFormFooter').before(createNewTextGap(i + 1));
         }
     }
 
-    let create_new_text_gap = function(i) {
-        let template = $('.cloze_template .text').clone();
-        
-        template.find('select, input[type=hidden]').each(function(index, item) {
-            process_item($(item), i);
-        });
-        
-        $(template.find('.aot_table input')).each(function(index, item) {
-            let input = $(item);
-            input.prop("id", input.prop("id").replace('0', i));
-            input.prop("name", input.prop("name").replace('0', i));
-        });
-        
-        return template.children();
-    }
+    const nrRegex = /\d*/;
 
-    let create_new_select_gap = function(i) {
-        let template = $('.cloze_template .select').clone();
-        
-        template.find('select, input[type=hidden]').each(function(index, item) {
-            process_item($(item), i);
-        });
-        
-        $(template.find('.aot_table input')).each(function(index, item) {
-            let input = $(item);
-            input.prop("id", input.prop("id").replace('0', i));
-            input.prop("name", input.prop("name").replace('0', i));
-        });
-        
-        return template.children();
-    }
-    
-    let create_new_number_gap = function(i) {
-        let template = $('.cloze_template .number').clone();
-        
-        process_row(template, i);
-        
-        return template.children();
-    }
+    function changeGapForm() {
+        const selected = $(this);
+        const id = selected.prop('id').match(nrRegex);
+        let template = null;
 
-    let change_gap_form = function(e) {
-        selected = $(this);
-        id = selected.prop('id').match(nr_regex);
-        template = null;
-        
         if (selected.val() === 'clz_number') {
-            template = create_new_number_gap(id);
+            template = createNewNumberGap(id);
+        } else if (selected.val() === 'clz_text') {
+            template = createNewTextGap(id);
+        } else if (selected.val() === 'clz_dropdown') {
+            template = createNewSelectGap(id);
         }
-        else if (selected.val() === 'clz_text'){
-            template = create_new_text_gap(id);
-        }
-        else if (selected.val() === 'clz_dropdown'){
-            template = create_new_select_gap(id);
-        }
-        
-        parent = selected.parents('.form-group');
-        parent.nextUntil('.ilFormFooter, .ilFormHeader').remove();
-        parent.after(template);
-        parent.next().remove();
-        parent.next().remove();
+
+        const parentItem = selected.parents('.form-group');
+        parentItem.nextUntil('.ilFormFooter, .ilFormHeader').remove();
+        parentItem.after(template);
+        parentItem.next().remove();
+        parentItem.next().remove();
     }
 
-    let nr_regex = /\d*/;
-
-    let prepare_form = function() {
+    function prepareForm() {
         $('.cloze_template .ilFormFooter').remove();
-        let template_forms = $('.cloze_template .form-horizontal');
-        
-        template_forms.each(function(index, item) {
-            let form = $(item);
+        const templateForms = $('.cloze_template .form-horizontal');
+
+        templateForms.each((index, item) => {
+            const form = $(item);
             form.parent().append(form.children());
-            form.remove();        
+            form.remove();
         });
     }
 
-    $(document).ready(prepare_form);
+    $(document).ready(prepareForm);
 
-    $(document).on("change", "select[id$=cze_gap_type]", change_gap_form);
-    $(document).on("click", ".js_parse_cloze_question", add_gap_items);    
+    $(document).on('change', 'select[id$=cze_gap_type]', changeGapForm);
+    $(document).on('click', '.js_parse_cloze_question', addGapItems);
 }(jQuery));

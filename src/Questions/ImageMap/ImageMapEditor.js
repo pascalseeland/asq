@@ -1,35 +1,37 @@
-(function($){
-    let shape_click = function (e) {
-    
-        let shape = $(this);
-    
+(function ($) {
+    function shapeClick() {
+        const shape = $(this);
+
         if (shape.hasClass('multiple_choice')) {
             shape.toggleClass('selected');
-            
-            let max = $("#max_answers").val();
-            let current = shape.parent().find(".selected").length;
-            
+
+            const max = $('#max_answers').val();
+            const current = shape.parent().find('.selected').length;
+
             if (max > 0 && current > max) {
                 shape.removeClass('selected');
             }
-            
         } else {
-            shape.parents('.imagemap_editor').find('svg .selected').removeClass(
-                    'selected');
+            shape.parents('.imagemap_editor').find('svg .selected')
+                .removeClass('selected');
             shape.addClass('selected');
         }
-    
-        let selected = [];
-    
+
+        const selected = [];
+
         shape.parents('.imagemap_editor').find('svg .selected').each(
-                function (index, item) {
-                    selected.push($(item).attr('data-value'));
-                });
-    
+            (index, item) => {
+                selected.push($(item).attr('data-value'));
+            },
+        );
+
         $('#answer').val(selected.join(','));
-    };
-    
-    $(document).on('click',
-                   '.imagemap_editor rect, .imagemap_editor ellipse, .imagemap_editor polygon',
-                   shape_click);
+    }
+
+    $(document)
+        .on(
+            'click',
+            '.imagemap_editor rect, .imagemap_editor ellipse, .imagemap_editor polygon',
+            shapeClick,
+        );
 }(jQuery));

@@ -1,47 +1,51 @@
-let text_length;
-let max_length;
-let has_max_length = false;
+(function ($) {
+    let textLength;
+    let maxLength;
+    let hasMaxLength = false;
 
-let update_counts = function (e) {
-    if (typeof(tinymce) === "undefined") {
-        return;
-    }
-
-    let body = tinymce.editors[0].getBody();
-    let text = tinymce.trim(body.innerText || body.textContent);
-    text_length = text.length;
-
-    $('.js_letter_count').html(text_length);
-};
-
-let check_values = function () {
-    if (has_max_length) {
-        if (text_length > max_length) {
-            // TODO use ilias modalpopup
-            alert($('.js_error').val());
-            return false;
+    function updateCounts() {
+        if (typeof (tinymce) === 'undefined') {
+            return;
         }
-    }
-};
 
-$(document).on('keyup', '#ilAsqQuestionView', update_counts);
-$(document).on('submit', 'main form', check_values);
+        const body = tinymce.editors[0].getBody();
+        const text = tinymce.trim(body.innerText || body.textContent);
+        textLength = text.length;
 
-$(document).ready(function () {
-    if (typeof(tinymce) === "undefined") {
-        return;
+        $('.js_letter_count').html(textLength);
     }
-    
-    tinymce.init({
-        selector : 'textarea',
-        init_instance_callback : function (editor) {
-            editor.onKeyUp.add(update_counts);
-            update_counts();
+
+    function checkValues() {
+        if (hasMaxLength) {
+            if (textLength > maxLength) {
+                // TODO use ilias modalpopup
+                alert($('.js_error').val());
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    $(document).on('keyup', '#ilAsqQuestionView', updateCounts);
+    $(document).on('submit', 'main form', checkValues);
+
+    $(document).ready(() => {
+        if (typeof (tinymce) === 'undefined') {
+            return;
+        }
+
+        tinymce.init({
+            selector: 'textarea',
+            init_instance_callback(editor) {
+                editor.onKeyUp.add(updateCounts);
+                updateCounts();
+            },
+        });
+
+        if ($('.js_maxlength').length > 0) {
+            maxLength = parseInt($('.js_maxlength').val(), 10);
+            hasMaxLength = true;
         }
     });
-
-    if ($('.js_maxlength').length > 0) {
-        max_length = parseInt($('.js_maxlength').val());
-        has_max_length = true;
-    }
-});
+}(jQuery));

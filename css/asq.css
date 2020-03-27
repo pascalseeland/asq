@@ -111,29 +111,28 @@
 /* Ordering Editor */
 .order_list {
 	margin: 5px;
-	list-style: none;
+	display: flex;
+	flex-direction: column;
 }
 
 .list_item {
 	background-color: #f5f7fa;
 	cursor: move;
-}
-
-.list_item div {
-	margin: 10px;
+	padding: 10px;
+	margin: 5px;
 }
 
 .placeholder {
 	background-color: #E8F8F5;
 	border: 1px #A3E4D7 dashed;
+	margin: 4px;
 }
 
-.horizontal {
-	display: flex;
-	flex-direction: columnn;
+.order_list.horizontal {
+	flex-direction: row;
 }
 
-.horizontal li {
+.horizontal .list_item {
 	min-width: 100px;
 	margin-right: 16px;
 }

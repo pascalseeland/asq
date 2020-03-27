@@ -1,20 +1,20 @@
-$(document).ready(function () {
+$(document).ready(() => {
     $('.order_list').sortable({
-        placeholder: "placeholder",
-        tolerance: "pointer",
-        start: function (e, ui) {
-            ui.placeholder.height(ui.item.height());
-            ui.placeholder.width(ui.item.width());
+        placeholder: 'placeholder',
+        tolerance: 'pointer',
+        start(e, ui) {
+            ui.placeholder.height(ui.item.outerHeight());
+            ui.placeholder.width(ui.item.outerWidth());
         },
-        stop: function () {
-            let items = $(this).find('[data-id]');
+        stop() {
+            const items = $(this).find('[data-id]');
 
-            let ids = [];
+            const ids = [];
             items.each(function () {
                 ids.push($(this).attr('data-id'));
             });
 
             $(this).siblings('input').val(ids.join(','));
-        }
+        },
     }).disableSelection();
 });

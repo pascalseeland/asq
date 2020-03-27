@@ -1,174 +1,174 @@
-(function($){
-    let has_tiny;
-    
-    let add_row = function() {    
-        let row = $(this).parents(".aot_row").eq(0);
-        let table = $(this).parents(".aot_table").children("tbody");
-        
-        if (has_tiny) {
-            clear_tiny(table);
-        }
-    
-        let new_row = row.clone();
-    
-        new_row = clear_row(new_row);
-        row.after(new_row);
-        set_input_ids(table);
-    
-        if (has_tiny) {
-            tinymce.init(tinyMCE.EditorManager.editors[0].settings);
-        }
-    
-        return false;
-    };
-    
-    clear_tiny = function(table) {
-        table.find('textarea, input[type=text]').each(function(index, item) {
-            let element = $(item);
-            if (!element.attr('id')) {
-                return;
-            }
-            
-            let editor = tinymce.get(element.attr('id'));
-            if(!editor) {
-                return;
-            }
+const asqAuthoring = (function () {
+    let hasTiny;
 
-            element.val(editor.getContent());
-            element.show();
-    
-            tinymce.EditorManager.remove(editor);
-    
-            element.siblings('.mceEditor').remove();
-        });
-    };
-    
-    let save_tiny = function() {
-        if (!has_tiny) {
+    function removeTinyFromRow(index, item) {
+        const element = $(item);
+        if (!element.attr('id')) {
             return;
         }
-        
-        let i;
-        for (i = 0; i < tinymce.editors.length; i += 1) {
-            let editor = tinymce.editors[i];
-            let element = $(editor.getElement());
-    
-            element.val(editor.getContent());
+
+        const editor = tinymce.get(element.attr('id'));
+        if (!editor) {
+            return;
         }
-    };
-    
-    let remove_row = function() {
-        let row = $(this).parents(".aot_row");
-        let table = $(this).parents(".aot_table").children("tbody");
-        
-        if (has_tiny) {
-            clear_tiny(table);
-        }
-    
-        if (table.children().length > 1) {
-            row.remove();
-            set_input_ids(table);
-        } else {
-            clear_row(row);
-        }
-    
-        if (has_tiny) {
-            tinymce.init(tinyMCE.EditorManager.editors[0].settings);
-        }
-    };
-    
-    clear_row = function(row) {
-        row.find('input[type!="Button"], textarea').each(function() {
-            let input = $(this);
-    
-            if (input.attr('type') === 'radio' ||
-                    input.attr('type') === 'checkbox') {
+
+        element.val(editor.getContent());
+        element.show();
+
+        tinymce.EditorManager.remove(editor);
+
+        element.siblings('.mceEditor').remove();
+    }
+
+    function clearTiny(table) {
+        table.find('textarea, input[type=text]').each(removeTinyFromRow);
+    }
+
+    function clearRow(row) {
+        row.find('input[type!="Button"], textarea').each((index, item) => {
+            const input = $(item);
+
+            if (input.attr('type') === 'radio'
+                    || input.attr('type') === 'checkbox') {
                 input.attr('checked', false);
-            }
-            else {
+            } else {
                 input.val('');
             }
         });
-    
-        row.find('span').each(function() {
-            let span = $(this);
+
+        row.find('span').each((index, item) => {
+            const span = $(item);
             if (span.children().length === 0) {
                 span.html('');
             }
         });
-    
+
         return row;
-    };
-    
-    let up_row = function() {
-        let row = $(this).parents(".aot_row");
-        row.prev('.aot_row').before(row);
-        set_input_ids(row.parents(".aot_table").children("tbody"));
-    };
-    
-    let down_row = function() {
-        let row = $(this).parents(".aot_row");
-        row.next('.aot_row').after(row);
-        set_input_ids(row.parents(".aot_table").children("tbody"));
-    };
-    
-    set_input_ids = function(table) {
-        table.parent().siblings(".js_count").val(table.children().length);
-    
-        let current_row = 1;
-    
-        table.children().each(function() {
-            process_row($(this), current_row);
-            current_row += 1;
-        });
-    };
-    
-    process_row = function(row, current_row) {
-        row.find("input[name],textarea[name],select").each(function() {
-            process_item($(this), current_row);
-    
-        });
-    };
-    
-    process_item = function(input, current_row) {
-        let new_name = update_input_name(input.attr("name"), current_row);
-    
+    }
+
+    function updateInputName(oldName, currentRow) {
+        return currentRow + oldName.match(/\D.*/);
+    }
+
+    function processItem(input, currentRow) {
+        const newName = updateInputName(input.attr('name'), currentRow);
+
         // if already an item with the new name exists
         // (when swapping) set the other element name
         // to current oldname to prevent name collision
         // and losing of radio values
         if (input.attr('type') === 'radio') {
-            let existing_group = $('[name="' + new_name + '"]');
-    
-            if (existing_group.length > 0) {
-                let my_name = input.attr("name");
-                let my_group = $('[name="' + my_name + '"]');
-                my_group.attr("name", "totally_random");
-                existing_group.attr("name", my_name);
-                my_group.attr("name", new_name);
+            const existingGroup = $(`[name="${newName}"]`);
+
+            if (existingGroup.length > 0) {
+                const myName = input.attr('name');
+                const myGroup = $(`name="${myName}"]`);
+                myGroup.attr('name', 'totally_random');
+                existingGroup.attr('name', myName);
+                myGroup.attr('name', newName);
             }
+        } else {
+            input.attr('name', newName);
         }
-        else {
-            input.attr("name", new_name);
-        }
-    
-        input.prop("id", update_input_name(input.prop("id"), current_row));    
+
+        input.prop('id', updateInputName(input.prop('id'), currentRow));
     }
-    
-    let update_input_name = function(old_name, current_row) {
-        return current_row + old_name.match(/\D.*/);
-    };
-    
-    
-    $(document).ready(function() {
+
+    function processRow(row, currentRow) {
+        row.find('input[name],textarea[name],select').each((index, item) => {
+            processItem($(item), currentRow);
+        });
+    }
+
+    function setInputIds(table) {
+        table.parent().siblings('.js_count').val(table.children().length);
+
+        let currentRow = 1;
+
+        table.children().each((index, item) => {
+            processRow($(item), currentRow);
+            currentRow += 1;
+        });
+    }
+
+    function addRow() {
+        const row = $(this).parents('.aot_row').eq(0);
+        const table = $(this).parents('.aot_table').children('tbody');
+
+        if (hasTiny) {
+            clearTiny(table);
+        }
+
+        let newRow = row.clone();
+
+        newRow = clearRow(newRow);
+        row.after(newRow);
+        setInputIds(table);
+
+        if (hasTiny) {
+            tinymce.init(tinymce.EditorManager.editors[0].settings);
+        }
+
+        return false;
+    }
+
+    function saveTiny() {
+        if (!hasTiny) {
+            return;
+        }
+
+        let i;
+        for (i = 0; i < tinymce.editors.length; i += 1) {
+            const editor = tinymce.editors[i];
+            const element = $(editor.getElement());
+
+            element.val(editor.getContent());
+        }
+    }
+
+    function removeRow() {
+        const row = $(this).parents('.aot_row');
+        const table = $(this).parents('.aot_table').children('tbody');
+
+        if (hasTiny) {
+            clearTiny(table);
+        }
+
+        if (table.children().length > 1) {
+            row.remove();
+            setInputIds(table);
+        } else {
+            clearRow(row);
+        }
+
+        if (hasTiny) {
+            tinymce.init(tinymce.EditorManager.editors[0].settings);
+        }
+    }
+
+    function upRow() {
+        const row = $(this).parents('.aot_row');
+        row.prev('.aot_row').before(row);
+        setInputIds(row.parents('.aot_table').children('tbody'));
+    }
+
+    function downRow() {
+        const row = $(this).parents('.aot_row');
+        row.next('.aot_row').after(row);
+        setInputIds(row.parents('.aot_table').children('tbody'));
+    }
+
+    $(document).ready(() => {
         // hack to prevent image verification error
         $('[name=ilfilehash]').remove();
-        has_tiny = typeof(tinymce) !== "undefined";
+        hasTiny = typeof (tinymce) !== 'undefined';
     });
-    
-    $(document).on("click", ".js_add", add_row);
-    $(document).on("click", ".js_remove", remove_row);
-    $(document).on("click", ".js_up", up_row);
-    $(document).on("click", ".js_down", down_row);
-    $(document).on("submit", "form", save_tiny);
-}(jQuery));
+
+    $(document).on('click', '.js_add', addRow);
+    $(document).on('click', '.js_remove', removeRow);
+    $(document).on('click', '.js_up', upRow);
+    $(document).on('click', '.js_down', downRow);
+    $(document).on('submit', 'form', saveTiny);
+
+    return { clearTiny, clearRow, setInputIds, processItem, processRow };
+}());

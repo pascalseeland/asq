@@ -31,7 +31,7 @@ abstract class ChoiceQuestionGUI extends QuestionFormGUI {
     protected function postInit() {
         global $DIC;
         
-        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultiplechoiceAuthoring.js');
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceAuthoring.js');
     }
     
     /**
