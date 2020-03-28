@@ -1,47 +1,31 @@
 (function ($) {
     const clozeRegex = /{[^}]*}/g;
 
-    function createNewTextGap(i) {
-        const template = $('.cloze_template .text').clone();
-
-        template.find('select, input[type=hidden]').each((index, item) => {
-            asqAuthoring.processItem($(item), i);
+    function updateGapNames($gap_item, index, oldIndex = 0) {
+        $gap_item.find('select, input').each((ix, item) => {
+            const $item = $(item);
+            if ($item.parents('.aot_table').length > 0) {
+                return;
+            }
+            asqAuthoring.processItem($(item), index);
         });
 
-        $(template.find('.aot_table input')).each((index, item) => {
+        $($gap_item.find('.aot_table input')).each((ix, item) => {
             const input = $(item);
-            input.prop('id', input.prop('id').replace('0', i));
-            input.prop('name', input.prop('name').replace('0', i));
-        });
+            input.prop('id', input.prop('id').replace(oldIndex.toString(), index.toString()));
+            input.prop('name', input.prop('name').replace(oldIndex.toString(), index.toString()));
+        });        
+    }
+    
+    function createNewGap(i, type = 'text') {
+        const template = $(`.cloze_template .${type}`).clone();
+
+        updateGapNames(template, i);
 
         return template.children();
     }
 
-    function createNewSelectGap(i) {
-        const template = $('.cloze_template .select').clone();
-
-        template.find('select, input[type=hidden]').each((index, item) => {
-            asqAuthoring.processItem($(item), i);
-        });
-
-        $(template.find('.aot_table input')).each((index, item) => {
-            const input = $(item);
-            input.prop('id', input.prop('id').replace('0', i));
-            input.prop('name', input.prop('name').replace('0', i));
-        });
-
-        return template.children();
-    }
-
-    function createNewNumberGap(i) {
-        const template = $('.cloze_template .number').clone();
-
-        asqAuthoring.processRow(template, i);
-
-        return template.children();
-    }
-
-    function addGapItems() {
+    function addGapItem() {
         const clozeText = $('#cze_text');
         const matches = $('#cze_text').val().match(clozeRegex);
         const gapIndex = matches ? matches.length + 1 : 1;
@@ -53,12 +37,7 @@
         clozeText.val(`${beforeCursor}{${gapIndex}}${afterCursor}`);
 
         const lastNonGap = $('#il_prop_cont_cze_text');
-
-        lastNonGap.nextUntil('.ilFormFooter').remove();
-
-        for (let i = 0; i < gapIndex; i += 1) {
-            lastNonGap.siblings('.ilFormFooter').before(createNewTextGap(i + 1));
-        }
+        lastNonGap.siblings('.ilFormFooter').before(createNewGap(gapIndex));
     }
 
     const nrRegex = /\d*/;
@@ -69,11 +48,11 @@
         let template = null;
 
         if (selected.val() === 'clz_number') {
-            template = createNewNumberGap(id);
+            template = createNewGap(id, 'number');
         } else if (selected.val() === 'clz_text') {
-            template = createNewTextGap(id);
+            template = createNewGap(id, 'text');
         } else if (selected.val() === 'clz_dropdown') {
-            template = createNewSelectGap(id);
+            template = createNewGap(id, 'select');
         }
 
         const parentItem = selected.parents('.form-group');
@@ -93,9 +72,56 @@
             form.remove();
         });
     }
+    
+    function deleteGapUIItems($pressedFormItem) {
+        $pressedFormItem.prev().remove();
+        $pressedFormItem.nextUntil('.ilFormHeader, .ilFormFooter').remove();
+        $pressedFormItem.remove();        
+    }
+    
+    function updateClozeText(currentId, replacementId = -1) {
+        const clozeText = $('#cze_text');
+        const clozeTextVal = clozeText.val();
+        const gapStr = `{${currentId}}`;
+        let gapIndex = clozeTextVal.indexOf(gapStr);
+        const beforeGap = clozeTextVal.substring(0, gapIndex);
+        const afterGap = clozeTextVal.substring(gapIndex + gapStr.length);
+        if (replacementId > 0) {
+            clozeText.val(`${beforeGap}{${replacementId}}${afterGap}`);
+        } else {
+            clozeText.val(`${beforeGap}${afterGap}`);
+        }
+    }
+    
+    function updateGapIndex(oldIndex) {
+        const newIndex = oldIndex - 1;
+        updateClozeText(oldIndex, newIndex);
+        
+        const $formBeginning = $(`div[id$="${oldIndex}cze_gap_type"]`).prev();
+        
+        updateGapNames($formBeginning.nextUntil('.ilFormHeader, .ilFormFooter'), newIndex, oldIndex);
+    }
+    
+    function deleteGapItem() {
+        const $pressedFormItem = $(this).parents('.form-group');
+        
+        const gapCount = $('#cze_text').val().match(clozeRegex).length;
+        const doomedGapId = $pressedFormItem.prevAll('.ilFormHeader').length - 1;
+        
+        deleteGapUIItems($pressedFormItem);
+        
+        updateClozeText(doomedGapId);
+        
+        if (gapCount > doomedGapId) {
+            for (let i = doomedGapId + 1; i <= gapCount; i += 1) {
+                updateGapIndex(i);
+            }
+        }
+    }
 
     $(document).ready(prepareForm);
 
     $(document).on('change', 'select[id$=cze_gap_type]', changeGapForm);
-    $(document).on('click', '.js_parse_cloze_question', addGapItems);
+    $(document).on('click', '.js_parse_cloze_question', addGapItem);
+    $(document).on('click', '.js_delete_button', deleteGapItem);
 }(jQuery));

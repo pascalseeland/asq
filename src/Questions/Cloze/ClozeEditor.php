@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Cloze;
 
 use ilFormSectionHeaderGUI;
+use ilLinkButton;
 use ilNumberInputGUI;
 use ilPropertyFormGUI;
 use ilSelectInputGUI;
@@ -18,6 +19,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\CustomInputGUIs\AssessmentTest\HiddenInputGUI\HiddenInputGUI;
 
 /**
  * Class ClozeEditor
@@ -271,6 +273,7 @@ class ClozeEditor extends AbstractEditor {
             ClozeGapConfiguration::TYPE_TEXT => $DIC->language()->txt('asq_label_gap_type_text'),
             ClozeGapConfiguration::TYPE_NUMBER => $DIC->language()->txt('asq_label_gap_type_number')
         ]);
+        $gap_type->setInfo(sprintf('<a class="btn btn-default btn-sm js_delete_button">%s</a>', $DIC->language()->txt('asq_label_btn_delete_gap')));
         $fields[$index . self::VAR_GAP_TYPE] = $gap_type;
 
         if (!is_null($gap)) {            
