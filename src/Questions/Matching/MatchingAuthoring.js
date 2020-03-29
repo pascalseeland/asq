@@ -10,43 +10,20 @@
     function updateValues(source, destination, useds) {
         const values = {};
 
-        let i = 0;
         $(`input[id$="${source}"]`).each((index, item) => {
-            const val = $(item).val();
-
-            if (!useds.includes(i.toString())) {
-                values[i] = val;
-            }
-
-            i += 1;
+            values[index] = $(item).val();
         });
 
         $(`select[id$="${destination}"]`).each((index, item) => {
             const that = $(item);
             const selectedVal = that.val();
-            const selectedText = that.children('option:selected').text();
             that.empty();
 
             Object.keys(values).forEach((key) => {
-                that.append(new Option(values[key], key));
-            });
-
-            if (useds.includes(selectedVal)) {
-                let found = false;
-
-                that.children().each((ix, child) => {
-                    const childVal = parseInt($(child).val(), 10);
-
-                    if (childVal > parseInt(selectedVal, 10) && !found) {
-                        $(child).before(new Option(selectedText, selectedVal));
-                        found = true;
-                    }
-                });
-
-                if (!found) {
-                    that.append(new Option(selectedText, selectedVal));
+                if (!useds.includes(key) || key === selectedVal) {
+                    that.append(new Option(values[key], key));
                 }
-            }
+            });
 
             that.val(selectedVal);
         });
@@ -105,36 +82,37 @@
         updateTerms();
     }
 
+    function setMatchingMode() {
+        matchingMode = $('input[name=me_matching]:checked').val();
+        updateUsedDefinitions();
+        updateUsedTerms();
+    }
+
     $(document).ready(() => {
         if ($('input[name=me_matching]').length > 0) {
-            matchingMode = $('input[name=me_matching]:checked').val();
-            updateUsedDefinitions();
-            updateUsedTerms();
+            setMatchingMode();
         }
     });
 
-    $(document).on('change', 'input[name=me_matching]', () => {
-        matchingMode = $(this).val();
-        updateUsedDefinitions();
-        updateUsedTerms();
-    });
+    $(document).on('change', 'input[name=me_matching]', setMatchingMode);
 
-    $(document).on('change', 'input[id$="me_definition_text"]',
-        updateDefinitions);
+    $(document).on('change', 'input[id$="me_definition_text"]', updateDefinitions);
     $(document).on('change', 'input[id$="me_term_text"]', updateTerms);
-    $(document).on('change', 'select[id$=me_match_definition]',
-        updateUsedDefinitions);
+    $(document).on('change', 'select[id$=me_match_definition]', updateUsedDefinitions);
     $(document).on('change', 'select[id$=me_match_term]', updateUsedTerms);
 
     // remove/add needs to trigger after remove event that actually removes the row
     $(document).on('click', '#il_prop_cont_me_matches .js_add', () => {
         setTimeout(cleanAddedRow, 1);
     });
+    $(document).on('click', '#il_prop_cont_me_matches .js_remove', () => {
+        setTimeout(updateUsedDefinitions, 1);
+        setTimeout(updateUsedTerms, 1);
+    });
     $(document).on('click', '#il_prop_cont_me_terms .js_remove', () => {
         setTimeout(updateTerms, 1);
     });
-    $(document).on('click', '#il_prop_cont_me_definitions .js_remove',
-        () => {
-            setTimeout(updateDefinitions, 1);
-        });
+    $(document).on('click', '#il_prop_cont_me_definitions .js_remove', () => {
+        setTimeout(updateDefinitions, 1);
+    });
 }(jQuery));
