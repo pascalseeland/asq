@@ -12,14 +12,14 @@
     }
 
     let popup = null;
-    let canvas;
-    let previewCanvas;
-    let typ;
-    let coordinates;
-    let label;
+    let $popupCanvas;
+    let $previewCanvas;
+    let $cordinateInput;
+    let $coordinateLabel;
     let currentCoordinates = null;
     let polyPoints;
     let start = null;
+    // if set height and width of new shape will be set to same
     let shifted;
     let existingShapes;
     let usedCanvas;
@@ -32,22 +32,31 @@
         return Math.round((part / whole) * 100);
     }
 
+    function shiftPoint(stop) {
+        const side = Math.max(
+            Math.abs(start.X - stop.offsetX),
+            Math.abs(start.Y - stop.offsetY),
+        );
+
+        return new Point(
+            stop.offsetX < start.X ? start.X - side : start.X + side,
+            stop.offsetY < start.Y ? start.Y - side : start.Y + side,
+        );
+    }
+
     function createPoints(stop) {
+        const stopProcessed = shifted
+            ? shiftPoint(stop)
+            : new Point(stop.offsetX, stop.offsetY);
+
         const point = {
             topLeft:
-                new Point(Math.min(start.X, stop.offsetX),
-                    Math.min(start.Y, stop.offsetY)),
+                new Point(Math.min(start.X, stopProcessed.X),
+                    Math.min(start.Y, stopProcessed.Y)),
             bottomRight:
-                new Point(Math.max(start.X, stop.offsetX),
-                    Math.max(start.Y, stop.offsetY)),
+                new Point(Math.max(start.X, stopProcessed.X),
+                    Math.max(start.Y, stopProcessed.Y)),
         };
-
-        if (shifted) {
-            const width = point.bottomRight.X - point.topLeft.X;
-
-            // set height to width
-            point.bottomRight.Y = point.topLeft.Y + width;
-        }
 
         return point;
     }
@@ -140,11 +149,11 @@
     }
 
     function drawCircle(origin, destination) {
-        const g = canvas[0].getContext('2d');
+        const g = $popupCanvas[0].getContext('2d');
 
-        g.clearRect(0, 0, canvas.width(), canvas.height());
+        g.clearRect(0, 0, $popupCanvas.width(), $popupCanvas.height());
 
-        drawShapes(existingShapes, canvas[0]);
+        drawShapes(existingShapes, $popupCanvas[0]);
 
         g.beginPath();
         g.lineWidth = '3';
@@ -182,20 +191,20 @@
 
         drawCircle(points.topLeft, points.bottomRight);
 
-        currentCoordinates = `cx:${transformToPercentage((points.topLeft.X + points.bottomRight.X) / 2, canvas.width())};`
-            + `cy:${transformToPercentage((points.topLeft.Y + points.bottomRight.Y) / 2, canvas.height())};`
-            + `rx:${transformToPercentage((points.bottomRight.X - points.topLeft.X) / 2, canvas.width())};`
-            + `ry:${transformToPercentage((points.bottomRight.Y - points.topLeft.Y) / 2, canvas.height())}`;
+        currentCoordinates = `cx:${transformToPercentage((points.topLeft.X + points.bottomRight.X) / 2, $popupCanvas.width())};`
+            + `cy:${transformToPercentage((points.topLeft.Y + points.bottomRight.Y) / 2, $popupCanvas.height())};`
+            + `rx:${transformToPercentage((points.bottomRight.X - points.topLeft.X) / 2, $popupCanvas.width())};`
+            + `ry:${transformToPercentage((points.bottomRight.Y - points.topLeft.Y) / 2, $popupCanvas.height())}`;
 
         start = null;
     }
 
     function drawRectangle(origin, destination) {
-        const g = canvas[0].getContext('2d');
+        const g = $popupCanvas[0].getContext('2d');
 
-        g.clearRect(0, 0, canvas.width(), canvas.height());
+        g.clearRect(0, 0, $popupCanvas.width(), $popupCanvas.height());
 
-        drawShapes(existingShapes, canvas[0]);
+        drawShapes(existingShapes, $popupCanvas[0]);
 
         g.beginPath();
         g.lineWidth = '3';
@@ -225,10 +234,10 @@
 
         drawRectangle(points.topLeft, points.bottomRight);
 
-        currentCoordinates = `x:${transformToPercentage(points.topLeft.X, canvas.width())};`
-            + `y:${transformToPercentage(points.topLeft.Y, canvas.height())};`
-            + `width:${transformToPercentage(points.bottomRight.X - points.topLeft.X, canvas.width())};`
-            + `height:${transformToPercentage(points.bottomRight.Y - points.topLeft.Y, canvas.height())}`;
+        currentCoordinates = `x:${transformToPercentage(points.topLeft.X, $popupCanvas.width())};`
+            + `y:${transformToPercentage(points.topLeft.Y, $popupCanvas.height())};`
+            + `width:${transformToPercentage(points.bottomRight.X - points.topLeft.X, $popupCanvas.width())};`
+            + `height:${transformToPercentage(points.bottomRight.Y - points.topLeft.Y, $popupCanvas.height())}`;
 
         start = null;
     }
@@ -249,11 +258,11 @@
     }
 
     function drawPolygon() {
-        const g = canvas[0].getContext('2d');
+        const g = $popupCanvas[0].getContext('2d');
 
-        g.clearRect(0, 0, canvas.width(), canvas.height());
+        g.clearRect(0, 0, $popupCanvas.width(), $popupCanvas.height());
 
-        drawShapes(existingShapes, canvas[0]);
+        drawShapes(existingShapes, $popupCanvas[0]);
 
         g.beginPath();
         g.lineWidth = '3';
@@ -281,8 +290,8 @@
             currentCoordinates = 'points:';
         }
 
-        currentCoordinates += `${transformToPercentage(e.offsetX, canvas.width())},${
-            transformToPercentage(e.offsetY, canvas.height())} `;
+        currentCoordinates += `${transformToPercentage(e.offsetX, $popupCanvas.width())},${
+            transformToPercentage(e.offsetY, $popupCanvas.height())} `;
 
         polyPoints.push(new Point(e.offsetX, e.offsetY));
 
@@ -298,29 +307,29 @@
 
         $(this).blur();
         shifted = false;
-        coordinates = $(this).parents('.aot_row').find('input[id$=imedd_coordinates]');
-        typ = $(this).parents('.aot_row').find('select[id$=imedd_type]').val();
+        $cordinateInput = $(this).parents('.aot_row').find('input[id$=imedd_coordinates]');
+        const typ = $(this).parents('.aot_row').find('select[id$=imedd_type]').val();
         existingShapes = $(this).parents('.aot_row').siblings();
-        label = $(this).parents('.aot_row').find('span.imedd_coordinates');
+        $coordinateLabel = $(this).parents('.aot_row').find('span.imedd_coordinates');
         popup = $('.js_image_popup');
-        canvas = $('.js_coordinate_selector_canvas');
+        $popupCanvas = $('.js_coordinate_selector_canvas');
 
-        canvas.off();
+        $popupCanvas.off();
         switch (typ) {
         case TYPE_RECTANGLE:
-            canvas.mousedown(recordStart);
-            canvas.mousemove(previewRectangle);
-            canvas.mouseup(generateRectangle);
+            $popupCanvas.mousedown(recordStart);
+            $popupCanvas.mousemove(previewRectangle);
+            $popupCanvas.mouseup(generateRectangle);
             break;
         case TYPE_CIRCLE:
-            canvas.mousedown(recordStart);
-            canvas.mousemove(previewCircle);
-            canvas.mouseup(generateCircle);
+            $popupCanvas.mousedown(recordStart);
+            $popupCanvas.mousemove(previewCircle);
+            $popupCanvas.mouseup(generateCircle);
             break;
         case TYPE_POLYGON:
             polyPoints = [];
             currentCoordinates = null;
-            canvas.mouseup(generatePolygon);
+            $popupCanvas.mouseup(generatePolygon);
             break;
         }
 
@@ -330,14 +339,14 @@
         const imgContent = img.parents('.modal-body');
         img.css('max-width', imgContent.width());
         img.css('max-height', imgContent.height());
-        canvas[0].height = img.height();
-        canvas[0].width = img.width();
-        canvas.css('left', `${(imgContent.width() - img.width()) / 2}px`);
-        canvas.css('top', `${(imgContent.height() - img.height()) / 2}px`);
+        $popupCanvas[0].height = img.height();
+        $popupCanvas[0].width = img.width();
+        $popupCanvas.css('left', `${(imgContent.width() - img.width()) / 2}px`);
+        $popupCanvas.css('top', `${(imgContent.height() - img.height()) / 2}px`);
         popup.css('left', `${(window.innerWidth - popup.width()) / 2}px`);
         popup.css('top', `${(window.innerHeight - popup.height()) / 2}px`);
 
-        drawShapes(existingShapes, canvas[0]);
+        drawShapes(existingShapes, $popupCanvas[0]);
     }
 
     function closePopup() {
@@ -348,31 +357,31 @@
         const previewImage = $('.image_preview');
 
         if (previewImage.length === 1) {
-            previewCanvas = $('<canvas></canvas');
-            previewCanvas.css('position', 'absolute');
-            previewCanvas[0].width = previewImage.width();
-            previewCanvas[0].height = previewImage.height();
-            previewCanvas.css('bottom', previewImage.css('marginBottom'));
-            previewCanvas.css('left', previewImage.parents('.col-sm-9').css('paddingLeft'));
-            previewImage.after(previewCanvas);
+            $previewCanvas = $('<canvas></canvas');
+            $previewCanvas.css('position', 'absolute');
+            $previewCanvas[0].width = previewImage.width();
+            $previewCanvas[0].height = previewImage.height();
+            $previewCanvas.css('bottom', previewImage.css('marginBottom'));
+            $previewCanvas.css('left', previewImage.parents('.col-sm-9').css('paddingLeft'));
+            previewImage.after($previewCanvas);
         }
     }
 
     function updatePreview() {
-        if (previewCanvas == null) {
+        if ($previewCanvas == null) {
             initializePreview();
         }
 
-        const g = previewCanvas[0].getContext('2d');
-        g.clearRect(0, 0, previewCanvas.width(), previewCanvas.height());
+        const g = $previewCanvas[0].getContext('2d');
+        g.clearRect(0, 0, $previewCanvas.width(), $previewCanvas.height());
 
-        drawShapes($('.aot_row'), previewCanvas[0]);
+        drawShapes($('.aot_row'), $previewCanvas[0]);
     }
 
     function submitPopup() {
         if (currentCoordinates !== null) {
-            coordinates.val(currentCoordinates);
-            label.html(currentCoordinates);
+            $cordinateInput.val(currentCoordinates);
+            $coordinateLabel.html(currentCoordinates);
             closePopup();
             updatePreview();
         }
