@@ -224,8 +224,10 @@ class ClozeEditor extends AbstractEditor {
                                            self::createTemplates());
         $fields[self::VAR_CLOZE_TEXT] = $cloze_text;
         
-        for ($i = 1; $i <= count($config->getGaps()); $i += 1) {
-            $fields = array_merge($fields, ClozeEditor::createGapFields($i, $config->getGaps()[$i - 1]));
+        $gaps = $_SERVER['REQUEST_METHOD'] !== 'POST' ? $config->getGaps() : self::readGapConfig(); 
+
+        for ($i = 1; $i <= count($gaps); $i += 1) {
+            $fields = array_merge($fields, ClozeEditor::createGapFields($i, $gaps[$i - 1]));
         }
         
         if ($config !== null) {
