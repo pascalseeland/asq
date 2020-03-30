@@ -17,6 +17,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
+use srag\asq\Domain\Model\Feedback;
 
 /**
  * Class MultipleChoiceEditor
@@ -96,6 +97,15 @@ class MultipleChoiceEditor extends AbstractEditor {
     			$tpl->parseCurrentBlock();
 			}
 			
+			if ($this->render_feedback
+			    && !is_null($this->answer)
+			    && $this->showFeedbackForAnswerOption($answer_option))
+			{
+			    $tpl->setCurrentBlock('feedback');
+			    $tpl->setVariable('FEEDBACK', $this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId()));
+			    $tpl->parseCurrentBlock();
+			}
+			
 			$tpl->setCurrentBlock('answer_row');
 			$tpl->setVariable('ANSWER_TEXT', $display_definition->getText());
 			$tpl->setVariable('TYPE', $this->isMultipleChoice() ? "checkbox" : "radio");
@@ -116,6 +126,23 @@ class MultipleChoiceEditor extends AbstractEditor {
 		return $tpl->get();
 	}
 
+	private function showFeedBackForAnswerOption(AnswerOption $option) : bool {
+	    $is_selected = in_array($option->getOptionId(), $this->answer->getSelectedIds());
+	    
+	    switch ($this->question->getFeedback()->getAnswerOptionFeedbackMode()) {
+	        case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL:
+	            return true;
+	        case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED:
+	            return $is_selected;
+	        case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT:
+	            $points_selected = $option->getScoringDefinition()->getPointsSelected();
+	            $points_unselected = $option->getScoringDefinition()->getPointsUnselected();
+	            return ($is_selected && ($points_selected > $points_unselected)
+	                    || (!$is_selected && ($points_unselected > $points_selected)));
+	        default:
+	            return false;
+	    }
+	}
 
 	/**
 	 * @return bool
