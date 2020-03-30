@@ -103,10 +103,10 @@ This project is licensed under the GPL v3 License
 * HS Bremen
 * ILIAS e.V. Advisory Council
 * ILIAS e.V. Technical Board
-* PH Freiburg
+* PH Freiburg (DE)
 * studer + raimann ag, Burgdorf
 * Universität Bern
-* Universität Freiburg
+* Universität Freiburg (DE)
 * Universität Hohenheim
 * Universität Marburg
 * Universität zu Köln
