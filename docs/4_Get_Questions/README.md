@@ -1,14 +1,14 @@
-# Get Questions
+# Get questions
 
 There are two ways to fetch questions:
-* Get all questions of a container by ILIAS Object ID
-* Get a single question by UUID 
+* Get all questions of a container by their ILIAS Object ID
+* Get a single question by their UUID 
 
 <br>
 <br>
 
 
-## Table of Contents
+## Table of contents
 
 - [Get all questions of a container by ILIAS Object ID](#get-all-questions-of-a-container-by-ilias-object-id)
 - [Get a single question by UUID](#get-a-single-question-by-uuid)  
@@ -18,12 +18,12 @@ There are two ways to fetch questions:
 <br>
 
 
-## Get all questions of a container by ILIAS Object ID
+## Get all questions of a container by its ILIAS Object ID
 
 ### Note
 
-A container is the object where questions are created and is thus basically the owner of these questions.
-This method is a basic way to get questions.
+A container is the object where questions are created within and thus is basically the owner of these questions.
+This method is a basic way to get questions:
 
 ### Usage
 
@@ -39,7 +39,7 @@ $question_dtos = AsqGateway::get()->question()->getQuestionsOfContainer($this->o
 
 ### Note
 
-The ASQ identifies question by a Version 4 UUID. You may get any question of the installation regardless the current application has created the question or not using the UUID.
+The ASQ identifies questions with a Version 4 UUID. You may get any questions of the installation regardless of whether the current application has created the question or not by using the UUID.
 
 ### Usage
 
@@ -59,7 +59,7 @@ The ASQ provides a question component without any form container. You have to en
 
 The component can be provided with an answer through the method setAnswer().
 
-The entered answer of the user can be extracted from the component through the method readAnswer();
+The answer of the user can be extracted from the component using the method readAnswer();
 
 ### Usage
 

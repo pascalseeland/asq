@@ -1,17 +1,17 @@
-# Edit Questions
+# Edit questions
 
-ASQ provides the following links to the authoring environment
+ASQ provides the following links to the authoring environment:
 * Edit Question
 * Preview Question
 * Edit Page
 * Edit Feedback
 
-Additionally it's possible to use a single independent edit form
+Additionally, it's possible to use a single independent edit form.
 <br>
 <br>
 
 
-## Table of Contents
+## Table of contents
 
 - [Usage of the Edit Links](#usage-of-the-edit-links)
 - [Get question edit form](#get-question-edit-form)
@@ -20,17 +20,17 @@ Additionally it's possible to use a single independent edit form
 <br>
 
 
-## Usage of the Edit Links
+## Usage of the edit links
 
 ### Note
 
-You can get the links by passing the Question UUID
+You can get the links by passing the Question UUID:
 ```php
 AsqGateway::get()->link()->getEditLink('7464973d-6cf3-4142-949a-3d7fd4d48169')
 ```
 
 ### Usage
-This example show how you display all questions of your container with an unordered list including an action menu.
+This example shows how to display all questions of your container with an unordered list using an action menu.
 ```php
 private function showQuestions()
     {
@@ -77,7 +77,7 @@ private function showQuestions()
 
 ### Note
 Returns the form used to edit the question. The form is of the type ilPropertyFormGUI and works like one.
-It is easyer to use the provided classes that you can get by using AuthoringQuestion.
+It is easier to use the provided classes listed above.
 
 ### Usage
 ```php
@@ -87,7 +87,7 @@ $form->addCommandButton(self::CMD_SAVE_FORM, $DIC->language()->txt('save'));
 $DIC->ui()->mainTemplate()->setContent($form->getHTML());
 ```
 
-to save:
+To save:
 
 ```php
 $question = $form->getQuestion();

@@ -4,7 +4,7 @@ The ILIAS ASQ is designed as a component that offers services around assessment 
 
 ![](asq_authoring_environment.png)
 
-The ASQ provides no higher level business logic. Those must be handled by the consumer. E.g. the business logic that a question can only be answered once or the business logic for handling a group of questions such as that a question can only be answered once. 
+The ASQ provides no higher level business logic. Those must be handled by the consumer. E.g. the business logic that a single question can only be answered once or the business logic for handling a group of questions so that questions can only have a single answer. 
   
 <br>
 <br>
@@ -13,14 +13,20 @@ The ASQ provides no higher level business logic. Those must be handled by the co
 # Status
 BETA
 
- 
+<br>
+<br>
+
+
+# History
+[History](docs/0_History/README.md)
+
 <br>
 <br>
 
 
 # Features
 
-## Authoring of Question Types
+## Authoring of question types
 
 * Cloze
 * Error
@@ -34,7 +40,8 @@ BETA
 * Ordering
 * TextSubset
 
-## Scoring of Answers
+## Scoring of answers
+* Get Answer
 * Score User Answer
 * Get Max Score
 * Get Best Answer
@@ -45,7 +52,7 @@ BETA
 
 # Requirements
 * PHP 7.2
-* ILIAS 6 - ILIAS 7
+* ILIAS 5.4 - ILIAS 7
 * https://github.com/studer-raimann/cqrs
   
 <br>
@@ -87,7 +94,24 @@ This project is licensed under the GPL v3 License
 
 # Credits
 
-## Development and Software Architecture
+## Coordination of Funding
+*  toedt@leifos.com
+
+## Funding
+* DHBW Karlsruhe
+* FH Aachen
+* HS Bremen
+* ILIAS e.V. Advisory Council
+* ILIAS e.V. Technical Board
+* PH Freiburg (DE)
+* studer + raimann ag, Burgdorf
+* Universität Bern
+* Universität Freiburg (DE)
+* Universität Hohenheim
+* Universität Marburg
+* Universität zu Köln
+
+## Development and software architecture
 * al@studer-raimann.ch
 * bh@bjoernheyser.de
 * ms@studer-raimann.ch
