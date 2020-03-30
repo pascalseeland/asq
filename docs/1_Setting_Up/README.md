@@ -1,4 +1,4 @@
-# Setting Up
+# Setting up
 
 If you want to use the Assessment Question Service within a Repository Objects Plugin, proceed as follows.
 
@@ -6,7 +6,7 @@ If you want to use the Assessment Question Service within a Repository Objects P
 <br>
 
 
-## Table of Contents
+## Table of contents
 - [Get the ASQ Library and the CQRS dependency by composer](#get-the-asq-library-and-the-cqrs-dependency-by-composer)
 - [Install Data Tables and Update Languages](#install-data-tables-and-update-languages) 
 - [Enable TinyMCE](#enable-tinymce)
@@ -15,10 +15,10 @@ If you want to use the Assessment Question Service within a Repository Objects P
 <br>
 
 
-## Get the ASQ Library and the CQRS dependency by composer
-Your have to load the two libraries asq und cqrs from github and make sure the classmap includes the directory "vendor/srag/asq/classes" .
+## Get the ASQ library and the CQRS dependency by composer
+Load the two libraries "asq" und "cqrs" from github and make sure the classmap includes the directory "vendor/srag/asq/classes".
 
-For this just integrate the following lines in your composer.json of your plugin and update the dependencies.
+For this just integrate the following lines into the composer.json of your plugin and update the dependencies.
 
 ```json
 "repositories": [
@@ -51,8 +51,8 @@ Example: [composer.json_example](composer.json_example)
 <br>
 
 
-## Install Data Tables and Update Languages
-Use the following setup statement in your sql/dbupdate.php
+## Install data tables and update languages
+Use the following setup statement in your sql/dbupdate.php:
 ```php
 <#1>
 [...]
@@ -67,7 +67,7 @@ Use the following setup statement in your sql/dbupdate.php
 
 
 ## Enable TinyMCE
-You **MUST** enable TinyMCE
+You **MUST** enable TinyMCE.
    
 ![](enable_tiny_mce.png) 
 

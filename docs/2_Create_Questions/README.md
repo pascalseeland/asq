@@ -1,14 +1,14 @@
-# Create Questions
+# Create questions
 
 There are two ways to create questions:
 1.  Recommended: Get the _Question Creation Link_ and delegate the creation to the authoring environment of ASQ.
-2. Normally not Recommended: Create the Question without using the authoring environment.
+2. Usually not recommended: Create the Question without using the authoring environment.
 
 <br>
 <br>
 
 
-## Table of Contents
+## Table of contents
 - [Get the Question Creation Link](#get-the-quesetion-creation-link)
 - [Create the Question without using the authoring environment](#create-the-question-without-using-the-authoring-environment)  
     
@@ -16,7 +16,7 @@ There are two ways to create questions:
 <br>
 
 
-## Get the Question Creation Link
+## Get the question creation link
 
 ### Note
 
@@ -40,11 +40,11 @@ use srag\asq\AsqGateway;
 class AsqDemoGUI {
 [...]
 ```
->Please reload the control structure - by plugins increase the version of the plugin and update the plugin via the _ILIAS Administration_.
+>Please reload the control structure - for plugins increase the version of the plugin and update it using the _ILIAS Administration_.
 
 - [ ] **2. Add the _Creation Link_**
 
-E.g add the link as a toolbar button
+E.g add the link as a toolbar button.
 ```php
 public function renderToolbar()
 {
@@ -60,11 +60,11 @@ public function renderToolbar()
 
 - [ ] **3. Catch any redirects to the `ilAsqQuestionAuthoringGUI` class**
 
-Catch any redirects to the `ilAsqQuestionAuthoringGUI` class within the `executeCommand()` and forward to ilAsqQuestionAuthoringGUI.
+Catch any redirects to the `ilAsqQuestionAuthoringGUI` class within the `executeCommand()` method and forward to ilAsqQuestionAuthoringGUI.
 
-The _ilAsqQuestionAuthoringGUI_ needs by construction an _AuthoringContextContainer_ object to hold the metadata of your application. 
+The _ilAsqQuestionAuthoringGUI_ constructor requires an _AuthoringContextContainer_ object to hold the metadata of your application. 
 
-An implementation of the redirection may look like this:
+An implementation of the redirect may look like this:
 
 
 ```php
@@ -134,13 +134,13 @@ private function forwardCommandToAuthoringGui()
 <br>
 
 
-## Create the Question without using the authoring environment
+## Create the question without using the authoring environment
 
 ### Note
 
-Alternatively and normally not needed, questions can be created directly without using the authoring environment.
+An alternative way is to directly create questions without using the authoring environment. This method should only be used if necessary.
 
-> This API Call will changed in future. The Question Type Parameter will be a _Fqdn class name_
+> This API Call will changed in the future. The Question Type Parameter will be a _Fqdn class name_
 
 ### Usage
 
