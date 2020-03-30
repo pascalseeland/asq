@@ -102,7 +102,7 @@ This project is licensed under the GPL v3 License
 * FH Aachen
 * HS Bremen
 * ILIAS e.V. Advisory Council
-* ILIAS e.V. ILIAS Technical Board
+* ILIAS e.V. Technical Board
 * PH Freiburg
 * studer + raimann ag, Burgdorf
 * Universität Bern
