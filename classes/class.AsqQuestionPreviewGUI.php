@@ -62,19 +62,14 @@ class AsqQuestionPreviewGUI
         
         $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
         
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $question_component->setRenderFeedback(true);
+        }
+        
         $question_tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
         $question_tpl->setVariable('FORMACTION', $DIC->ctrl()->getFormAction($this, self::CMD_SHOW_PREVIEW));
         $question_tpl->setVariable('QUESTION_OUTPUT', $question_component->renderHtml());
         $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $feedback_component = new FeedbackComponent(
-                new ScoringComponent($question_dto, $question_component->readAnswer()), 
-                new AnswerFeedbackComponent($question_dto, $question_component->readAnswer()));
-            $question_tpl->setCurrentBlock('instant_feedback');
-            $question_tpl->setVariable('INSTANT_FEEDBACK',$feedback_component->getHtml());
-            $question_tpl->parseCurrentBlock();
-        }
 
         $DIC->ui()->mainTemplate()->setContent($question_tpl->get());
     }

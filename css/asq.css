@@ -1,3 +1,8 @@
+.feedback {
+	padding: 4px;
+	background-color: #eeeeee;
+}
+
 /* Errortext Editor */
 .errortext_word:hover {
 	background-color: gray;

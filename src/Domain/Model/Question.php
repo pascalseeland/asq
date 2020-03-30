@@ -198,7 +198,9 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      */
     public function setData(QuestionData $data, int $creator_id)
     {
-        $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $data));
+        if (! QuestionData::isNullableEqual($data, $this->getData())) {
+            $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $data));
+        }
     }
 
     /**
@@ -219,11 +221,13 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
         QuestionPlayConfiguration $play_configuration,
         int $creator_id
     ) : void {
-        $this->ExecuteEvent(new QuestionPlayConfigurationSetEvent(
-            $this->getAggregateId(),
-            new ilDateTime(time(), IL_CAL_UNIX),
-            $creator_id,
-            $play_configuration));
+        if (! QuestionPlayConfiguration::isNullableEqual($play_configuration, $this->getPlayConfiguration())) {
+            $this->ExecuteEvent(new QuestionPlayConfigurationSetEvent(
+                $this->getAggregateId(),
+                new ilDateTime(time(), IL_CAL_UNIX),
+                $creator_id,
+                $play_configuration));
+        }
     }
 
     /**
@@ -241,7 +245,15 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      */
     public function setAnswerOptions(AnswerOptions $options, int $creator_id)
     {
-        $this->ExecuteEvent(new QuestionAnswerOptionsSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $options));
+        if (!$options->equals($this->getAnswerOptions())) {
+            $this->ExecuteEvent(
+                new QuestionAnswerOptionsSetEvent(
+                    $this->getAggregateId(), 
+                    new ilDateTime(time(), IL_CAL_UNIX), 
+                    $creator_id, 
+                    $options));
+        }
+        
     }
 
 
@@ -260,11 +272,13 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      */
     public function setHints(QuestionHints $hints, int $creator_id = self::SYSTEM_USER_ID)
     {
-        $this->ExecuteEvent(new QuestionHintsSetEvent(
-            $this->getAggregateId(),
-            new ilDateTime(time(), IL_CAL_UNIX),
-            $creator_id,
-            $hints));
+        if (!$hints->equals($this->getHints())) {
+            $this->ExecuteEvent(new QuestionHintsSetEvent(
+                $this->getAggregateId(),
+                new ilDateTime(time(), IL_CAL_UNIX),
+                $creator_id,
+                $hints));
+        }
     }
 
     /**
@@ -284,11 +298,13 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
         Feedback $feedback,
         int $creator_id
     ) : void {
-        $this->ExecuteEvent(new QuestionFeedbackSetEvent(
-            $this->getAggregateId(),
-            new ilDateTime(time(), IL_CAL_UNIX),
-            $creator_id,
-            $feedback));
+        if (!Feedback::isNullableEqual($feedback, $this->getFeedback())) {
+            $this->ExecuteEvent(new QuestionFeedbackSetEvent(
+                $this->getAggregateId(),
+                new ilDateTime(time(), IL_CAL_UNIX),
+                $creator_id,
+                $feedback));
+        }
     }
 
     /**

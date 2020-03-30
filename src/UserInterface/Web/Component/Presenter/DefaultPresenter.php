@@ -22,14 +22,14 @@ class DefaultPresenter extends AbstractPresenter {
      * @return string
      * @throws \ilTemplateException
      */
-	public function generateHtml(AbstractEditor $editor): string {
+	public function generateHtml(AbstractEditor $editor, bool $show_feedback = false): string {
 	    global $DIC;
 	    
 	    $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
 
 		$tpl->setCurrentBlock('question');
 		$tpl->setVariable('QUESTIONTEXT', $this->question->getData()->getQuestionText());
-		$tpl->setVariable('EDITOR', $editor->generateHtml());
+		$tpl->setVariable('EDITOR', $editor->generateHtml($show_feedback));
 		$tpl->parseCurrentBlock();
 
 		$DIC->ui()->mainTemplate()->addCss(PathHelper::getBasePath(__DIR__) . 'css/asq.css');

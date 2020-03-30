@@ -56,6 +56,10 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
         $this->setTitle($DIC->language()->txt('asq_feedback_form_title'));
 
         $this->initForm();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->setValuesByPost();
+        }
     }
 
     protected function initForm()
@@ -81,15 +85,14 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
         $feedback_setting->addOption(new ilRadioOption($DIC->language()->txt('asq_option_feedback_correct'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT));
         $feedback_setting->setRequired(true);
         $feedback_setting->setValue($this->feedback->getAnswerOptionFeedbackMode());
-         
         $this->addItem($feedback_setting);
 
         foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
             /** @var AnswerOption $answer_option */
             $field = new ilTextAreaInputGUI($answer_option->getOptionId(), $this->getPostKey($answer_option));
             
-            if ($this->feedback->hasAnswerOptionFeedback((int)($answer_option->getOptionId()))) {
-                $field->setValue($this->feedback->getFeedbackForAnswerOption((int)$answer_option->getOptionId()));
+            if ($this->feedback->hasAnswerOptionFeedback(($answer_option->getOptionId()))) {
+                $field->setValue($this->feedback->getFeedbackForAnswerOption($answer_option->getOptionId()));
             }
             
             $this->addItem($field);

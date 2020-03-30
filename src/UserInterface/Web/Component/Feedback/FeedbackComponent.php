@@ -7,6 +7,7 @@ use ilTemplate;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class FeedbackComponent
@@ -30,12 +31,10 @@ class FeedbackComponent
      */
     private $answer_feedback_component;
 
-
-//QuestionDto $question_dto, QuestionConfig $question_config, QuestionCommands $question_commands
-    public function __construct(ScoringComponent $scoring_component, AnswerFeedbackComponent $answer_feedback_component)
+    public function __construct(QuestionDto $question_dto, Answer $answer)
     {
-        $this->scoring_component = $scoring_component;
-        $this->answer_feedback_component = $answer_feedback_component;
+        $this->scoring_component = new ScoringComponent($question_dto, $answer);
+        $this->answer_feedback_component = new AnswerFeedbackComponent($question_dto, $answer);
     }
 
 
@@ -45,10 +44,6 @@ class FeedbackComponent
 
         $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.feedback.html', true, true);
 
-        /*$tpl->setCurrentBlock('inst_resp_id');
-        $tpl->setVariable('INSTANT_RESPONSE_FOCUS_ID', self::FEEDBACK_FOCUS_ANCHOR);
-        $tpl->parseCurrentBlock();*/
-
         $tpl->setCurrentBlock('feedback_header');
         $tpl->setVariable('FEEDBACK_HEADER', $DIC->language()->txt('asq_answer_feedback_header'));
         $tpl->parseCurrentBlock();
@@ -56,7 +51,6 @@ class FeedbackComponent
         $tpl->setCurrentBlock('answer_feedback');
         $tpl->setVariable('ANSWER_FEEDBACK', $this->answer_feedback_component->getHtml());
         $tpl->parseCurrentBlock();
-
 
         $tpl->setCurrentBlock('answer_scoring');
         $tpl->setVariable('ANSWER_SCORING', $this->scoring_component->getHtml());

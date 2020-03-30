@@ -29,6 +29,10 @@ abstract class AbstractEditor {
 	 * @var AbstractValueObject
 	 */
 	protected $answer;
+	/**
+	 * @var bool
+	 */
+	protected $render_feedback;
 	
 	/**
 	 * AbstractEditor constructor.
@@ -44,6 +48,10 @@ abstract class AbstractEditor {
 		}
 	}
 
+	public function setRenderFeedback(bool $render_feedback) {
+	   $this->render_feedback = $render_feedback;
+	}
+	
 	/**
 	 * @return string
 	 */

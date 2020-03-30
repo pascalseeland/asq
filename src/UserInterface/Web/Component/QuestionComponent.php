@@ -10,6 +10,7 @@ use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Component\Presenter\AbstractPresenter;
 use srag\asq\UserInterface\Web\Component\Presenter\DefaultPresenter;
+use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
 
 /**
  * Class QuestionComponent
@@ -22,10 +23,6 @@ use srag\asq\UserInterface\Web\Component\Presenter\DefaultPresenter;
  */
 class QuestionComponent
 {
-    const DEFAULT_SUBMIT_CMD = "submitAnswer";
-    const DEFAULT_SHOW_FEEDBACK_CMD = "showFeedback";
-    const DEFAULT_GET_HINT_CMD = "getHint";
-    
     /**
      * @var QuestionDto
      */
@@ -38,7 +35,11 @@ class QuestionComponent
      * @var AbstractEditor
      */
     private $editor;
-
+    /**
+     * @var bool
+     */
+    private $show_feedback = false;
+    
     public function __construct(QuestionDto $question_dto)
     {
         $this->question_dto = $question_dto;
@@ -53,18 +54,25 @@ class QuestionComponent
         $this->editor = $editor;
     }
 
+    public function setRenderFeedback(bool $show_feedback) {
+        $this->show_feedback = $show_feedback;
+        $this->editor->setRenderFeedback($show_feedback);
+    }
 
-    public function renderHtml() : string
+    public function renderHtml(bool $show_feedback = false) : string
     {
-        global $DIC;
-
         $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');
-        $tpl->setVariable('SCORE_COMMAND', self::DEFAULT_SUBMIT_CMD);
         $tpl->setVariable('QUESTION_OUTPUT', $this->presenter->generateHtml($this->editor));
-        $tpl->setVariable('BUTTON_TITLE', $DIC->language()->txt('check'));
         $tpl->parseCurrentBlock();
+        
+        if ($this->show_feedback) {
+            $feedback_component = new FeedbackComponent($this->question_dto, $this->editor->readAnswer());
+            $tpl->setCurrentBlock('feedback');
+            $tpl->setVariable('QUESTION_FEEDBACK',$feedback_component->getHtml());
+            $tpl->parseCurrentBlock();
+        }
 
         return $tpl->get();
     }

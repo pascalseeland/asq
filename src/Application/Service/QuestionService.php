@@ -96,25 +96,11 @@ class QuestionService extends ASQService
         /** @var Question $question */
         $question = QuestionRepository::getInstance()->getAggregateRootById(new DomainObjectId($question_dto->getId()));
         
-        if (! AbstractValueObject::isNullableEqual($question_dto->getData(), $question->getData())) {
-            $question->setData($question_dto->getData(), $this->getActiveUser());
-        }
-
-        if (! AbstractValueObject::isNullableEqual($question_dto->getPlayConfiguration(), $question->getPlayConfiguration())) {
-            $question->setPlayConfiguration($question_dto->getPlayConfiguration(), $this->getActiveUser());
-        }
-
-        if (! $question_dto->getAnswerOptions()->equals($question->getAnswerOptions())) {
-            $question->setAnswerOptions($question_dto->getAnswerOptions(), $this->getActiveUser());
-        }
-
-        if (is_object($question_dto->getFeedback()) && !AbstractValueObject::isNullableEqual($question_dto->getFeedback(), $question->getFeedback())) {
-            $question->setFeedback($question_dto->getFeedback(), $this->getActiveUser());
-        }
-
-        if (! is_null($question_dto->getQuestionHints()) && !$question_dto->getQuestionHints()->equals($question->getHints())) {
-            $question->setHints($question_dto->getQuestionHints(), $this->getActiveUser());
-        }
+        $question->setData($question_dto->getData(), $this->getActiveUser());
+        $question->setPlayConfiguration($question_dto->getPlayConfiguration(), $this->getActiveUser());
+        $question->setAnswerOptions($question_dto->getAnswerOptions(), $this->getActiveUser());
+        $question->setFeedback($question_dto->getFeedback(), $this->getActiveUser());
+        $question->setHints($question_dto->getQuestionHints(), $this->getActiveUser());
 
         if (count($question->getRecordedEvents()->getEvents()) > 0) {
             // save changes if there are any
