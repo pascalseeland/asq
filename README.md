@@ -98,17 +98,18 @@ This project is licensed under the GPL v3 License
 *  toedt@leifos.com
 
 ## Funding
-* ILIAS e.V. Advisory Council
-* Universität Bern
 * DHBW Karlsruhe
 * FH Aachen
-* Universität Freiburg
-* PH Freiburg
-* Universität zu Köln
-* Universität Marburg
-* Universität Hohenheim
 * HS Bremen
+* ILIAS e.V. Advisory Council
+* ILIAS e.V. ILIAS Technical Board
+* PH Freiburg
 * studer + raimann ag, Burgdorf
+* Universität Bern
+* Universität Freiburg
+* Universität Hohenheim
+* Universität Marburg
+* Universität zu Köln
 
 ## Development and software architecture
 * al@studer-raimann.ch
