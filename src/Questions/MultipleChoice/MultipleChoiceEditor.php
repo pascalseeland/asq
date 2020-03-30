@@ -99,6 +99,7 @@ class MultipleChoiceEditor extends AbstractEditor {
 			
 			if ($this->render_feedback
 			    && !is_null($this->answer)
+			    && !is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId()))
 			    && $this->showFeedbackForAnswerOption($answer_option))
 			{
 			    $tpl->setCurrentBlock('feedback');

@@ -12,6 +12,7 @@ use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\UserInterface\Web\PathHelper;
@@ -126,6 +127,16 @@ class KprimChoiceEditor extends AbstractEditor {
                 $tpl->parseCurrentBlock();
             }
             
+            if ($this->render_feedback
+                && !is_null($this->answer)
+                && !is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId()))
+                && $this->showFeedbackForAnswerOption($answer_option))
+            {
+                $tpl->setCurrentBlock('feedback');
+                $tpl->setVariable('FEEDBACK', $this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId()));
+                $tpl->parseCurrentBlock();
+            }
+            
             $tpl->setCurrentBlock('answer_row');
             $tpl->setVariable('ANSWER_TEXT', $display_definition->getText());
             $tpl->setVariable('ANSWER_ID', $this->getPostName($answer_option->getOptionId()));
@@ -148,6 +159,19 @@ class KprimChoiceEditor extends AbstractEditor {
         return $tpl->get();
     }
 
+    private function showFeedBackForAnswerOption(AnswerOption $option) : bool {
+        switch ($this->question->getFeedback()->getAnswerOptionFeedbackMode()) {
+            case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL:
+                return true;
+            case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED:
+                return $this->answer->getAnswerForId($option->getOptionId());
+            case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT:
+                return $this->answer->getAnswerForId($option->getOptionId()) === $option->getScoringDefinition()->isCorrectValue();       
+            default:
+                return false;
+        }
+    }
+    
     /**
      * @param string $id
      * @return string

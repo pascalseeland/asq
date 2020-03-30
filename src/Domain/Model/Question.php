@@ -196,7 +196,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      * @param int          $container_obj_id
      * @param int          $creator_id
      */
-    public function setData(QuestionData $data, int $creator_id)
+    public function setData(?QuestionData $data, int $creator_id)
     {
         if (! QuestionData::isNullableEqual($data, $this->getData())) {
             $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $data));
@@ -218,7 +218,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      * @param int                       $creator_id
      */
     public function setPlayConfiguration(
-        QuestionPlayConfiguration $play_configuration,
+        ?QuestionPlayConfiguration $play_configuration,
         int $creator_id
     ) : void {
         if (! QuestionPlayConfiguration::isNullableEqual($play_configuration, $this->getPlayConfiguration())) {
@@ -270,9 +270,9 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      * @param QuestionHints $hints
      * @param int           $creator_id
      */
-    public function setHints(QuestionHints $hints, int $creator_id = self::SYSTEM_USER_ID)
+    public function setHints(?QuestionHints $hints, int $creator_id = self::SYSTEM_USER_ID)
     {
-        if (!$hints->equals($this->getHints())) {
+        if (!is_null($hints) && !$hints->equals($this->getHints())) {
             $this->ExecuteEvent(new QuestionHintsSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
@@ -295,7 +295,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      * @param int $creator_id
      */
     public function setFeedback(
-        Feedback $feedback,
+        ?Feedback $feedback,
         int $creator_id
     ) : void {
         if (!Feedback::isNullableEqual($feedback, $this->getFeedback())) {
