@@ -5,6 +5,7 @@ namespace srag\asq\Infrastructure\Setup\lang;
 
 use ilGlobalCache;
 use ilObjLanguage;
+use ReflectionClass;
 use srag\asq\UserInterface\Web\PathHelper;
 
 /**
@@ -111,7 +112,8 @@ abstract class SetupLanguages
 
     public function getLanguageDirectory() : string
     {
-        return PathHelper::getBasePath(__DIR__) . 'lang';
+        $class_info = new ReflectionClass($this);
+        return PathHelper::getBasePath($class_info->getFileName()) . 'lang';
     }
 }
 
