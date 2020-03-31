@@ -12,25 +12,15 @@ use srag\asq\UserInterface\Web\PathHelper;
  *
  * @author Martin Studer <ms@studer-raimann.ch>
  */
-class SetupLanguages
+abstract class SetupLanguages
 {
 
-    const LANG_PREFIX = "asq";
-    /**
-     * @var string
-     */
-    protected $lng_prefix;
-
-
-    private function __construct()
-    {
-        $this->lng_prefix = self::LANG_PREFIX;
-    }
-
+    abstract function getLanguagePrefix() : string;
 
     public static function new() : SetupLanguages
     {
-        $obj = new SetupLanguages();
+        $classname = get_called_class();
+        $obj = new $classname();
 
         return $obj;
     }
@@ -60,26 +50,26 @@ class SetupLanguages
             $lang_array = array();
 
             // get locally changed variables of the module (these should be kept)
-            $local_changes = ilObjLanguage::_getLocalChangesByModule($lang['key'], $this->lng_prefix);
+            $local_changes = ilObjLanguage::_getLocalChangesByModule($lang['key'], $this->getLanguagePrefix());
 
             // get language data
             if (is_array($txt)) {
                 foreach ($txt as $row) {
                     if ($row[0] != "#" && strpos($row, "#:#") > 0) {
                         $a = explode("#:#", trim($row));
-                        $identifier = $this->lng_prefix . "_" . trim($a[0]);
+                        $identifier = $this->getLanguagePrefix() . "_" . trim($a[0]);
                         $value = trim($a[1]);
 
                         if (isset($local_changes[$identifier])) {
                             $lang_array[$identifier] = $local_changes[$identifier];
                         } else {
                             $lang_array[$identifier] = $value;
-                            ilObjLanguage::replaceLangEntry($this->lng_prefix, $identifier, $lang["key"], $value);
+                            ilObjLanguage::replaceLangEntry($this->getLanguagePrefix(), $identifier, $lang["key"], $value);
                         }
                     }
                 }
             }
-            ilObjLanguage::replaceLangModule($lang["key"], $this->lng_prefix, $lang_array);
+            ilObjLanguage::replaceLangModule($lang["key"], $this->getLanguagePrefix(), $lang_array);
         }
     }
 
