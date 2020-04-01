@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Feedback\Form;
 
 use ilFormSectionHeaderGUI;
+use ilObjAdvancedEditing;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTextAreaInputGUI;
@@ -69,10 +70,14 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
 
         $feedback_correct = new ilTextAreaInputGUI($DIC->language()->txt('asq_input_feedback_correct'),  self::VAR_ANSWER_FEEDBACK_CORRECT);
         $feedback_correct->setValue($this->feedback->getAnswerCorrectFeedback());
+        $feedback_correct->setUseRte(true);
+        $feedback_correct->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
         $this->addItem($feedback_correct);
         
         $feedback_wrong = new ilTextAreaInputGUI($DIC->language()->txt('asq_input_feedback_wrong'), self::VAR_ANSWER_FEEDBACK_WRONG);
         $feedback_wrong->setValue($this->feedback->getAnswerWrongFeedback());
+        $feedback_wrong->setUseRte(true);
+        $feedback_wrong->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
         $this->addItem($feedback_wrong);
 
         $header = new ilFormSectionHeaderGUI();
@@ -90,6 +95,8 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
         foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
             /** @var AnswerOption $answer_option */
             $field = new ilTextAreaInputGUI($answer_option->getOptionId(), $this->getPostKey($answer_option));
+            $field->setUseRte(true);
+            $field->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
             
             if ($this->feedback->hasAnswerOptionFeedback(($answer_option->getOptionId()))) {
                 $field->setValue($this->feedback->getFeedbackForAnswerOption($answer_option->getOptionId()));
