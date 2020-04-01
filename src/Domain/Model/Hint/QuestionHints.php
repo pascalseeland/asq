@@ -19,7 +19,7 @@ class QuestionHints
 
 
     /**
-     * @var Hint[]
+     * @var QuestionHint[]
      */
     private $hints;
 
@@ -31,22 +31,20 @@ class QuestionHints
      *
      * @throws AsqException
      */
-    public function __construct(?array $hints)
+    public function __construct(array $hints = [])
     {
         $this->hints = $hints;
-        $this->validate();
     }
 
 
-    public function addHint(?Hint $hint)
+    public function addHint(?QuestionHint $hint)
     {
         $this->hints[] = $hint;
-        $this->validate();
     }
 
 
     /**
-     * @return Hint[]
+     * @return QuestionHint[]
      */
     public function getHints() : array
     {
@@ -57,18 +55,18 @@ class QuestionHints
     /**
      * @param int $order_number
      *
-     * @return Hint
+     * @return QuestionHint
      * @throws AsqException
      */
-    public function getSpecificHint(int $order_number) : Hint
+    public function getHintById(string $id) : QuestionHint
     {
         foreach ($this->hints as $hint) {
-            if ((int) $hint->getOrderNumber() === (int) $order_number) {
+            if ($hint->getId() === $id) {
                 return $hint;
             }
         }
 
-        return new Hint(0, '', 0);
+        throw new AsqException(sprintf("Hint with Id: %s does not exist", $id));
     }
 
 
@@ -84,14 +82,11 @@ class QuestionHints
         $hints = [];
 
         foreach ($data as $hint) {
-            $a_hint = new Hint($hint->order_number, $hint->content, $hint->point_deduction);
-            $a_hint->deserialize($hint);
-            $hints[] = $a_hint;
+            $hints[] = QuestionHint::create($hint->id, $hint->content, $hint->point_deduction);
         }
 
         return new QuestionHints($hints);
     }
-
 
     /**
      * @param QuestionHints $other
@@ -108,11 +103,11 @@ class QuestionHints
 
     public function hintsAreEqual(QuestionHints $other) : bool
     {
-        /** @var Hint $my_hint */
+        /** @var QuestionHint $my_hint */
         foreach ($this->hints as $my_hint) {
             $found = false;
 
-            /** @var Hint $other_hint */
+            /** @var QuestionHint $other_hint */
             foreach ($other->hints as $other_hint) {
                 if ($my_hint->equals($other_hint)) {
                     $found = true;
@@ -126,41 +121,5 @@ class QuestionHints
         }
 
         return true;
-    }
-
-    /**
-     * @throws AsqException
-     */
-    public function validate():void {
-        if(count($this->hints) > 0) {
-            $order_numbers = [];
-            $min_hint = 0;
-            $max_hint = 0;
-
-            foreach($this->getHints() as $hint) {
-                //More than one hint with the smae order number?
-                if(in_array($hint->getOrderNumber(), $order_numbers)) {
-                    throw new AsqException('Property hint_order_number - '.$hint->getOrderNumber().' - is not valid. There is a second hint with the same order number');
-                }
-                $order_numbers[] = $hint->getOrderNumber();
-
-                if($hint->getOrderNumber() < $min_hint || $min_hint == 0) {
-                    $min_hint = $hint->getOrderNumber();
-                }
-
-                if($hint->getOrderNumber() > $max_hint || $max_hint == 0) {
-                    $max_hint = $hint->getOrderNumber();
-                }
-            }
-
-            if($min_hint != Hint::ORDER_GAP) {
-                throw new AsqException('Property hint_order_number - '.$min_hint.' - is not valid. This is the minimum Order. Expected would be 10');
-            }
-
-            if($max_hint != (Hint::ORDER_GAP * count($this->getHints()))) {
-                throw new AsqException('Property hint_order_number - '.$max_hint.' - is not valid. This is the maximum Order. Expected would be  '.Hint::ORDER_GAP * count($this->getHints()));
-            }
-        }
-
     }
 }

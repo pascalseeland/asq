@@ -92,32 +92,4 @@ class Feedback extends AbstractValueObject
     public function getFeedbackForAnswerOption(string $option_id) : string {
         return $this->answer_option_feedbacks[$option_id];
     }
-
-    public function equals(AbstractValueObject $other) : bool
-    {
-        /** @var Feedback $other */
-        return (get_class($this) === get_class($other) &&
-                $this->answer_correct_feedback === $other->answer_correct_feedback &&
-                $this->answer_wrong_feedback === $other->answer_wrong_feedback &&
-                $this->answer_option_feedback_mode === $other->answer_option_feedback_mode &&
-                $this->answerOptionFeedbacksEqual($other->answer_option_feedbacks));
-    }
-    
-    private function answerOptionFeedbacksEqual(array $other_options): bool {
-        if (count($this->answer_option_feedbacks) !== count($other_options)) {
-            return false;
-        }
-        
-        foreach (array_keys($this->answer_option_feedbacks) as $key) {
-            if (array_key_exists($key, $other_options)) {
-                return false;
-            }
-            
-            if ($this->answer_option_feedbacks[$key] !== $other_options[$key]) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
 }

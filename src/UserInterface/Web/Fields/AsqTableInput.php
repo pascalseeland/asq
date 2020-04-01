@@ -42,19 +42,19 @@ class AsqTableInput extends ilTextInputGUI {
     
     public function __construct(string $title,
         string $post_var,
-        ?array $values = null,
-        ?array $definitions = null,
-        ?array $form_configuration = null)
+        array $values = [],
+        array $definitions = [],
+        array $form_configuration = [])
     {
         parent::__construct($title, $post_var);
 
-        $this->definitions = $definitions ?? [];
-        $this->form_configuration = $form_configuration ?? [];
+        $this->definitions = $definitions;
+        $this->form_configuration = $form_configuration;
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->readValues();
         } else {
-            $this->values = $values ?? [];
+            $this->values = $values;
         }
     }
     
@@ -248,7 +248,7 @@ class AsqTableInput extends ilTextInputGUI {
     }
     
     private function generateTextArea(string $post_var, $value) {
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/templates/default/tpl.TextAreaField.html', true, true);
+        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.TextAreaField.html', true, true);
         
         $tpl->setCurrentBlock('textarea');
         $tpl->setVariable('POST_NAME', $post_var);

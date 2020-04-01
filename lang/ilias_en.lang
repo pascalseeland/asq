@@ -213,3 +213,4 @@ question_hints_form_header#:#Hint for Question: %s
 question_hints_label_hint#:#Hint
 question_hints_label_points_deduction#:#Point Deduction
 answer_feedback_header#:#Feedback
+hints#:#Hints

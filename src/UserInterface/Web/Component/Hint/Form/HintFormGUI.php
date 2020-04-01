@@ -4,8 +4,14 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Hint\Form;
 
 use ILIAS\UI\Component\Layout\Page\Page;
+use ilRTE;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Hint\Hint;
+use srag\asq\Domain\Model\Hint\QuestionHint;
+use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
  * Class HintFormGUI
@@ -18,19 +24,14 @@ use srag\asq\Domain\Model\Hint\Hint;
  */
 class HintFormGUI extends \ilPropertyFormGUI
 {
-    /**
-     * @var Page
-     */
-    protected $page;
+    const HINT_POSTVAR = 'hints';
+    const HINT_CONTENT_POSTVAR = 'hint_content';
+    const HINT_POINTS_POSTVAR = 'hint_points';
+    
     /**
      * @var QuestionDto
      */
     protected $question_dto;
-    /**
-     * @var Hint
-     */
-    protected $hint;
-
 
     /**
      * QuestionHintFormGUI constructor.
@@ -38,21 +39,24 @@ class HintFormGUI extends \ilPropertyFormGUI
      * @param Page        $page
      * @param QuestionDto $questionDto
      */
-    public function __construct(
-        QuestionDto $question_dto,
-        Hint $hint
-    ) {
+    public function __construct(QuestionDto $question_dto) {
         global $DIC;
         /* @var \ILIAS\DI\Container $DIC */
 
         parent::__construct();
 
         $this->question_dto = $question_dto;
-        $this->hint = $hint;
 
         $this->setTitle($DIC->language()->txt('asq_feedback_form_title'));
 
         $this->initForm();
+        
+        $rtestring = ilRTE::_getRTEClassname();
+        include_once "./Services/RTE/classes/class.$rtestring.php";
+        $rte = new $rtestring();
+        $rte->addRTESupport(55, 'blah');
+        
+        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
 
 
@@ -63,24 +67,53 @@ class HintFormGUI extends \ilPropertyFormGUI
 
         $this->setTitle(sprintf($DIC->language()->txt('asq_question_hints_form_header'), $this->question_dto->getData()->getTitle()));
 
-        //Hint Order Number
-        $order_number = new HintFieldOrderNumber($this->hint->getOrderNumber());
-        $this->addItem($order_number->getField());
-
-        //RTE or PageEditor?
-        $content_rte = new HintFieldContentRte($this->hint->getContent(), $this->question_dto->getContainerObjId(), $this->question_dto->getLegacyData()->getContainerObjType());
-        $this->addItem($content_rte->getField());
-
-        $points_deduction = new HintFieldPointsDeduction($this->hint->getPointDeduction());
-        $this->addItem($points_deduction->getField());
+        $hint_table = new AsqTableInput(
+            $DIC->language()->txt('asq_hints'), 
+            self::HINT_POSTVAR, 
+            $this->getHintData(), 
+            $this->getTableDefinitions(),
+            [AsqTableInput::OPTION_ORDER]); 
+        
+        $this->addItem($hint_table);
     }
 
-    public static function getHintFromPost() {
-
-        $hint_order_number =  HintFieldOrderNumber::getValueFromPost();
-        $content_rte = HintFieldContentRte::getValueFromPost();
-        $points_deduction = HintFieldPointsDeduction::getValueFromPost();
-
-        return new Hint($hint_order_number, $content_rte,$points_deduction);
+    private function getHintData() : array {
+        return array_map(function($hint) {
+            return [
+                self::HINT_CONTENT_POSTVAR => $hint->getContent(), 
+                self::HINT_POINTS_POSTVAR => $hint->getPointDeduction()];
+        }, $this->question_dto->getQuestionHints()->getHints());
+    }
+    
+    private function getTableDefinitions() : array {
+        global $DIC;
+        
+        return [
+            new AsqTableInputFieldDefinition(
+                $DIC->language()->txt('asq_question_hints_label_hint'), 
+                AsqTableInputFieldDefinition::TYPE_TEXT_AREA, 
+                self::HINT_CONTENT_POSTVAR),
+            new AsqTableInputFieldDefinition(
+                $DIC->language()->txt('asq_question_hints_label_points_deduction'), 
+                AsqTableInputFieldDefinition::TYPE_NUMBER, 
+                self::HINT_POINTS_POSTVAR)
+        ];
+    }
+    
+    public function getHintsFromPost() : QuestionHints {
+        $index = 0;
+        return new QuestionHints(
+            array_map(
+                function($raw_hint) use ($index) {
+                    $index += 1;
+                    
+                    return QuestionHint::create(
+                        strval($index),
+                        AsqHtmlPurifier::getInstance()->purify($raw_hint[self::HINT_CONTENT_POSTVAR]), 
+                        floatval($raw_hint[self::HINT_POINTS_POSTVAR]));
+                }, 
+                AsqTableInput::readValuesFromPost(self::HINT_POSTVAR, $this->getTableDefinitions())
+            )
+        );
     }
 }

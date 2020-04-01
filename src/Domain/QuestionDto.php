@@ -242,6 +242,14 @@ class QuestionDto
     }
 
     /**
+     * @return bool
+     */
+    public function hasHints() : bool
+    {
+        return !is_null($this->question_hints) && count($this->question_hints->getHints()) > 0;
+    }
+    
+    /**
      *
      * @return QuestionHints
      */
