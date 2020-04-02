@@ -3,6 +3,13 @@
 	background-color: #eeeeee;
 }
 
+.hint {
+	margin: 4px;
+	padding: 4px;
+	background-color: lightyellow;
+}
+
+
 /* Errortext Editor */
 .errortext_word:hover {
 	background-color: gray;

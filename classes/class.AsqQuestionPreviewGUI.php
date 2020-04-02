@@ -4,9 +4,7 @@ declare(strict_types=1);
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Component\Feedback\AnswerFeedbackComponent;
-use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
-use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
+use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
 
 /**
  * Class AsqQuestionPreviewGUI
@@ -23,13 +21,24 @@ class AsqQuestionPreviewGUI
 {
 
     const CMD_SHOW_PREVIEW = 'showPreview';
-    const CMD_SHWOW_Feedback = 'showFeedback';
+    const CMD_SHOW_FEEDBACK = 'showFeedback';
+    const CMD_SHOW_HINTS = 'showHints';
 
     /**
      * @var DomainObjectId
      */
     protected $question_id;
 
+    /**
+     * @var bool
+     */
+    private $show_feedback;
+    
+    /**
+     * @var bool
+     */
+    private $show_hints;
+    
     public function __construct(
         DomainObjectId $question_id
     ) {
@@ -45,7 +54,16 @@ class AsqQuestionPreviewGUI
             case strtolower(self::class):
             default:
                 switch ($DIC->ctrl()->getCmd()) {
-                    case self::CMD_SHWOW_Feedback:
+                    case self::CMD_SHOW_HINTS:
+                        $this->show_hints = true;
+                        
+                        $this->showQuestion();
+                        break;
+                    case self::CMD_SHOW_FEEDBACK:
+                        $this->show_feedback = true;
+                        
+                        $this->showQuestion();
+                        break;
                     case self::CMD_SHOW_PREVIEW:
                     default:
                         $this->showQuestion();
@@ -62,15 +80,28 @@ class AsqQuestionPreviewGUI
         
         $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
         
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($this->show_feedback) {
             $question_component->setRenderFeedback(true);
         }
         
         $question_tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
         $question_tpl->setVariable('FORMACTION', $DIC->ctrl()->getFormAction($this, self::CMD_SHOW_PREVIEW));
         $question_tpl->setVariable('QUESTION_OUTPUT', $question_component->renderHtml());
+        
+        if ($this->show_hints) {
+            $hint_component = new HintComponent($question_dto->getQuestionHints());
+            $question_tpl->setVariable('HINTS', $hint_component->getHtml());
+        }
+        
         $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
-
+        
+        if (count($question_dto->getQuestionHints()->getHints()) > 0) {
+            $question_tpl->setCurrentBlock('hint_button');
+            $question_tpl->setVariable('HINT_BUTTON_TITLE', $DIC->language()->txt('asq_hint_button_title'));
+            $question_tpl->parseCurrentBlock();
+        }
+        
+        
         $DIC->ui()->mainTemplate()->setContent($question_tpl->get());
     }
 }

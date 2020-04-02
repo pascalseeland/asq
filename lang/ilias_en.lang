@@ -75,6 +75,7 @@ header_matches_term#:#Term
 header_points#:#Points
 label_process_error_text#:#Analyze Error Text
 feedback_button_title#:#Request Feedback
+hint_button_title#:#Show Hints
 label_max_points#:#Maximum Available Points
 kprim_information#:#The multiple choice question type ‘four times decision right/wrong’ (Type K’, also known as Kprim) gives four answers or additions to a question or an incomplete statement. A decision about the correctness is to be done on all four answers/additions. The maximum points are granted only, if all decisions are correct.
 header_upload_file#:#Choose File to Upload

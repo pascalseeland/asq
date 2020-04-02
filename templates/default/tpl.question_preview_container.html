@@ -4,11 +4,12 @@
 	<form name="ilAssQuestionPreview" action="{FORMACTION}" method="post" enctype="multipart/form-data">
 		{QUESTION_NAVIGATION}
 		{QUESTION_OUTPUT}
-		<!-- BEGIN instant_feedback -->
-		{INSTANT_FEEDBACK}
-		<!-- END instant_feedback -->
+		{HINTS}
 		<br />
 		<input name="cmd[showFeedback]" type="submit" class="btn btn-default btn-sm" value="{FEEDBACK_BUTTON_TITLE}" />
+		<!-- BEGIN hint_button -->
+		<input name="cmd[showHints]" type="submit" class="btn btn-default btn-sm" value="{HINT_BUTTON_TITLE}" />
+		<!-- END hint_button -->
 	</form>
 </div>
 <!-- BEGIN notes_panel -->{NOTES_PANEL}<!-- END notes_panel -->
