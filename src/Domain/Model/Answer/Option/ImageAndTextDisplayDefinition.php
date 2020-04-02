@@ -1,13 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\UserInterface\Web\Component\Editor;
+namespace srag\asq\Domain\Model\Answer\Option;
 
-use stdClass;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
-use srag\asq\UserInterface\Web\ImageUploader;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\ImageUploader;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
@@ -33,11 +31,12 @@ class ImageAndTextDisplayDefinition extends AnswerDefinition {
 	 */
 	protected $image;
 
-	public function __construct(string $text, string $image) {
-		$this->text = $text;
-		$this->image = $image;
+	public static function create(string $text, string $image) : ImageAndTextDisplayDefinition {
+	    $object = new ImageAndTextDisplayDefinition();
+	    $object->text = $text;
+	    $object->image = $image;
+		return $object;
 	}
-
 
 	/**
 	 * @return string
@@ -71,7 +70,7 @@ class ImageAndTextDisplayDefinition extends AnswerDefinition {
 	}
 
 	public static function getValueFromPost(string $index) {
-		return new ImageAndTextDisplayDefinition(
+		return ImageAndTextDisplayDefinition::create(
 		    AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_MCDD_TEXT)]),
 		    ImageUploader::getInstance()->processImage(self::getPostKey($index, self::VAR_MCDD_IMAGE))
 		);
@@ -80,14 +79,6 @@ class ImageAndTextDisplayDefinition extends AnswerDefinition {
 	public function getValues(): array {
 		return [self::VAR_MCDD_TEXT => $this->text, 
 		        self::VAR_MCDD_IMAGE => $this->image];
-	}
-
-
-	public static function deserialize(stdClass $data) {
-		return new ImageAndTextDisplayDefinition(
-			$data->text,
-			$data->image
-		);
 	}
 	
 	/**

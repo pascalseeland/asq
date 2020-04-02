@@ -8,8 +8,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\Domain\Model\Scoring\EmptyScoringDefinition;
 
 /**
  * Class MultipleChoiceScoring
@@ -101,7 +101,7 @@ class MatchingScoring extends AbstractScoring
      */
     public static function getScoringDefinitionClass() : string
     {
-        return EmptyScoringDefinition::class;
+        return EmptyDefinition::class;
     }
     
     public static function isComplete(Question $question): bool

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\MultipleChoice;
 
-use stdClass;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
@@ -33,15 +32,19 @@ class MultipleChoiceScoringDefinition extends AnswerDefinition {
 
 
 	/**
-	 * MultipleChoiceScoringDefinition constructor.
-	 *
-	 * @param int $points_selected
-	 * @param int $points_unselected
+	 * @param float $points_selected
+	 * @param float $points_unselected
+	 * @return MultipleChoiceScoringDefinition
 	 */
-	public function __construct(float $points_selected = 0.0, float $points_unselected = 0.0)
+	public static function create(
+	    float $points_selected = 0.0, 
+	    float $points_unselected = 0.0
+	) : MultipleChoiceScoringDefinition
 	{
-		$this->points_selected = $points_selected;
-		$this->points_unselected = $points_unselected;
+	    $object = new MultipleChoiceScoringDefinition();
+	    $object->points_selected = $points_selected;
+	    $object->points_unselected = $points_unselected;
+		return $object;
 	}
 
 
@@ -79,7 +82,7 @@ class MultipleChoiceScoringDefinition extends AnswerDefinition {
 	}
 
 	public static function getValueFromPost(string $index) {
-		return new MultipleChoiceScoringDefinition(
+		return MultipleChoiceScoringDefinition::create(
 		    floatval($_POST[self::getPostKey($index, self::VAR_MCSD_SELECTED)]),
 		    floatval($_POST[self::getPostKey($index, self::VAR_MCSD_UNSELECTED)])
 		);
@@ -88,14 +91,6 @@ class MultipleChoiceScoringDefinition extends AnswerDefinition {
 	public function getValues(): array {
 		return [self::VAR_MCSD_SELECTED => $this->points_selected, 
 		        self::VAR_MCSD_UNSELECTED => $this->points_unselected];
-	}
-
-
-	public static function deserialize(stdClass $data) {
-		return new MultipleChoiceScoringDefinition(
-			$data->points_selected,
-			$data->points_unselected
-		);
 	}
 	
 	/**

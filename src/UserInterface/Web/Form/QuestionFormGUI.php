@@ -11,14 +11,13 @@ use ilPropertyFormGUI;
 use ilSelectInputGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\UserInterface\Web\AsqGUIElementFactory;
-use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
 
 /**
@@ -181,14 +180,14 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
         return $question;
     }
     
-    protected function readAnswerOptions(QuestionDto $question) : AnswerOptions {
+    protected function readAnswerOptions(QuestionDto $question) : ?AnswerOptions {
         if (!is_null($this->option_form)) {
             $this->option_form->setConfiguration($question->getPlayConfiguration());
             $this->option_form->readAnswerOptions();
             return $this->option_form->getAnswerOptions();
         }
         
-        return new AnswerOptions();
+        return null;
     }
     
     

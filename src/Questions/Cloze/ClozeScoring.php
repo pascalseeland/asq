@@ -7,8 +7,8 @@ use ILIAS\UI\NotImplementedException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\Domain\Model\Scoring\EmptyScoringDefinition;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 
 /**
@@ -130,6 +130,6 @@ class ClozeScoring extends AbstractScoring {
      */
     public static function getScoringDefinitionClass() : string
     {
-        return EmptyScoringDefinition::class;
+        return EmptyDefinition::class;
     }
 }

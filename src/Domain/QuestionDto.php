@@ -2,7 +2,8 @@
 declare(strict_types = 1);
 namespace srag\asq\Domain;
 
-use srag\asq\Domain\Model\ContentEditingMode;
+use JsonSerializable;
+use srag\CQRS\Aggregate\RevisionId;
 use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\QuestionData;
@@ -19,7 +20,7 @@ use srag\asq\Domain\Model\Hint\QuestionHints;
  * @package srag/asq
  * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionDto
+class QuestionDto implements JsonSerializable
 {
 
     const IL_COMPONENT_ID = 'asq';
@@ -38,50 +39,39 @@ class QuestionDto
 
     /**
      *
-     * @var string
+     * @var ?RevisionId
      */
-    private $revision_name = "";
-
-    /**
-     * var string
-     */
-    private $il_component_id = self::IL_COMPONENT_ID;
+    private $revision_id;
 
     /**
      *
-     * @var QuestionData
+     * @var ?QuestionData
      */
     private $data;
 
     /**
      *
-     * @var QuestionPlayConfiguration
+     * @var ?QuestionPlayConfiguration
      */
     private $play_configuration;
 
     /**
      *
-     * @var AnswerOptions
+     * @var ?AnswerOptions
      */
     private $answer_options;
 
     /**
      *
-     * @var Feedback
+     * @var ?Feedback
      */
     private $feedback;
 
     /**
      *
-     * @var QuestionHints
+     * @var ?QuestionHints
      */
     private $question_hints;
-
-    /**
-     *
-     * @var bool
-     */
-    private $complete = false;
 
     /**
      *
@@ -96,26 +86,18 @@ class QuestionDto
         $dto->id = $question->getAggregateId()->getId();
         $dto->type = $question->getType();
         $dto->complete = $question->isQuestionComplete();
-
-        if ($question->getRevisionId() !== null) {
-            $dto->revision_name = $question->getRevisionId()->getName();
-        }
-
+        
+        $dto->revision_id = $question->getRevisionId();
         $dto->data = $question->getData();
         $dto->play_configuration = $question->getPlayConfiguration();
         $dto->answer_options = $question->getAnswerOptions();
 
-        $dto->feedback = $question->getFeedback() ?? new Feedback();
+        $dto->feedback = $question->getFeedback();
         $dto->question_hints = $question->getHints();
 
         return $dto;
     }
-
-    public function __construct()
-    {
-        $this->answer_options = new AnswerOptions();
-    }
-
+    
     /**
      *
      * @return string
@@ -164,9 +146,9 @@ class QuestionDto
      *
      * @return string
      */
-    public function getRevisionName(): string
+    public function getRevisionId(): ?RevisionId
     {
-        return $this->revision_name;
+        return $this->revision_id;
     }
 
     /**
@@ -182,7 +164,7 @@ class QuestionDto
      *
      * @param QuestionData $data
      */
-    public function setData(QuestionData $data): void
+    public function setData(?QuestionData $data): void
     {
         $this->data = $data;
     }
@@ -200,7 +182,7 @@ class QuestionDto
      *
      * @param QuestionPlayConfiguration $play_configuration
      */
-    public function setPlayConfiguration(QuestionPlayConfiguration $play_configuration): void
+    public function setPlayConfiguration(?QuestionPlayConfiguration $play_configuration): void
     {
         $this->play_configuration = $play_configuration;
     }
@@ -209,7 +191,7 @@ class QuestionDto
      *
      * @return AnswerOptions
      */
-    public function getAnswerOptions(): AnswerOptions
+    public function getAnswerOptions(): ?AnswerOptions
     {
         return $this->answer_options;
     }
@@ -218,11 +200,18 @@ class QuestionDto
      *
      * @param AnswerOptions $answer_options
      */
-    public function setAnswerOptions(AnswerOptions $answer_options): void
+    public function setAnswerOptions(?AnswerOptions $answer_options): void
     {
         $this->answer_options = $answer_options;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasFeedback() : bool {
+        return !is_null($this->feedback);
+    }
+    
     /**
      *
      * @param Feedback $feedback
@@ -262,8 +251,30 @@ class QuestionDto
      *
      * @param QuestionHints $question_hints
      */
-    public function setQuestionHints(QuestionHints $question_hints): void
+    public function setQuestionHints(?QuestionHints $question_hints): void
     {
         $this->question_hints = $question_hints;
+    }
+    
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+    
+    public static function deserialize(string $json_data) 
+    {
+        $data = json_decode($json_data, true);
+        
+        $object = new QuestionDto();
+        $object->id = $data['id'];
+        $object->type = $data['type'];
+        $object->answer_options = AnswerOptions::createFromArray($data['answer_options']);
+        $object->data = QuestionData::createFromArray($data['data']);
+        $object->feedback = Feedback::createFromArray($data['feedback']);
+        $object->play_configuration = QuestionPlayConfiguration::createFromArray($data['play_configuration']);
+        $object->question_hints = QuestionHints::createFromArray($data['question_hints']);
+        $object->revision_id = RevisionId::createFromArray($data['revision_id']);
+        
+        return $object;
     }
 }

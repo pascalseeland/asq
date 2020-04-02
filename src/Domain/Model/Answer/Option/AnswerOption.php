@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model\Answer\Option;
 
-use JsonSerializable;
-use stdClass;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class AnswerOption
@@ -15,33 +14,30 @@ use stdClass;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AnswerOption implements JsonSerializable {
-
-	const DISPLAY_DEF_CLASS = "ddclass";
-	const SCORING_DEF_CLASS = "sdclass";
-	const ANSWER_OPTION_FEEDBACK_CLASS = "fdclass";
-
-
+class AnswerOption extends AbstractValueObject {
 	/**
 	 * @var string
 	 */
-	private $option_id;
+	protected $option_id;
 	/**
 	 * @var ?AnswerDefinition
 	 */
-	private $display_definition;
+	protected $display_definition;
 	/**
 	 * @var ?AnswerDefinition
 	 */
-	private $scoring_definition;
+	protected $scoring_definition;
 
-	public function __construct(string $id, 
-	                            ?AnswerDefinition $display_definition = null, 
-	                            ?AnswerDefinition $scoring_definition = null)
+	public static function create(
+	    string $id, 
+	    ?AnswerDefinition $display_definition = null, 
+	    ?AnswerDefinition $scoring_definition = null) : AnswerOption
 	{
-		$this->option_id = $id;
-		$this->display_definition = $display_definition;
-		$this->scoring_definition = $scoring_definition;
+	    $object = new AnswerOption();
+	    $object->option_id = $id;
+	    $object->display_definition = $display_definition;
+	    $object->scoring_definition = $scoring_definition;
+		return $object;
 	}
 
 	/**
@@ -51,15 +47,12 @@ class AnswerOption implements JsonSerializable {
 		return $this->option_id;
 	}
 
-
-
 	/**
 	 * @return AnswerDefinition
 	 */
 	public function getDisplayDefinition() {
 		return $this->display_definition;
 	}
-
 
 	/**
 	 * @return mixed
@@ -76,50 +69,5 @@ class AnswerOption implements JsonSerializable {
 		$sd_fields = $this->scoring_definition !== null ? $this->scoring_definition->getValues() : [];
 
 		return array_merge($dd_fields, $sd_fields);
-	}
-
-	public function equals(AnswerOption $other) : bool {
-	    if (get_class($this->display_definition) !== get_class($other->display_definition) ||
-	        get_class($this->scoring_definition) !== get_class($other->scoring_definition))
-	    {
-	       return false;        
-	    }
-
-	    $my_values = $this->rawValues();
-	    $other_values = $other->rawValues();
-
-	    foreach (array_keys($my_values) as $key)
-	    {
-	        if ($my_values[$key] !== $other_values[$key]) 
-	        {
-	            return false;
-	        }
-	    }
-	    
-	    return true;
-	}
-
-	/**
-	 * Specify data which should be serialized to JSON
-	 *
-	 * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 * @since 5.4.0
-	 */
-	public function jsonSerialize() {
-		$vars = get_object_vars($this);
-		$vars[self::DISPLAY_DEF_CLASS] = get_class($this->display_definition);
-		$vars[self::SCORING_DEF_CLASS] = get_class($this->scoring_definition);
-		return $vars;
-	}
-
-	public function deserialize(stdClass $option) {
-
-		$dd_class = $option->{self::DISPLAY_DEF_CLASS};
-		$this->display_definition = call_user_func(array($dd_class, 'deserialize'), $option->display_definition);
-
-		$sd_class = $option->{self::SCORING_DEF_CLASS};
-		$this->scoring_definition = call_user_func(array($sd_class, 'deserialize'), $option->scoring_definition);
 	}
 }

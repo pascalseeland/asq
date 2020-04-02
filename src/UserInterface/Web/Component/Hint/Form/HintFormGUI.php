@@ -102,7 +102,7 @@ class HintFormGUI extends \ilPropertyFormGUI
     
     public function getHintsFromPost() : QuestionHints {
         $index = 0;
-        return new QuestionHints(
+        return QuestionHints::create(
             array_map(
                 function($raw_hint) use ($index) {
                     $index += 1;

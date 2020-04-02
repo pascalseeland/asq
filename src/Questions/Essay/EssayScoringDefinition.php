@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay;
 
-use stdClass;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
@@ -32,16 +31,15 @@ class EssayScoringDefinition extends AnswerDefinition {
     protected $text;
     
     /**
-     * @param int $type
-     * @param float $min
-     * @param float $max
-     * @param string $unit
-     * @param float $multiple_of
-     * @param int $points
+     * @param string $text
+     * @param float $points
+     * @return EssayScoringDefinition
      */
-    public function __construct(?string $text, ?float $points) {
-        $this->points = $points;
-        $this->text = $text;
+    public static function create(?string $text, ?float $points) : EssayScoringDefinition {
+        $object = new EssayScoringDefinition();
+        $object->points = $points;
+        $object->text = $text;
+        return $object;
     }
 
     public function getPoints() : ?float
@@ -72,12 +70,8 @@ class EssayScoringDefinition extends AnswerDefinition {
     {
         $pointkey = self::getPostKey($index, self::VAR_POINTS);
         
-        return new EssayScoringDefinition(AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TEXT)]),
-                                          array_key_exists($pointkey, $_POST) ? floatval($_POST[$pointkey]) : 0);            
-    }
-
-    public static function deserialize(stdClass $data)
-    {
-        return new EssayScoringDefinition($data->text, $data->points);
+        return EssayScoringDefinition::create(
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TEXT)]),
+            array_key_exists($pointkey, $_POST) ? floatval($_POST[$pointkey]) : 0);            
     }
 }

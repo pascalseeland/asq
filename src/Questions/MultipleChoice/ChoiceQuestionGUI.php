@@ -7,8 +7,8 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
@@ -43,13 +43,14 @@ abstract class ChoiceQuestionGUI extends QuestionFormGUI {
         // strip image when multiline is selected
         if (!$question->getPlayConfiguration()->getEditorConfiguration()->isSingleLine()) {
             // remove from question
-            $stripped_options = new AnswerOptions();
-            /** @var $option AnswerOption */
-            foreach ($question->getAnswerOptions()->getOptions() as $option) {
-                $stripped_options->addOption(new AnswerOption($option->getOptionId(),
-                    new ImageAndTextDisplayDefinition($option->getDisplayDefinition()->getText(), ''),
-                    $option->getScoringDefinition()));
-            }
+            $stripped_options = AnswerOptions::create(
+                function($option) {
+                    return AnswerOption::create(
+                        $option->getOptionId(),
+                        ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
+                        $option->getScoringDefinition());
+                }, 
+                $question->getAnswerOptions()->getOptions());
             
             $question->setAnswerOptions($stripped_options);
             $this->option_form->setAnswerOptions($stripped_options);

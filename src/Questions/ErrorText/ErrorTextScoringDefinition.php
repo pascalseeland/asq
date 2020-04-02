@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\ErrorText;
 
-
-use stdClass;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
@@ -49,16 +47,20 @@ class ErrorTextScoringDefinition extends AnswerDefinition {
     private static $error_text_words;
     
     /**
-     * ErrorTextScoringDefinition constructor.
-     *
-     * @param int $points
+     * @param int $wrong_word_index
+     * @param int $wrong_word_length
+     * @param string $correct_text
+     * @param float $points
+     * @return \srag\asq\Questions\ErrorText\ErrorTextScoringDefinition
      */
-    public function __construct(int $wrong_word_index, int $wrong_word_length, ?string $correct_text, float $points)
+    public static function create(int $wrong_word_index, int $wrong_word_length, ?string $correct_text, float $points)
     {
-        $this->wrong_word_index = $wrong_word_index;
-        $this->wrong_word_length = $wrong_word_length;
-        $this->correct_text = $correct_text;
-        $this->points = $points;
+        $object = new ErrorTextScoringDefinition();
+        $object->wrong_word_index = $wrong_word_index;
+        $object->wrong_word_length = $wrong_word_length;
+        $object->correct_text = $correct_text;
+        $object->points = $points;
+        return $object;
     }
     
     /**
@@ -139,7 +141,7 @@ class ErrorTextScoringDefinition extends AnswerDefinition {
     }
     
     public static function getValueFromPost(string $index) {
-        return new ErrorTextScoringDefinition(
+        return ErrorTextScoringDefinition::create(
             intval($_POST[self::getPostKey($index, self::VAR_WORD_INDEX)]),
             intval($_POST[self::getPostKey($index, self::VAR_WORD_LENGTH)]),
             AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_CORRECT_TEXT)]),
@@ -164,14 +166,5 @@ class ErrorTextScoringDefinition extends AnswerDefinition {
         }
         
         return $text;
-    }
-    
-    
-    public static function deserialize(stdClass $data) {
-        return new ErrorTextScoringDefinition(
-            $data->wrong_word_index,
-            $data->wrong_word_length,
-            $data->correct_text,
-            $data->points);
     }
 }

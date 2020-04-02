@@ -3,8 +3,7 @@
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
 use ilDateTime;
-use srag\asq\Domain\Model\Question;
-use srag\asq\Infrastructure\Persistence\Projection\AbstractProjectionAr;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class QuestionAr
@@ -35,6 +34,14 @@ class QuestionAr extends AbstractProjectionAr
      */
     protected $created;
     /**
+     * @var int
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     8
+     */
+    protected $creator;
+    /**
      * @var string
      *
      * @con_has_field  true
@@ -53,26 +60,8 @@ class QuestionAr extends AbstractProjectionAr
      * @con_index      true
      * @con_is_notnull true
      */
-    protected $revision_id;
-    /**
-     * @var int
-     *
-     * @con_has_field  true
-     * @con_fieldtype  integer
-     * @con_index      true
-     * @con_is_notnull true
-     */
-    protected $container_obj_id;
-    /**
-     * @con_has_field        true
-     * @con_fieldtype        integer
-     * @con_length           8
-     * @con_is_notnull       true
-     * @con_is_unique        true
-     *
-     * @var int
-     */
-    protected $question_int_id;
+    protected $revision_name;
+
     /**
      * @var string
      *
@@ -80,47 +69,22 @@ class QuestionAr extends AbstractProjectionAr
      * @con_fieldtype  clob
      * @con_is_notnull true
      */
-    protected $question_data;
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  clob
-     * @con_is_notnull true
-     */
-    protected $question_configuration;
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  clob
-     */
-    protected $answer_options;
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  clob
-     */
-    protected $feedback;
+    protected $data;
 
     /**
      * 
-     * @param Question $question
+     * @param QuestionDto $question
      */
-    public static function createNew(Question $question) {
+    public static function createNew(QuestionDto $question) {        
+        global $DIC;
         $object = new QuestionAr();
         
         $created = new ilDateTime(time(), IL_CAL_UNIX);
         $object->created = $created->get(IL_CAL_DATETIME);
-        $object->question_int_id = $question->getQuestionIntId();
-        $object->revision_id = $question->getRevisionId()->GetKey();
-        $object->question_id = $question->getAggregateId()->getId();
-        $object->question_data = json_encode($question->getData());
-        $object->question_configuration = json_encode($question->getPlayConfiguration());
-        $object->answer_options = json_encode($question->getAnswerOptions()->getOptions());
-        $object->container_obj_id = $question->getContainerObjId();
-        $object->feedback = json_encode($question->getFeedback());
+        $object->creator = $DIC->user()->getId();
+        $object->question_id = $question->getId();
+        $object->revision_name = $question->getRevisionId()->getName();
+        $object->data = json_encode($question);
         
         return $object;
         
@@ -133,7 +97,7 @@ class QuestionAr extends AbstractProjectionAr
     {
         return $this->id;
     }
-
+    
     /**
      * @return mixed
      */
@@ -142,6 +106,14 @@ class QuestionAr extends AbstractProjectionAr
         return $this->created;
     }
 
+    /**
+     * @return int
+     */
+    public function getCreator(): int
+    {
+        return $this->creator;
+    }
+    
     /**
      * @return string
      */
@@ -153,58 +125,13 @@ class QuestionAr extends AbstractProjectionAr
     /**
      * @return string
      */
-    public function getRevisionId() : string
+    public function getRevisionName() : string
     {
-        return $this->revision_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getContainerObjId() : int
-    {
-        return $this->container_obj_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getQuestionIntId(): int
-    {
-        return $this->question_int_id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getQuestionData()
-    {
-        return $this->question_data;
+        return $this->revision_name;
     }
     
-    /**
-     * @return string
-     */
-    public function getQuestionConfiguration()
-    {
-        return $this->question_configuration;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getAnswerOptions()
-    {
-        return $this->answer_options;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFeedback() : string
-    {
-        return $this->feedback;
+    public function getQuestion(): QuestionDto {
+        return QuestionDto::deserialize($this->data);
     }
     
     /**

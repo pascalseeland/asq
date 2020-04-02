@@ -8,7 +8,9 @@ use srag\CQRS\Aggregate\RevisionFactory;
 use srag\CQRS\Command\CommandContract;
 use srag\CQRS\Command\CommandHandlerContract;
 use srag\asq\Domain\QuestionRepository;
-use srag\asq\Domain\Projection\ProjectQuestions;
+use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
+use srag\asq\Application\Exception\AsqException;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class CreateQuestionRevisionCommandHandler
@@ -26,10 +28,22 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract {
      */
 	public function handle(CommandContract $command) {
 	    /** @var CreateQuestionRevisionCommand $command */
+	    $repository = new PublishedQuestionRepository();
+	    
+	    if ($repository->revisionExists($command->getQuestionId(), $command->getRevisionName())) {
+	       throw new AsqException(
+	           sprintf(
+	               'A revision with the Name: "%s" already exists for Question: "%s"', 
+	               $command->getRevisionName(), 
+	               $command->getQuestionId()));
+	    }
+	    
+	    
 		$question = QuestionRepository::getInstance()->getAggregateRootById(new DomainObjectId($command->getQuestionId()));
-		RevisionFactory::setRevisionId($question);
-		$projector = new ProjectQuestions();
-		$projector->project($question);
+		RevisionFactory::setRevisionId($question, $command->getRevisionName());
+
+		$repository->saveNewQuestionRevision(QuestionDto::CreateFromQuestion($question));
+	    
 		QuestionRepository::getInstance()->save($question);
 	}
 }

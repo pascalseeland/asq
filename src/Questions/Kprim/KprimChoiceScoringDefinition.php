@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Kprim;
 
-use stdClass;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
@@ -29,8 +28,10 @@ class KprimChoiceScoringDefinition extends AnswerDefinition {
      */
     protected $correct_value;
 
-    public function __construct(bool $correct_value) {
-        $this->correct_value = $correct_value;
+    public static function create(bool $correct_value) : KprimChoiceScoringDefinition{
+        $object = new KprimChoiceScoringDefinition();
+        $object->correct_value = $correct_value;
+        return $object;
     }
     
     /**
@@ -71,11 +72,6 @@ class KprimChoiceScoringDefinition extends AnswerDefinition {
 
     public static function getValueFromPost(string $index)
     {
-        return new KprimChoiceScoringDefinition($_POST[self::getPostKey($index, self::VAR_KPSD_CORRECT)] === self::STR_TRUE);
-    }
-
-    public static function deserialize(stdClass $data)
-    {
-        return new KprimChoiceScoringDefinition($data->correct_value);
+        return KprimChoiceScoringDefinition::create($_POST[self::getPostKey($index, self::VAR_KPSD_CORRECT)] === self::STR_TRUE);
     }
 }

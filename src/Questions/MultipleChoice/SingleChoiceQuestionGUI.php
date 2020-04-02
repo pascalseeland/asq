@@ -5,7 +5,7 @@ namespace srag\asq\Questions\MultipleChoice;
 
 use ilHiddenInputGUI;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\UserInterface\Web\Component\Editor\ImageAndTextDisplayDefinition;
+use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 
 /**
  * Class SingleChoiceQuestionGUI

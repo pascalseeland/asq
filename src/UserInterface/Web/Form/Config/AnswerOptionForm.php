@@ -21,7 +21,7 @@ class AnswerOptionForm extends AsqTableInput {
     const VAR_POST = 'answer_options';
     
     /**
-     * @var AnswerOptions
+     * @var ?AnswerOptions
      */
     private $options;
     /**
@@ -31,7 +31,7 @@ class AnswerOptionForm extends AsqTableInput {
     
 	public function __construct(string $title, 
 	                            ?QuestionPlayConfiguration $configuration, 
-	                            AnswerOptions $options, 
+	                            ?AnswerOptions $options, 
 	                            ?array $definitions = null,
 	                            ?array $form_configuration = null) 
 	{
@@ -48,14 +48,14 @@ class AnswerOptionForm extends AsqTableInput {
 	    
 		parent::__construct($title, 
 		                    self::VAR_POST,
-                		    $this->getRawOptionValue($options->getOptions()),
+		                    !is_null($options) ? $this->getRawOptionValue($options->getOptions()) : [],
 		                    $definitions,
 		                    $form_configuration);
 		
 		$this->options = $options;
 	}
 	
-	public function setAnswerOptions(Answeroptions $options) {
+	public function setAnswerOptions(AnswerOptions $options) {
 	    $this->setValues($this->getRawOptionValue($options->getOptions()));
 	}
 	
@@ -107,16 +107,16 @@ class AnswerOptionForm extends AsqTableInput {
 	    
 	    $count = intval($_POST[Answeroptionform::VAR_POST]);
 
-	    $this->options = new AnswerOptions();
+	    $options = [];
 	    for ($i = 1; $i <= $count; $i++) {
-	        $this->options->addOption(new AnswerOption
-	            (
+	        $options[] = AnswerOption::create(
 	                strval($i),
 	                $dd_class::getValueFromPost(strval($i)),
-	                $sd_class::getValueFromPost(strval($i))));
+	                $sd_class::getValueFromPost(strval($i)));
 	    }
 	    
-	    $this->values = $this->getRawOptionValue($this->options->getOptions());
+	    $this->options = AnswerOptions::create($options);
+	    $this->values = $this->getRawOptionValue($options);
 	}
 
 	public function getAnswerOptions() : AnswerOptions {

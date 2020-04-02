@@ -92,10 +92,14 @@ class AsqQuestionPreviewGUI
             $hint_component = new HintComponent($question_dto->getQuestionHints());
             $question_tpl->setVariable('HINTS', $hint_component->getHtml());
         }
+
+        if ($question_dto->hasFeedback()) {
+            $question_tpl->setCurrentBlock('feedback_button');
+            $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
+            $question_tpl->parseCurrentBlock();
+        }
         
-        $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
-        
-        if (count($question_dto->getQuestionHints()->getHints()) > 0) {
+        if ($question_dto->hasHints()) {
             $question_tpl->setCurrentBlock('hint_button');
             $question_tpl->setVariable('HINT_BUTTON_TITLE', $DIC->language()->txt('asq_hint_button_title'));
             $question_tpl->parseCurrentBlock();

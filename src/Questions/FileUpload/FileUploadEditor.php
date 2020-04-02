@@ -13,9 +13,9 @@ use srag\CQRS\Aggregate\Guid;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 
 /**
  * Class FileUploadEditor
@@ -198,7 +198,7 @@ class FileUploadEditor extends AbstractEditor {
     }
 
     public static function getDisplayDefinitionClass() : string {
-        return EmptyDisplayDefinition::class;
+        return EmptyDefinition::class;
     }
     
     public static function isComplete(Question $question): bool

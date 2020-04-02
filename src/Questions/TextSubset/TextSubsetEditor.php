@@ -9,9 +9,9 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 
 /**
  * Class TextSubsetEditor
@@ -123,7 +123,7 @@ class TextSubsetEditor extends AbstractEditor {
      * @return string
      */
     static function getDisplayDefinitionClass() : string {
-        return EmptyDisplayDefinition::class;
+        return EmptyDefinition::class;
     }
     
     /**

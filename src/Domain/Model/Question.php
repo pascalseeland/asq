@@ -5,14 +5,12 @@ namespace srag\asq\Domain\Model;
 
 use ilDateTime;
 use srag\CQRS\Aggregate\AbstractEventSourcedAggregateRoot;
-use srag\CQRS\Aggregate\AggregateRoot;
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Aggregate\IsRevisable;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\DomainEvent;
-use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
-use srag\asq\Domain\Event\AggregateRevisionCreatedEvent;
+use srag\CQRS\Event\Standard\AggregateRevisionCreatedEvent;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
@@ -43,10 +41,6 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      */
     private $revision_id;
     /**
-     * @var string
-     */
-    private $revision_name;
-    /**
      * @var int
      */
     private $creator_id;
@@ -70,20 +64,6 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      * @var Feedback
      */
     private $feedback;
-
-
-    /**
-     * Question constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->answers = [];
-        $this->answer_options = new AnswerOptions();
-        $this->hints = new QuestionHints([]);
-    }
-
 
     /**
      * @param DomainObjectId $question_uuid
@@ -145,7 +125,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      */
     protected function applyAggregateRevisionCreatedEvent(AggregateRevisionCreatedEvent $event)
     {
-        $this->revision_id = new RevisionId($event->getRevisionId());
+        $this->revision_id = $event->getRevisionId();
     }
 
 
@@ -233,7 +213,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
     /**
      * @return AnswerOptions
      */
-    public function getAnswerOptions() : AnswerOptions
+    public function getAnswerOptions() : ?AnswerOptions
     {
         return $this->answer_options;
     }
@@ -243,9 +223,9 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      * @param AnswerOptions $options
      * @param int $creator_id
      */
-    public function setAnswerOptions(AnswerOptions $options, int $creator_id)
+    public function setAnswerOptions(?AnswerOptions $options, int $creator_id)
     {
-        if (!$options->equals($this->getAnswerOptions())) {
+        if (! Answeroptions::isNullableEqual($options, $this->getAnswerOptions())) {
             $this->ExecuteEvent(
                 new QuestionAnswerOptionsSetEvent(
                     $this->getAggregateId(), 
@@ -272,7 +252,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
      */
     public function setHints(?QuestionHints $hints, int $creator_id = self::SYSTEM_USER_ID)
     {
-        if (!is_null($hints) && !$hints->equals($this->getHints())) {
+        if (! QuestionHints::isNullableEqual($hints, $this->getHints())) {
             $this->ExecuteEvent(new QuestionHintsSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
@@ -344,24 +324,6 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
             new ilDateTime(time(), IL_CAL_UNIX),
             $user_id,
             $id));
-    }
-
-    /**
-     * @return array
-     *
-     * Data used for signing the revision, so this method needs to to collect all
-     * Domain specific data of an object and return it as an array
-     */
-    public function getRevisionData() : array
-    {
-        $data = [];
-        $data[] = $this->getAggregateId()->getId();
-        $data[] = $this->getData();
-        $data[] = $this->getPlayConfiguration();
-        $data[] = $this->getAnswerOptions();
-        $data[] = $this->getFeedback();
-        $data[] = $this->getHints();
-        return $data;
     }
     
     public function isQuestionComplete() : bool {

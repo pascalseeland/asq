@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
-use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class QuestionListItemAr
@@ -38,6 +38,16 @@ class QuestionListItemAr extends AbstractProjectionAr
      * @con_sequence   true
      */
     protected $id;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     200
+     * @con_index      true
+     * @con_is_notnull true
+     */
+    protected $revision_name;
     /**
      * @var string
      *
@@ -89,10 +99,11 @@ class QuestionListItemAr extends AbstractProjectionAr
      */
     protected $working_time;
 
-    public static function createNew(Question $question) : QuestionListItemAr 
+    public static function createNew(QuestionDto $question) : QuestionListItemAr 
     {
         $object = new QuestionListItemAr();
         $object->question_id = $question->getAggregateId()->getId();
+        $object->revision_name = $question->getRevisionId()->getName();
         $object->title = $question->getData()->getTitle();
         $object->description = $question->getData()->getDescription();
         $object->question = $question->getData()->getQuestionText();
@@ -146,5 +157,12 @@ class QuestionListItemAr extends AbstractProjectionAr
      */
     public function getQuestionId() : string {
         return $this->question_id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getRevisionName() : string {
+        return $this->revision_name;
     }
 }

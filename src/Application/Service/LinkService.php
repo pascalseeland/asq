@@ -10,6 +10,7 @@ use AsqQuestionFeedbackEditorGUI;
 use AsqQuestionHintEditorGUI;
 use AsqQuestionPageGUI;
 use AsqQuestionPreviewGUI;
+use AsqQuestionVersionGUI;
 use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 
 /**
@@ -115,6 +116,23 @@ class LinkService
             $DIC->language()->txt('asq_authoring_tab_hints'),
             $DIC->ctrl()->getLinkTargetByClass([
                 AsqQuestionAuthoringGUI::class, AsqQuestionHintEditorGUI::class
+            ])
+        );
+    }
+    
+    /**
+     * @return UiStandardLink
+     */
+    public function getRevisionsLink(string $question_id) : UiStandardLink
+    {
+        global $DIC; /* @var \ILIAS\DI\Container $DIC */
+        
+        self::setQuestionUidParameter($question_id);
+        
+        return $DIC->ui()->factory()->link()->standard(
+            $DIC->language()->txt('asq_authoring_tab_versions'),
+            $DIC->ctrl()->getLinkTargetByClass([
+                AsqQuestionAuthoringGUI::class, AsqQuestionVersionGUI::class
             ])
         );
     }

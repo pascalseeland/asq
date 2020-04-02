@@ -3,30 +3,15 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Question;
-use srag\asq\Domain\Model\QuestionLegacyData;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 
 class PublishedQuestionRepository
 {
     /**
     * @param Question $question
     */
-    public function saveNewQuestionRevision(Question $question) {
-        /** @var QuestionAr $old_question */
-        $old_question = QuestionAr::where(['question_id' => $question->getAggregateId()->getId()])->first();
-
-
-        if (!is_null($old_question)) {
-            if ($old_question->getRevisionId() === $question->getRevisionId()) {
-                //same question already published
-                return;
-            }
-        }
-        
+    public function saveNewQuestionRevision(QuestionDto $question) {        
         $question_ar = QuestionAr::createNew($question);
         $question_ar->create();
         
@@ -40,67 +25,29 @@ class PublishedQuestionRepository
                $current->getAnswerOptions()->equals($old->getAnswerOptions());
     }
     
-    public function getQuestionByRevisionId(string $revision_id) : QuestionDto
+    public function revisionExists(string $question_id, string $name) : bool {
+        return QuestionAr::where(['revision_name' => $name, 'question_id' => $question_id])->count() > 0;
+    }
+    
+    public function getQuestionRevision(string $question_id, string $name) : QuestionDto
     {
-        /** @var QuestionAr $question */
-        $question = QuestionAr::where(['revision_id' => $revision_id])->first();
-
-        $dto = $this->GenerateDtoFromAr($question);
+        /** @var QuestionAr $revision */
+        $revision = QuestionAr::where(['revision_name' => $name, 'question_id' => $question_id])->first();
         
-        return $dto;
+        return $revision->getQuestion();
     }
-   
+    
     /**
-     * @param QuestionAr $question
-     * @return QuestionDto
-     */
-    private function GenerateDtoFromAr(QuestionAr $question)
-    {
-        $dto = new QuestionDto();
-        $dto->setId($question->getQuestionId());
-        $dto->setRevisionId($question->getRevisionId());
-        $dto->setContainerObjId($question->getContainerObjId());
-        $dto->setQuestionIntId($question->getQuestionIntId());
-        $dto->setData(AbstractValueObject::deserialize($question->getQuestionData()));
-        $dto->setPlayConfiguration(AbstractValueObject::deserialize($question->getQuestionConfiguration()));
-        $dto->setAnswerOptions(AnswerOptions::deserialize($question->getAnswerOptions()));
-        $dto->setLegacyData(QuestionLegacyData::create(0, $question->getContainerObjId(), $question->getObjectId()));
-        $dto->setFeedback(Feedback::deserialize($question->getFeedback()));
-        return $dto;
-    }
-
-
-    /**
-     * @param $container_obj_id
-     *
+     * @param string $question_id
      * @return QuestionDto[]
      */
-    public function getQuestionsByContainer($container_obj_id) : array
+    public function getAllQuestionRevisions(string $question_id) : array
     {
-        $questions = [];
+        /** @var QuestionAr $revision */
+        $revisions = QuestionAr::where(['question_id' => $question_id])->get();
         
-        foreach (QuestionAr::where(['container_obj_id' => $container_obj_id])->get() as $question) {
-            $questions[] = $this->GenerateDtoFromAr($question);
-        }
-
-        return $questions;
-    }
-
-
-    public function unpublishCurrentRevision(string $question_id, int $container_obj_id)
-    {
-        /** @var QuestionListItemAr $question */
-        $question_list = QuestionListItemAr::where(['question_id' => $question_id])->first();
-        
-        if (!is_null($question)) {
-            $question_list->delete();
-        }
-        
-        /** @var QuestionAr $question */
-        $question = QuestionAr::where(['question_id' => $question_id])->first();
-        
-        if (!is_null($question)) {
-            $question->delete();
-        }
+        return array_map(function($revision) {
+            return $revision->getQuestion();
+        }, $revisions);
     }
 }

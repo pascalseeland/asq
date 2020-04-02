@@ -7,8 +7,8 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
-use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
@@ -37,7 +37,8 @@ class EssayQuestionGUI extends QuestionFormGUI {
     
     protected function readAnswerOptions(QuestionDto $question) : AnswerOptions {
         $selected = intval($_POST[EssayScoring::VAR_SCORING_MODE]);
-        $options = new AnswerOptions();
+        
+        $options = [];
         
         if ($selected !== EssayScoring::SCORING_MANUAL) {
             if ($selected === EssayScoring::SCORING_AUTOMATIC_ALL) {
@@ -53,18 +54,18 @@ class EssayQuestionGUI extends QuestionFormGUI {
             $i = 1; 
             
             while (array_key_exists($this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_TEXT), $_POST)) {
-                $options->addOption(new AnswerOption(
+                $options[] = AnswerOption::create(
                         strval($i),
-                        new EmptyDisplayDefinition(),
-                        new EssayScoringDefinition(
+                        EmptyDefinition::create(),
+                        EssayScoringDefinition::create(
                             AsqHtmlPurifier::getInstance()->purify($_POST[$this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_TEXT)]),
                             array_key_exists($this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_POINTS), $_POST) ? 
-                                intval($_POST[$this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_POINTS)]) : null)));
+                                intval($_POST[$this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_POINTS)]) : null));
                 $i += 1;
             }
         }
     
-        return $options;
+        return Answeroptions::create($options);
     }
     
     private function getPostKey($i, $prefix, $suffix) {

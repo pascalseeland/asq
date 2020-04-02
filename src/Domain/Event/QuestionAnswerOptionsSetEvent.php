@@ -51,7 +51,7 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent {
 	 * {@inheritDoc}
 	 */
 	public function getEventBody(): string {
-		return json_encode($this->answer_options->getOptions());
+		return json_encode($this->answer_options);
 	}
 
 	/**

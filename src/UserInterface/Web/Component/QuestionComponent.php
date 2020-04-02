@@ -67,7 +67,7 @@ class QuestionComponent
         $tpl->setVariable('QUESTION_OUTPUT', $this->presenter->generateHtml($this->editor));
         $tpl->parseCurrentBlock();
         
-        if ($this->show_feedback) {
+        if ($this->show_feedback && !is_null($this->question_dto->getFeedback())) {
             $feedback_component = new FeedbackComponent($this->question_dto, $this->editor->readAnswer());
             $tpl->setCurrentBlock('feedback');
             $tpl->setVariable('QUESTION_FEEDBACK',$feedback_component->getHtml());

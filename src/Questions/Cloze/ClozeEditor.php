@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Cloze;
 
 use ilFormSectionHeaderGUI;
-use ilLinkButton;
 use ilNumberInputGUI;
 use ilPropertyFormGUI;
 use ilSelectInputGUI;
@@ -13,13 +12,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Component\Editor\EmptyDisplayDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\CustomInputGUIs\AssessmentTest\HiddenInputGUI\HiddenInputGUI;
 
 /**
  * Class ClozeEditor
@@ -398,6 +396,6 @@ class ClozeEditor extends AbstractEditor {
      * @return string
      */
     static function getDisplayDefinitionClass() : string {
-        return EmptyDisplayDefinition::class;
+        return EmptyDefinition::class;
     }
 }

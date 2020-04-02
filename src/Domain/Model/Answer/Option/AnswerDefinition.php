@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model\Answer\Option;
 
-use JsonSerializable;
 use stdClass;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
@@ -17,7 +17,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class AnswerDefinition implements JsonSerializable {
+abstract class AnswerDefinition Extends AbstractValueObject {
 
     /**
      * @return AsqTableInputFieldDefinition[]
@@ -27,8 +27,6 @@ abstract class AnswerDefinition implements JsonSerializable {
 	public abstract function getValues() : array;
 
 	public abstract static function getValueFromPost(string $index);
-
-	public abstract static function deserialize(stdClass $data);
 	
 	/**
 	 * @return bool
@@ -46,17 +44,5 @@ abstract class AnswerDefinition implements JsonSerializable {
 	
 	protected static function getPostKey(string $index, string $name) {
 	    return sprintf('%s_answer_options_%s', $index, $name);
-	}
-	
-	/**
-	 * Specify data which should be serialized to JSON
-	 *
-	 * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 * @since 5.4.0
-	 */
-	public function jsonSerialize() {
-	    return get_object_vars($this);
 	}
 }

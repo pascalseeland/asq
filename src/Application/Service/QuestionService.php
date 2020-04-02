@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Command\CommandBusBuilder;
 use srag\asq\Application\Command\CreateQuestionCommand;
+use srag\asq\Application\Command\CreateQuestionRevisionCommand;
 use srag\asq\Application\Command\SaveQuestionCommand;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
@@ -14,7 +14,7 @@ use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\ContentEditingMode;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
-use srag\asq\Application\Command\CreateQuestionRevisionCommand;
+use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 
 /**
  * Class QuestionService
@@ -43,13 +43,15 @@ class QuestionService extends ASQService
             throw new AsqException(sprintf("Question with id %s does not exist", $id));
         }
     }
-
-    /**
-     * @param string $name
-     * @param string $question_id
-     */
-    public function createQuestionRevision(string $name, string $question_id) {
-        CommandBusBuilder::getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+    
+    public function getQuestionRevision(string $id, string $name) : QuestionDto {
+        $repo = new PublishedQuestionRepository();
+        return $repo->getQuestionRevision($id, $name);
+    }
+    
+    public function getAllRevisionsOfQuestion(string $id) : array {
+        $repo = new PublishedQuestionRepository();
+        return $repo->getAllQuestionRevisions($id);
     }
     
     /**
@@ -59,11 +61,19 @@ class QuestionService extends ASQService
     public function getQuestionsOfContainer(int $container_id) : array {
         $questions = [];
         $event_store = new QuestionEventStore();
-        foreach ($event_store->allStoredQuestionIdsForContainerObjId($container_id) as $aggregate_id) {        
+        foreach ($event_store->allStoredQuestionIdsForContainerObjId($container_id) as $aggregate_id) {
             $questions[] = $this->getQuestionByQuestionId($aggregate_id);;
         }
         
         return $questions;
+    }
+
+    /**
+     * @param string $name
+     * @param string $question_id
+     */
+    public function createQuestionRevision(string $name, string $question_id) {
+        CommandBusBuilder::getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
     }
 
     /**

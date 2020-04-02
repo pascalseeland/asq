@@ -5,7 +5,6 @@ namespace srag\asq\Application\Command;
 
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Command\AbstractCommand;
-use srag\CQRS\Command\CommandContract;
 
 /**
  * Class CreateQuestionCommand

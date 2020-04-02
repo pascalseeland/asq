@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Formula;
 
-use stdClass;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
@@ -39,20 +38,18 @@ class FormulaScoringDefinition extends AnswerDefinition {
     protected $points;
     
     /**
-     * @param int $type
-     * @param float $min
-     * @param float $max
+     * @param string $formula
      * @param string $unit
-     * @param float $multiple_of
-     * @param int $points
+     * @param float $points
+     * @return FormulaScoringDefinition
      */
-    public function __construct(string $formula, string $unit, float $points) {
-        $this->formula = $formula;
-        $this->unit = $unit;
-        $this->points = $points;
+    public static function create(string $formula, string $unit, float $points) : FormulaScoringDefinition {
+        $object = new FormulaScoringDefinition();
+        $object->formula = $formula;
+        $object->unit = $unit;
+        $object->points = $points;
+        return $object;
     }
-    
-    
     
     /**
      * @return string
@@ -113,15 +110,9 @@ class FormulaScoringDefinition extends AnswerDefinition {
 
     public static function getValueFromPost(string $index)
     {          
-        return new FormulaScoringDefinition(AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_FORMULA)]),
+        return FormulaScoringDefinition::create(
+            AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_FORMULA)]),
             AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_UNIT)]), 
             floatval($_POST[self::getPostKey($index, self::VAR_POINTS)]));            
-    }
-
-    public static function deserialize(stdClass $data)
-    {
-        return new FormulaScoringDefinition($data->formula, 
-                                            $data->unit,
-                                            $data->points);
     }
 }
