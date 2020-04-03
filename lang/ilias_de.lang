@@ -207,3 +207,7 @@ input_feedback_wrong#:#Mindestens eine Antwort ist nicht richtig
 link_edit_feedback_page#:#Inhalt bearbeiten
 back_to_question_link#:#Zurück zur aufrufenden Frage
 hints#:#Hints
+header_revision_creator#:#Creator
+header_revision_name#:#Name
+header_revision_date#:#Date
+header_revision_actions#:#Actions

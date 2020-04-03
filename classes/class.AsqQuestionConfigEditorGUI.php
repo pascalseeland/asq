@@ -5,6 +5,8 @@ use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Application\Service\QuestionService;
+use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
  * Class AsqQuestionConfigEditorGUI
@@ -29,10 +31,10 @@ class AsqQuestionConfigEditorGUI
     protected $contextContainer;
 
     /**
-     * @var DomainObjectId
+     * @var QuestionDto
      */
-    protected $questionId;
-
+    private $question;
+    
     /**
      *
      * @param AuthoringContextContainer $contextContainer
@@ -40,7 +42,7 @@ class AsqQuestionConfigEditorGUI
     public function __construct(AuthoringContextContainer $contextContainer, DomainObjectId $questionId)
     {
         $this->contextContainer = $contextContainer;
-        $this->questionId = $questionId;
+        $this->question = AsqGateway::get()->question()->getQuestionByQuestionId($questionId->getId());
     }
 
 
@@ -69,8 +71,7 @@ class AsqQuestionConfigEditorGUI
 
         if( $form === null )
         {
-            $question = $this->buildQuestion();
-            $form = $this->buildForm($question);
+            $form = $this->buildForm();
         }
 
         $DIC->ui()->mainTemplate()->setContent($form->getHTML());
@@ -84,8 +85,7 @@ class AsqQuestionConfigEditorGUI
     {
         $form = $this->buildForm();
 
-        $question = $form->getQuestion();
-        AsqGateway::get()->question()->saveQuestion($question);
+        $this->saveQuestion($form);
         
         ilutil::sendInfo("Question Saved", true);
         
@@ -102,8 +102,7 @@ class AsqQuestionConfigEditorGUI
         
         $form = $this->buildForm();
         
-        $question = $form->getQuestion();
-        AsqGateway::get()->question()->saveQuestion($question);
+        $this->saveQuestion($form);
         
         if( !$form->checkInput() )
         {
@@ -116,35 +115,27 @@ class AsqQuestionConfigEditorGUI
         ));
     }
 
+    private function saveQuestion(QuestionFormGUI $form) {
+        $changes = $form->getQuestion();
+        $this->question->setData($changes->getData());
+        $this->question->setPlayConfiguration($changes->getPlayConfiguration());
+        $this->question->setAnswerOptions($changes->getAnswerOptions());
+        AsqGateway::get()->question()->saveQuestion($this->question);
+    }
+    
     /**
-     * @return ilPropertyFormGUI
+     * @return QuestionFormGUI
      * @throws Exception
      */
-    protected function buildForm() : ilPropertyFormGUI // TODO: should be any interface
+    private function buildForm() : QuestionFormGUI
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
-        $question = $this->buildQuestion();
-
-        $form = AsqGateway::get()->ui()->getQuestionEditForm($question);
+        $form = AsqGateway::get()->ui()->getQuestionEditForm($this->question);
         $form->setFormAction($DIC->ctrl()->getFormAction($this, self::CMD_SHOW_FORM));
         $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $DIC->language()->txt('save_return'));
         $form->addCommandButton(self::CMD_SAVE_FORM, $DIC->language()->txt('save'));
 
         return $form;
-    }
-
-
-    /**
-     * @return QuestionDto
-     */
-    protected function buildQuestion() : QuestionDto
-    {
-        global $DIC;
-        
-        $question_id = $this->questionId->getId();
-        $question = AsqGateway::get()->question()->getQuestionByQuestionId($question_id);
-
-        return $question;
     }
 }

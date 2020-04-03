@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
+use ActiveRecord;
+use ilDateTimeException;
 use srag\asq\Domain\QuestionDto;
+use ilDateTime;
 
 /**
  * Class QuestionListItemAr
@@ -14,7 +17,7 @@ use srag\asq\Domain\QuestionDto;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionListItemAr extends AbstractProjectionAr
+class QuestionListItemAr extends ActiveRecord
 {
 
     const STORAGE_NAME = "asq_question_list_item";
@@ -98,17 +101,25 @@ class QuestionListItemAr extends AbstractProjectionAr
      * @con_fieldtype  integer
      */
     protected $working_time;
-
+    /**
+     * @var ilDateTime
+     * 
+     * @con_has_field true
+     * @con_fieldtype timestamp
+     */
+    protected $created;
+    
     public static function createNew(QuestionDto $question) : QuestionListItemAr 
     {
         $object = new QuestionListItemAr();
-        $object->question_id = $question->getAggregateId()->getId();
+        $object->question_id = $question->getId();
         $object->revision_name = $question->getRevisionId()->getName();
         $object->title = $question->getData()->getTitle();
         $object->description = $question->getData()->getDescription();
         $object->question = $question->getData()->getQuestionText();
         $object->author = $question->getData()->getAuthor();
         $object->working_time = $question->getData()->getWorkingTime();
+        $object->created = new ilDateTime(time(), IL_CAL_UNIX);
         return $object;
     }
     
@@ -139,15 +150,15 @@ class QuestionListItemAr extends AbstractProjectionAr
     /**
      * @return string
      */
-    public function getAuthor()
+    public function getAuthor() : string
     {
         return $this->author;
     }
 
     /**
-     * @return number
+     * @return int
      */
-    public function getWorkingTime()
+    public function getWorkingTime() : int
     {
         return $this->working_time;
     }
@@ -164,5 +175,32 @@ class QuestionListItemAr extends AbstractProjectionAr
      */
     public function getRevisionName() : string {
         return $this->revision_name;
+    }
+    
+    /**
+     * @return ilDateTime
+     */
+    public function getCreated(): ilDateTime {
+        return $this->created;
+    }
+    
+    /**
+     * @param $field_name
+     * @param $field_value
+     *
+     * @return ilDateTime|mixed|null
+     * @throws ilDateTimeException
+     */
+    public function wakeUp($field_name, $field_value)
+    {
+        switch ($field_name) {
+            case 'created':
+                return new ilDateTime($field_value, IL_CAL_DATETIME);
+            case 'id':
+            case 'working_time':
+                return intval($field_value);
+            default:
+                return null;
+        }
     }
 }

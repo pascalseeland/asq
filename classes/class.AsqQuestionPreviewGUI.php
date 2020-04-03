@@ -23,12 +23,18 @@ class AsqQuestionPreviewGUI
     const CMD_SHOW_PREVIEW = 'showPreview';
     const CMD_SHOW_FEEDBACK = 'showFeedback';
     const CMD_SHOW_HINTS = 'showHints';
-
+    const PARAM_REVISON_NAME = 'revisionName';
+    
     /**
      * @var DomainObjectId
      */
     protected $question_id;
 
+    /**
+     * @var ?string
+     */
+    private $revision_name;
+    
     /**
      * @var bool
      */
@@ -42,10 +48,19 @@ class AsqQuestionPreviewGUI
     public function __construct(
         DomainObjectId $question_id
     ) {
+        global $DIC;
+        
         $this->question_id = $question_id;
+        
+        if (isset($_GET[self::PARAM_REVISON_NAME])) {
+            $this->revision_name = $_GET[self::PARAM_REVISON_NAME];
+            
+            $DIC->ctrl()->setParameter(
+                $this, self::PARAM_REVISON_NAME, $this->revision_name
+            );
+        }
     }
-
-
+    
     public function executeCommand()
     {
         global $DIC;
@@ -76,7 +91,11 @@ class AsqQuestionPreviewGUI
     {
         global $DIC;
 
-        $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
+        if (is_null($this->revision_name)) {
+            $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
+        } else {
+            $question_dto = AsqGateway::get()->question()->getQuestionRevision($this->question_id->getId(), $this->revision_name);
+        }
         
         $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
         

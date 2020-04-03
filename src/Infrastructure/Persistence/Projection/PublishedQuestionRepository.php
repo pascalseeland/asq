@@ -5,6 +5,7 @@ namespace srag\asq\Infrastructure\Persistence\Projection;
 
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\QuestionInfo;
 
 class PublishedQuestionRepository
 {
@@ -43,11 +44,11 @@ class PublishedQuestionRepository
      */
     public function getAllQuestionRevisions(string $question_id) : array
     {
-        /** @var QuestionAr $revision */
-        $revisions = QuestionAr::where(['question_id' => $question_id])->get();
+        /** @var QuestionListItemAr $revision */
+        $revisions = QuestionListItemAr::where(['question_id' => $question_id])->get();
         
         return array_map(function($revision) {
-            return $revision->getQuestion();
+            return new QuestionInfo($revision);
         }, $revisions);
     }
 }

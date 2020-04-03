@@ -19,7 +19,7 @@ use srag\asq\Domain\Model\Feedback;
  */
 class QuestionFeedbackSetEvent extends AbstractDomainEvent {
 	/**
-	 * @var Feedback
+	 * @var ?Feedback
 	 */
 	protected $feedback;
 
@@ -34,7 +34,7 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent {
 	public function __construct(DomainObjectId $aggregate_id,
                         	    ilDateTime $occured_on,
                         	    int $initiating_user_id, 
-                                Feedback $feedback = null)
+                                ?Feedback $feedback = null)
 	{
 	    parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
 	    
@@ -44,7 +44,7 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent {
 	/**
 	 * @return Feedback
 	 */
-	public function getFeedback(): Feedback {
+	public function getFeedback(): ?Feedback {
 		return $this->feedback;
 	}
 

@@ -19,7 +19,7 @@ use ilDateTime;
  */
 class QuestionHintsSetEvent extends AbstractDomainEvent {
     /**
-     * @var QuestionHints
+     * @var ?QuestionHints
      */
     protected $hints;
 
@@ -37,7 +37,7 @@ class QuestionHintsSetEvent extends AbstractDomainEvent {
     public function __construct(DomainObjectId $aggregate_id,
         ilDateTime $occured_on,
         int $initiating_user_id, 
-        QuestionHints $hints = null)
+        ?QuestionHints $hints = null)
     {
         parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
         
@@ -47,7 +47,7 @@ class QuestionHintsSetEvent extends AbstractDomainEvent {
     /**
      * @return QuestionHints
      */
-    public function getHints(): QuestionHints {
+    public function getHints(): ?QuestionHints {
         return $this->hints;
     }
 

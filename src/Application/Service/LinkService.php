@@ -56,12 +56,20 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getPreviewLink(string $question_id) : UiStandardLink
+    public function getPreviewLink(string $question_id, ?string $revision_name = null) : UiStandardLink
     {
         global $DIC;
 
         self::setQuestionUidParameter($question_id);
 
+        if (!is_null($revision_name)) {
+            $DIC->ctrl()->setParameterByClass(
+                AsqQuestionPreviewGUI::class,
+                AsqQuestionPreviewGUI::PARAM_REVISON_NAME,
+                $revision_name
+            );
+        }
+        
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_preview'),
             $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class]));

@@ -2,6 +2,7 @@
 
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
+use ActiveRecord;
 use ilDateTime;
 use srag\asq\Domain\QuestionDto;
 
@@ -14,7 +15,7 @@ use srag\asq\Domain\QuestionDto;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionAr extends AbstractProjectionAr
+class QuestionAr extends ActiveRecord
 {
     const STORAGE_NAME = "asq_question";
     /**

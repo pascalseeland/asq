@@ -44,11 +44,20 @@ class QuestionService extends ASQService
         }
     }
     
+    /**
+     * @param string $id
+     * @param string $name
+     * @return QuestionDto
+     */
     public function getQuestionRevision(string $id, string $name) : QuestionDto {
         $repo = new PublishedQuestionRepository();
         return $repo->getQuestionRevision($id, $name);
     }
     
+    /**
+     * @param string $id
+     * @return array
+     */
     public function getAllRevisionsOfQuestion(string $id) : array {
         $repo = new PublishedQuestionRepository();
         return $repo->getAllQuestionRevisions($id);
