@@ -187,6 +187,10 @@ class QuestionDto implements JsonSerializable
         $this->play_configuration = $play_configuration;
     }
 
+    public function hasAnswerOptions() : bool {
+        return !is_null($this->answer_options) && count($this->answer_options->getOptions()) > 0;
+    }
+    
     /**
      *
      * @return AnswerOptions
