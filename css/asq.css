@@ -150,6 +150,10 @@
 }
 
 /* File Upload Editor */
+.file_upload_table {
+	margin-bottom: 50px;
+}
+
 .file_upload_table tr {
 	border: 1px solid black;
 }
