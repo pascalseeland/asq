@@ -170,9 +170,9 @@ class FileUploadEditor extends AbstractEditor {
             
         }
         
-        if (!is_null($this->answer) && count($this->answer->getFiles()) > 0) {
-            $tpl->setCurrentBlock('files');
+        $tpl->setCurrentBlock('files');
 
+        if (!is_null($this->answer) && count($this->answer->getFiles()) > 0) {
             foreach ($this->answer->getFiles() as $key => $value) {
                 $tpl->setCurrentBlock('file');
                 $tpl->setVariable('FILE_ID', $this->getFileKey($key));
@@ -180,11 +180,15 @@ class FileUploadEditor extends AbstractEditor {
                 $tpl->setVariable('FILE_PATH', $value);
                 $tpl->parseCurrentBlock();
             }
-            
-            $tpl->setVariable('HEADER_DELETE', $DIC->language()->txt('delete'));
-            $tpl->setVariable('HEADER_FILENAME', $DIC->language()->txt('filename'));
+        } else {
+            $tpl->setCurrentBlock('no_file');
+            $tpl->setVariable('TEXT_NO_FILE', $DIC->language()->txt('asq_no_file'));
             $tpl->parseCurrentBlock();
         }
+        
+        $tpl->setVariable('HEADER_DELETE', $DIC->language()->txt('delete'));
+        $tpl->setVariable('HEADER_FILENAME', $DIC->language()->txt('filename'));
+        $tpl->parseCurrentBlock();
         
         return $tpl->get();
     }

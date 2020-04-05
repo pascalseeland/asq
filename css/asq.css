@@ -148,3 +148,20 @@
 	min-width: 100px;
 	margin-right: 16px;
 }
+
+/* File Upload Editor */
+.file_upload_table tr {
+	border: 1px solid black;
+}
+
+.file_upload_table th {
+	min-width: 100px;
+}
+
+.file_upload_table td {
+	padding: 12px;
+}
+
+.file_upload_table * {
+	text-align: center;
+}

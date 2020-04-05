@@ -1,7 +1,7 @@
-<div class="ilClearFloat assFileUpload">
+<div class="ilClearFloat">
 	<!-- BEGIN files -->
-	<div class="ilc_qanswer_Answer ilc_answers answers assFileUploadTable">
-		<table>
+	<div>
+		<table class="file_upload_table">
 			<tr>
 				<th style="min-width: 60px;">{HEADER_DELETE}</th>
 				<th>{HEADER_FILENAME}</th>
@@ -16,6 +16,11 @@
 				</td>
 			</tr>
 			<!-- END file -->
+			<!-- BEGIN no_file -->
+			<tr>
+				<td colspan=2><span>{TEXT_NO_FILE}</span></td>
+			</tr>
+			<!-- END no_file -->
 		</table>
 	</div>
 	<!-- END files -->
