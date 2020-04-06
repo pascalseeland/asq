@@ -77,26 +77,6 @@ class QuestionEventStore extends EventStore {
 	    
 	    return $event_stream;
 	}
-
-    /**
-     * @param int $container_obj_id
-     *
-     * @return array
-     */
-	public function allStoredQuestionIdsForContainerObjId(int $container_obj_id): array {
-	   global $DIC;
-
-	   // TODO join with not in select QuestionDeletedEvent
-	   $sql = "SELECT aggregate_id FROM " . QuestionEventStoreAr::STORAGE_NAME . " where event_name like '%AggregateCreatedEvent'";
-	   $res = $DIC->database()->query($sql);
-
-	   $arr_data = [];
-	   while ($row = $DIC->database()->fetchAssoc($res)) {
-	           $arr_data[] = $row['aggregate_id'];
-	   }
-
-	   return $arr_data;
-	}
 	
     public function getEventStream(?EventID $from_position): DomainEvents
     {

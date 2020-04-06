@@ -62,20 +62,6 @@ class QuestionService extends ASQService
         $repo = new PublishedQuestionRepository();
         return $repo->getAllQuestionRevisions($id);
     }
-    
-    /**
-     * @param int $container_id
-     * @return QuestionDto[]
-     */
-    public function getQuestionsOfContainer(int $container_id) : array {
-        $questions = [];
-        $event_store = new QuestionEventStore();
-        foreach ($event_store->allStoredQuestionIdsForContainerObjId($container_id) as $aggregate_id) {
-            $questions[] = $this->getQuestionByQuestionId($aggregate_id);;
-        }
-        
-        return $questions;
-    }
 
     /**
      * @param string $name
