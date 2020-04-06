@@ -7,6 +7,7 @@ use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Application\Service\QuestionService;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class AsqQuestionConfigEditorGUI
@@ -137,5 +138,26 @@ class AsqQuestionConfigEditorGUI
         $form->addCommandButton(self::CMD_SAVE_FORM, $DIC->language()->txt('save'));
 
         return $form;
+    }
+    
+    private function createRevision() {
+        global $DIC;
+        
+        $form = $this->buildForm();
+        
+        $rev_name = $_POST[QuestionFormGUI::VAR_REVISION_NAME];
+        
+        if (empty($rev_name)) {
+            ilutil::sendInfo($DIC->language()->txt('asq_missing_revision_name'));
+        } else {
+            try {
+                AsqGateway::get()->question()->createQuestionRevision($rev_name, $this->question->getId());
+                ilUtil::sendSuccess($DIC->language()->txt('asq_revision_created'));
+            } catch(AsqException $e) {
+                ilutil::sendFailure($e->getMessage());
+            }
+        }
+        
+        $this->showForm($form);
     }
 }

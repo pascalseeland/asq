@@ -221,3 +221,8 @@ header_revision_name#:#Name
 header_revision_date#:#Datum
 header_revision_actions#:#Aktionen
 no_file#:#No Entrys
+button_create_revision#:#Create new Version
+label_new_revision#:#Version name
+info_create_revision#:#Pretty information Text
+missing_revision_name#:#A name is needed to create a Version
+revision_created#:#Version created

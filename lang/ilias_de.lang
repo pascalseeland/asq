@@ -212,3 +212,8 @@ header_revision_name#:#Name
 header_revision_date#:#Date
 header_revision_actions#:#Actions
 no_file#:#Keine Einträge
+button_create_revision#:#Neue Version Erstellen
+label_new_revision#:#Name neue Version
+info_create_revision#:#Guter erklärender Text über Revisionen
+missing_revision_name#:#Zum erstellen einer Version muss ein Name angegeben Werden
+revision_created#:#Version wurde erstellt

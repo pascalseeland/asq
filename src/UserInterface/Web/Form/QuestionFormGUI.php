@@ -19,6 +19,7 @@ use srag\asq\UserInterface\Web\AsqGUIElementFactory;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
+use srag\CustomInputGUIs\AssessmentTest\TextInputGUI\TextInputGUI;
 
 /**
  * Abstract Class QuestionFormGUI
@@ -38,6 +39,7 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
     const VAR_QUESTION = 'question';
     const VAR_WORKING_TIME = 'working_time';
     const VAR_LIFECYCLE = 'lifecycle';
+    const VAR_REVISION_NAME = 'rev_name';
     
     const VAR_LEGACY = 'legacy';
     
@@ -45,6 +47,8 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
     const SECONDS_IN_HOUR = 3600;
     
     const FORM_PART_LINK = 'form_part_link';
+    
+    const CMD_CREATE_REVISON = 'createRevision';
     
     /**
      * @var AnswerOptionForm
@@ -120,9 +124,24 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
             $this->addItem($this->option_form);
         }
         
+        $this->addRevisionForm();
+        
         $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
         
         $this->postInit();
+    }
+    
+    private function addRevisionForm() {
+        global $DIC;
+        
+        $revision = new TextInputGUI($DIC->language()->txt('asq_label_new_revision'), self::VAR_REVISION_NAME);
+        $revision->setInfo(sprintf(
+            '%s<br /><input class="btn btn-default btn-sm" type="submit" name="cmd[%s]" value="%s" />',
+            $DIC->language()->txt('asq_info_create_revision'),
+            self::CMD_CREATE_REVISON,
+            $DIC->language()->txt('asq_button_create_revision')
+        ));
+        $this->addItem($revision);
     }
     
     protected function getAnswerOptionConfiguration() {
