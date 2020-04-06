@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
+use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 use AsqQuestionAuthoringGUI;
 use AsqQuestionConfigEditorGUI;
 use AsqQuestionCreationGUI;
@@ -11,7 +12,6 @@ use AsqQuestionHintEditorGUI;
 use AsqQuestionPageGUI;
 use AsqQuestionPreviewGUI;
 use AsqQuestionVersionGUI;
-use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 
 /**
  * Class QuestionAuthoring

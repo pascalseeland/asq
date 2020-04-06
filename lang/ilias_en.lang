@@ -226,3 +226,5 @@ label_new_revision#:#Version name
 info_create_revision#:#Pretty information Text
 missing_revision_name#:#A name is needed to create a Version
 revision_created#:#Version created
+version_title#:#Versions
+range#:#Range

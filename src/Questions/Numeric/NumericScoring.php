@@ -75,7 +75,7 @@ class NumericScoring extends AbstractScoring
         $fields[self::VAR_POINTS] = $points;
 
         $spacer = new ilFormSectionHeaderGUI();
-        $spacer->setTitle($DIC->language()->txt('range'));
+        $spacer->setTitle($DIC->language()->txt('asq_range'));
         $fields[] = $spacer;
         
         $lower_bound = new ilNumberInputGUI($DIC->language()->txt('asq_label_lower_bound'), self::VAR_LOWER_BOUND);

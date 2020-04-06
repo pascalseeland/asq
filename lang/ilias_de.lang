@@ -217,3 +217,5 @@ label_new_revision#:#Name neue Version
 info_create_revision#:#Guter erklärender Text über Revisionen
 missing_revision_name#:#Zum erstellen einer Version muss ein Name angegeben Werden
 revision_created#:#Version wurde erstellt
+version_title#:#Versionen
+range#:#Bereich

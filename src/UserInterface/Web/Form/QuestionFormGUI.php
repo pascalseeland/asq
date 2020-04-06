@@ -11,6 +11,7 @@ use ilPropertyFormGUI;
 use ilSelectInputGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
+use ilFormSectionHeaderGUI;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
@@ -133,6 +134,10 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
     
     private function addRevisionForm() {
         global $DIC;
+        
+        $spacer = new ilFormSectionHeaderGUI();
+        $spacer->setTitle($DIC->language()->txt('asq_version_title'));
+        $this->addItem($spacer);
         
         $revision = new TextInputGUI($DIC->language()->txt('asq_label_new_revision'), self::VAR_REVISION_NAME);
         $revision->setInfo(sprintf(
