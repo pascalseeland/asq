@@ -52,7 +52,7 @@ class QuestionHintsSetEvent extends AbstractDomainEvent {
     }
 
     public function getEventBody(): string {
-        return json_encode($this->hints->getHints());
+        return json_encode($this->hints);
     }
 
     /**

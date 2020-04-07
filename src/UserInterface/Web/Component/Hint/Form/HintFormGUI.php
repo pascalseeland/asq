@@ -78,6 +78,10 @@ class HintFormGUI extends \ilPropertyFormGUI
     }
 
     private function getHintData() : array {
+        if (!$this->question_dto->hasHints()) {
+            return [];
+        }
+        
         return array_map(function($hint) {
             return [
                 self::HINT_CONTENT_POSTVAR => $hint->getContent(), 

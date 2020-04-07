@@ -1,6 +1,7 @@
 const asqAuthoring = (function () {
     let hasTiny;
-
+    let tinySettings;
+    
     function removeTinyFromRow(index, item) {
         const element = $(item);
         if (!element.attr('id')) {
@@ -21,6 +22,7 @@ const asqAuthoring = (function () {
     }
 
     function clearTiny(table) {
+        tinySettings = tinymce.EditorManager.editors[0].settings;
         table.find('textarea, input[type=text]').each(removeTinyFromRow);
     }
 
@@ -106,7 +108,7 @@ const asqAuthoring = (function () {
         setInputIds(table);
 
         if (hasTiny) {
-            tinymce.init(tinymce.EditorManager.editors[0].settings);
+            tinymce.init(tinySettings);
         }
 
         return false;
@@ -142,7 +144,7 @@ const asqAuthoring = (function () {
         }
 
         if (hasTiny) {
-            tinymce.init(tinymce.EditorManager.editors[0].settings);
+            tinymce.init(tinySettings);
         }
     }
 
