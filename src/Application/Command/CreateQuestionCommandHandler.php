@@ -7,6 +7,8 @@ use srag\CQRS\Command\CommandContract;
 use srag\CQRS\Command\CommandHandlerContract;
 use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\Question;
+use ILIAS\Data\Result;
+use ILIAS\Data\Result\Ok;
 
 /**
  * Class CreateQuestionCommandHandler
@@ -22,7 +24,7 @@ class CreateQuestionCommandHandler implements CommandHandlerContract {
     /**
      * @param CommandContract $command
      */
-	public function handle(CommandContract $command) {
+	public function handle(CommandContract $command) : Result {
         /** @var CreateQuestionCommand $command */
 	    
         /** @var Question $question */
@@ -33,5 +35,7 @@ class CreateQuestionCommandHandler implements CommandHandlerContract {
 		);
 
 		QuestionRepository::getInstance()->save($question);
+		
+		return new Ok(null);
 	}
 }

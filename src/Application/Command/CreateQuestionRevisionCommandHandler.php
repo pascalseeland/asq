@@ -11,6 +11,9 @@ use srag\asq\Domain\QuestionRepository;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
+use ILIAS\Data\Result;
+use ILIAS\Data\Result\Error;
+use ILIAS\Data\Result\Ok;
 
 /**
  * Class CreateQuestionRevisionCommandHandler
@@ -26,16 +29,16 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract {
     /**
      * @param CommandContract $command
      */
-	public function handle(CommandContract $command) {
+	public function handle(CommandContract $command) :Result {
 	    /** @var CreateQuestionRevisionCommand $command */
 	    $repository = new PublishedQuestionRepository();
 	    
 	    if ($repository->revisionExists($command->getQuestionId(), $command->getRevisionName())) {
-	       throw new AsqException(
+	       return new Error(new AsqException(
 	           sprintf(
 	               'A revision with the Name: "%s" already exists for Question: "%s"', 
 	               $command->getRevisionName(), 
-	               $command->getQuestionId()));
+	               $command->getQuestionId())));
 	    }
 	    
 	    
@@ -45,5 +48,7 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract {
 		$repository->saveNewQuestionRevision(QuestionDto::CreateFromQuestion($question));
 	    
 		QuestionRepository::getInstance()->save($question);
+		
+		return new Ok(null);
 	}
 }

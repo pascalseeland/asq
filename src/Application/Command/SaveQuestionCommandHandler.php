@@ -6,6 +6,8 @@ namespace srag\asq\Application\Command;
 use srag\CQRS\Command\CommandContract;
 use srag\CQRS\Command\CommandHandlerContract;
 use srag\asq\Domain\QuestionRepository;
+use ILIAS\Data\Result;
+use ILIAS\Data\Result\Ok;
 
 /**
  * Class SaveQuestionCommandHandler
@@ -21,8 +23,10 @@ class SaveQuestionCommandHandler implements CommandHandlerContract {
 	/**
 	 * @param CommandContract $command
 	 */
-	public function handle(CommandContract $command) {
+	public function handle(CommandContract $command) : Result{
 	    /** @var SaveQuestionCommand $command */
 		QuestionRepository::getInstance()->save($command->GetQuestion());
+		
+		return new Ok(null);
 	}
 }

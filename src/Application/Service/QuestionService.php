@@ -4,16 +4,20 @@ declare(strict_types=1);
 namespace srag\asq\Application\Service;
 
 use srag\CQRS\Aggregate\DomainObjectId;
-use srag\CQRS\Command\CommandBusBuilder;
+use srag\CQRS\Command\CommandBus;
+use srag\CQRS\Command\CommandConfiguration;
+use srag\CQRS\Command\Access\OpenAccess;
 use srag\asq\Application\Command\CreateQuestionCommand;
+use srag\asq\Application\Command\CreateQuestionCommandHandler;
 use srag\asq\Application\Command\CreateQuestionRevisionCommand;
+use srag\asq\Application\Command\CreateQuestionRevisionCommandHandler;
 use srag\asq\Application\Command\SaveQuestionCommand;
+use srag\asq\Application\Command\SaveQuestionCommandHandler;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\ContentEditingMode;
 use srag\asq\Domain\Model\Question;
-use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 
 /**
@@ -27,6 +31,34 @@ use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
  */
 class QuestionService extends ASQService
 {
+    /**
+     * @var CommandBus
+     */
+    private $command_bus;
+    
+    private function getCommandBus() : CommandBus {
+        if (is_null($this->command_bus)) {
+            $this->command_bus = new CommandBus();
+            
+            $this->command_bus->registerCommand(new CommandConfiguration(
+                CreateQuestionCommand::class,
+                new CreateQuestionCommandHandler(),
+                new OpenAccess()));
+            
+            $this->command_bus->registerCommand(new CommandConfiguration(
+                CreateQuestionRevisionCommand::class,
+                new CreateQuestionRevisionCommandHandler(),
+                new OpenAccess()));
+            
+            $this->command_bus->registerCommand(new CommandConfiguration(
+                SaveQuestionCommand::class,
+                new SaveQuestionCommandHandler(),
+                new OpenAccess()));
+        }
+        
+        return $this->command_bus;
+    }
+    
     /**
      * @param string $id
      * @throws AsqException
@@ -68,7 +100,7 @@ class QuestionService extends ASQService
      * @param string $question_id
      */
     public function createQuestionRevision(string $name, string $question_id) {
-        CommandBusBuilder::getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+        $this->getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
     }
 
     /**
@@ -81,7 +113,7 @@ class QuestionService extends ASQService
     {
         $id = new DomainObjectId();
 
-        CommandBusBuilder::getCommandBus()->handle(
+        $this->getCommandBus()->handle(
             new CreateQuestionCommand(
                 $id,
                 $type, 
@@ -109,7 +141,7 @@ class QuestionService extends ASQService
 
         if (count($question->getRecordedEvents()->getEvents()) > 0) {
             // save changes if there are any
-            CommandBusBuilder::getCommandBus()->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
+            $this->getCommandBus()->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
         }
     }
 }
