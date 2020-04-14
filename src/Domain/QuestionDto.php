@@ -10,6 +10,8 @@ use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
  * Class QuestionDto
@@ -33,7 +35,7 @@ class QuestionDto implements JsonSerializable
 
     /**
      *
-     * @var int
+     * @var QuestionTypeDefinition
      */
     private $type;
 
@@ -110,7 +112,7 @@ class QuestionDto implements JsonSerializable
     /**
      * @return int
      */
-    public function getType(): int
+    public function getType(): QuestionTypeDefinition
     {
         return $this->type;
     }
@@ -260,18 +262,26 @@ class QuestionDto implements JsonSerializable
         $this->question_hints = $question_hints;
     }
     
+    /**
+     * {@inheritDoc}
+     * @see JsonSerializable::jsonSerialize()
+     */
     public function jsonSerialize()
     {
         return get_object_vars($this);
     }
     
+    /**
+     * @param string $json_data
+     * @return QuestionDto
+     */
     public static function deserialize(string $json_data) 
     {
         $data = json_decode($json_data, true);
         
         $object = new QuestionDto();
         $object->id = $data['id'];
-        $object->type = $data['type'];
+        $object->type = QuestionTypeDefinition::createFromArray($data['type']);
         $object->answer_options = AnswerOptions::createFromArray($data['answer_options']);
         $object->data = QuestionData::createFromArray($data['data']);
         $object->feedback = Feedback::createFromArray($data['feedback']);

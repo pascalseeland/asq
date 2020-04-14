@@ -83,7 +83,7 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
         
         $this->initForm($question);
         $this->setMultipart(true);
-        $this->setTitle(AsqGUIElementFactory::getQuestionTypes()[$question->getType()]);
+        $this->setTitle($question->getType()->getTitle());
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->setValuesByPost();

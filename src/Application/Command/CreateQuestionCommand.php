@@ -5,6 +5,7 @@ namespace srag\asq\Application\Command;
 
 use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Command\AbstractCommand;
+use srag\asq\Domain\Model\QuestionTypeDefinition;
 
 /**
  * Class CreateQuestionCommand
@@ -27,25 +28,25 @@ class CreateQuestionCommand extends AbstractCommand {
 	 */
 	protected $container_id;
 	/**
-	 * @var int
+	 * @var QuestionTypeDefinition
 	 */
-    protected $question_type_id;
+    protected $question_type;
 	
     /**
      * @param DomainObjectId $question_uuid
+     * @param QuestionTypeDefinition $question_type
      * @param int $initiating_user_id
      * @param int $container_id
-     * @param int $answer_type_id
      */
 	public function __construct(
 		DomainObjectId $question_uuid,
-	    int $question_type_id,
+	    QuestionTypeDefinition $question_type,
 		int $initiating_user_id,
 		?int $container_id = null) {
 		parent::__construct($initiating_user_id);
 		$this->question_uuid = $question_uuid;
 		$this->container_id = $container_id;
-		$this->question_type_id = $question_type_id;
+		$this->question_type = $question_type;
 	}
 
 	/**
@@ -65,7 +66,7 @@ class CreateQuestionCommand extends AbstractCommand {
 	/**
 	 * @return int
 	 */
-	public function getQuestionType(): int {
-	    return $this->question_type_id;
+	public function getQuestionType(): QuestionTypeDefinition {
+	    return $this->question_type;
 	}
 }

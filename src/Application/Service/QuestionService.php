@@ -16,8 +16,9 @@ use srag\asq\Application\Command\SaveQuestionCommandHandler;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\QuestionRepository;
-use srag\asq\Domain\Model\ContentEditingMode;
 use srag\asq\Domain\Model\Question;
+use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 
 /**
@@ -109,7 +110,7 @@ class QuestionService extends ASQService
      * @param string $content_editing_mode
      * @return QuestionDto
      */
-    public function createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA): QuestionDto
+    public function createQuestion(QuestionTypeDefinition $type, int $container_id): QuestionDto
     {
         $id = new DomainObjectId();
 
@@ -118,8 +119,7 @@ class QuestionService extends ASQService
                 $id,
                 $type, 
                 $this->getActiveUser(), 
-                $container_id, 
-                $content_editing_mode));
+                $container_id));
         
         return $this->getQuestionByQuestionId($id->getId());
     }
@@ -143,5 +143,30 @@ class QuestionService extends ASQService
             // save changes if there are any
             $this->getCommandBus()->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
         }
+    }
+    
+    /**
+     * @return QuestionTypeDefinition[]
+     */
+    public function getAvailableQuestionTypes() : array {
+        return array_map(function($type) {
+            return QuestionTypeDefinition::create($type);
+        }, QuestionType::get());
+    }
+    
+    /**
+     * @param string $title_key
+     * @param string $form_class
+     */
+    public function addQuestionType(string $title_key, string $form_class) {
+        $type = QuestionType::createNew($title_key, $form_class);
+        $type->create();
+    }
+    
+    /**
+     * @param string $form_class
+     */
+    public function removeQuestionType(string $form_class) {
+        QuestionType::where(['form_class' => $form_class])->first()->delete();
     }
 }

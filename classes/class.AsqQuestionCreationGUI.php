@@ -100,8 +100,7 @@ class AsqQuestionCreationGUI
         
         $new_question = AsqGateway::get()->question()->createQuestion(
             $form->getQuestionType(),
-            $this->contextContainer->getObjId(),
-            $form->getContentEditingMode());
+            $this->contextContainer->getObjId());
 
         if (!is_null($this->contextContainer->getCaller())) {
             $this->contextContainer->getCaller()->afterQuestionCreated($new_question);

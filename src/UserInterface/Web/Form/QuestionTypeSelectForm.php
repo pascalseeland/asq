@@ -5,8 +5,8 @@ namespace srag\asq\UserInterface\Web\Form;
 
 use ilPropertyFormGUI;
 use ilSelectInputGUI;
-use srag\asq\Domain\Model\ContentEditingMode;
-use srag\asq\UserInterface\Web\AsqGUIElementFactory;
+use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\AsqGateway;
 
 /**
  * Class QuestionTypeSelectForm
@@ -19,8 +19,12 @@ use srag\asq\UserInterface\Web\AsqGUIElementFactory;
  */
 class QuestionTypeSelectForm extends ilPropertyFormGUI {
 	const VAR_QUESTION_TYPE = "question_type";
-	const VAR_CONTENT_EDIT_MODE = "content_edit_mode";
 
+	/**
+	 * @var QuestionTypeDefinition[]
+	 */
+	private $question_types;
+	
     /**
      * QuestionTypeSelectForm constructor.
      */
@@ -39,59 +43,28 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI {
 
 	    global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
+	    $this->question_types = AsqGateway::get()->question()->getAvailableQuestionTypes();
+	    
 	    $this->setTitle($DIC->language()->txt('asq_create_question_form'));
 
 		$select = new ilSelectInputGUI(
 		    $DIC->language()->txt('asq_input_question_type'), self::VAR_QUESTION_TYPE
         );
-		$select->setOptions(AsqGUIElementFactory::getQuestionTypes());
+
+		$options = [];
+
+		foreach ($this->question_types as $ix => $type) {
+            $options[$ix] = $type->getTitle();
+		}
+
+		$select->setOptions($options);
 		$this->addItem($select);
-
-        if( \ilObjAssessmentFolder::isAdditionalQuestionContentEditingModePageObjectEnabled() )
-        {
-            $radio = new \ilRadioGroupInputGUI(
-                $DIC->language()->txt("asq_input_cont_edit_mode"), self::VAR_CONTENT_EDIT_MODE
-            );
-
-            $radio->addOption(new \ilRadioOption(
-                $DIC->language()->txt('asq_input_cont_edit_mode_rte_textarea'),
-                ContentEditingMode::RTE_TEXTAREA
-            ));
-
-            $radio->addOption(new \ilRadioOption(
-                $DIC->language()->txt('asq_input_cont_edit_mode_page_object'),
-                ContentEditingMode::PAGE_OBJECT
-            ));
-
-            $radio->setValue(ContentEditingMode::RTE_TEXTAREA);
-
-            $this->addItem($radio);
-        }
 	}
 
     /**
-     * @return int|null
+     * @return QuestionTypeDefinition
      */
-	public function getQuestionType() : ?int {
-		return intval($_POST[self::VAR_QUESTION_TYPE]);
+	public function getQuestionType() : QuestionTypeDefinition {
+		return $this->question_types[intval($_POST[self::VAR_QUESTION_TYPE])];
 	}
-
-
-    /**
-     * @return bool
-     */
-	public function hasContentEditingMode() : bool
-    {
-        $input = $this->getItemByPostVar(self::VAR_CONTENT_EDIT_MODE);
-        return $input instanceof \ilFormPropertyGUI;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function getContentEditingMode() : string
-    {
-        return $this->hasContentEditingMode() ?  $this->getInput(self::VAR_CONTENT_EDIT_MODE) : ContentEditingMode::RTE_TEXTAREA;
-    }
 }

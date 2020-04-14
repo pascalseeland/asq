@@ -33,7 +33,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
     const VAR_TYPE = 'question_type';
     
     /**
-     * @var int
+     * @var QuestionTypeDefinition
      */
     private $question_type;
     /**
@@ -67,14 +67,14 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
 
     /**
      * @param DomainObjectId $question_uuid
-     * @param int            $initiating_user_id
-     *
+     * @param int $initiating_user_id
+     * @param QuestionTypeDefinition $question_type
      * @return Question
      */
     public static function createNewQuestion(
         DomainObjectId $question_uuid,
         int $initiating_user_id,
-        int $question_type
+        QuestionTypeDefinition $question_type
     ) : Question {
         $question = new Question();
         $question->ExecuteEvent(
@@ -158,7 +158,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
     /**
      * @return int
      */
-    public function getType() : int {
+    public function getType() : QuestionTypeDefinition {
         return $this->question_type;
     }
 

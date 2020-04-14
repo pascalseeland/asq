@@ -5,7 +5,6 @@ namespace srag\asq\Application\Service;
 
 use AsqQuestionPageGUI;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\UserInterface\Web\AsqGUIElementFactory;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
@@ -37,7 +36,8 @@ class UIService {
      * @return QuestionFormGUI
      */
     public function getQuestionEditForm(QuestionDto $question) : QuestionFormGUI {
-        return AsqGUIElementFactory::CreateQuestionForm($question);
+        $class = $question->getType()->getFormClass();
+        return new $class($question);
     }
     
     /**
