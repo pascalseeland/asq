@@ -270,8 +270,6 @@ class AsqQuestionAuthoringGUI
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 
-        $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
-        
         $DIC->tabs()->clearTargets();
 
         $DIC->tabs()->setBackTarget(
@@ -279,9 +277,11 @@ class AsqQuestionAuthoringGUI
             $this->authoring_context_container->getBackLink()->getAction()
         );
 
+        /* TODO fix page
         $page_link = AsqGateway::get()->link()->getEditPageLink($this->question_id->getId());
         $DIC->tabs()->addTab(self::TAB_ID_PAGEVIEW, $page_link->getLabel(), $page_link->getAction());
-
+        */
+        
         $preview_link = AsqGateway::get()->link()->getPreviewLink($this->question_id->getId());
         $DIC->tabs()->addTab(self::TAB_ID_PREVIEW, $preview_link->getLabel(), $preview_link->getAction());
 
