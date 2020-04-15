@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Ordering;
 
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
 
 /**
  * Class OrderingScoringConfiguration

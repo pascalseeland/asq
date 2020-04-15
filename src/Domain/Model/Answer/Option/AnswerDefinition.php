@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model\Answer\Option;
 
-use stdClass;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
