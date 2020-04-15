@@ -169,18 +169,17 @@ class EssayScoring extends AbstractScoring {
         return false;
     }
     
-    protected function calculateMaxScore() {
+    protected function calculateMaxScore() : float {
         if ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY) {
-            $this->max_score = 
-                array_sum(
-                    array_map(function($answer_option) {
-                        return $answer_option->getScoringDefinition()->getPoints();
-                    }, 
-                    $this->question->getAnswerOptions()->getOptions()
-                ));
+            return array_sum(
+                        array_map(function($answer_option) {
+                            return $answer_option->getScoringDefinition()->getPoints();
+                        }, 
+                        $this->question->getAnswerOptions()->getOptions()
+                    ));
         }
         else {
-            $this->max_score = $this->configuration->getPoints();
+            return $this->configuration->getPoints();
         }
     }
     

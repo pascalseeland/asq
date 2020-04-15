@@ -56,9 +56,9 @@ class FileUploadScoring extends AbstractScoring {
         return $reached_points;
     }
     
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
-        $this->max_score = $this->configuration->getPoints();
+        return $this->configuration->getPoints();
     }
     
     /**

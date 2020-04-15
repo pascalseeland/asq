@@ -50,9 +50,9 @@ class OrderingScoring extends AbstractScoring
         return $reached_points;
     }
 
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
-        $this->max_score = $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
+        return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
     public function getBestAnswer() : Answer

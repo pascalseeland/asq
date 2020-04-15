@@ -135,13 +135,15 @@ class FormulaScoring extends AbstractScoring {
         throw new NotImplementedException("implement FormulaScoring->getBestAnswer()");
     }
     
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
-        $this->max_score = 0.0;
+        $max_score = 0.0;
         
         foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
-            $this->max_score += $option->getScoringDefinition()->getPoints();
+            $max_score += $option->getScoringDefinition()->getPoints();
         }
+        
+        return $max_score;
     }
     
     /**

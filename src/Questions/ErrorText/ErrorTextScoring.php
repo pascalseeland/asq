@@ -70,15 +70,17 @@ class ErrorTextScoring extends AbstractScoring {
         return $reached_points;
     }
     
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
-        $this->max_score = 0.0;
+        $max_score = 0.0;
         
         foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var ErrorTextScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
-            $this->max_score += $scoring_definition->getPoints();
+            $max_score += $scoring_definition->getPoints();
         }
+        
+        return $max_score;
     }
     
     public function getBestAnswer() : Answer {

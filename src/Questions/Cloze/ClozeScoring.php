@@ -100,13 +100,15 @@ class ClozeScoring extends AbstractScoring {
         }
     }
 
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
-        $this->max_score = 0.0;
+        $max_score = 0.0;
         
         foreach ($this->configuration->getGaps() as $gap_configuration) {
-            $this->max_score += $gap_configuration->getMaxPoints();
+            $max_score += $gap_configuration->getMaxPoints();
         }
+        
+        return $max_score;
     }
     
     public function getBestAnswer(): Answer

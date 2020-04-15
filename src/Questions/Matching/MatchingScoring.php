@@ -63,13 +63,15 @@ class MatchingScoring extends AbstractScoring
         return new MatchingAnswer($matches);
     }
     
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
-        $this->max_score = 0;
+        $max_score = 0;
         
         foreach ($this->question->getPlayConfiguration()->getEditorConfiguration()->getMatches() as $match) {
-            $this->max_score += intval($match[MatchingEditor::VAR_MATCH_POINTS]);
-        };        
+            $max_score += intval($match[MatchingEditor::VAR_MATCH_POINTS]);
+        };     
+        
+        return $max_score;
     }
     
     /**

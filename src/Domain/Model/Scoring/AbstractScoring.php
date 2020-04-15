@@ -78,13 +78,13 @@ abstract class AbstractScoring
 
     public function getMaxScore() : float {
         if (is_null($this->max_score)) {
-            $this->calculateMaxScore();
+            $this->max_score = $this->calculateMaxScore();
         }
         
         return $this->max_score;
     }
     
-    protected abstract function calculateMaxScore();
+    protected abstract function calculateMaxScore() : float;
     
     /**
      * @param float $reached_points

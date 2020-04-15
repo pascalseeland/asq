@@ -74,7 +74,7 @@ class TextSubsetScoring extends AbstractScoring
         return TextSubsetAnswer::create($answers);
     }
 
-    protected function calculateMaxScore()
+    protected function calculateMaxScore() : float
     {
         $amount = $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers();
         
@@ -88,7 +88,7 @@ class TextSubsetScoring extends AbstractScoring
             
         rsort($points);
         
-        $this->max_score = array_sum(array_slice($points, 0, $amount));
+        return array_sum(array_slice($points, 0, $amount));
     }
     
     /**
