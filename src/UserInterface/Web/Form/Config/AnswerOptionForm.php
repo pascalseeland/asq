@@ -42,10 +42,6 @@ class AnswerOptionForm extends AsqTableInput {
 	        $definitions = $this->collectFields($configuration);
 	    }
 	    
-	    if (is_null($form_configuration) && !is_null($configuration)) {
-	        $form_configuration = $this->collectConfigurations($configuration);
-	    }    
-	    
 		parent::__construct($title, 
 		                    self::VAR_POST,
 		                    !is_null($options) ? $this->getRawOptionValue($options->getOptions()) : [],
@@ -134,15 +130,5 @@ class AnswerOptionForm extends AsqTableInput {
 	    
 	    
 	    return array_merge($dd_class::getFields($play), $sd_class::getFields($play));
-	}
-
-	/**
-	 * @param QuestionPlayConfiguration $play
-	 *
-	 * @return array
-	 */
-	private function collectConfigurations(QuestionPlayConfiguration $play) : array {
-	    return array_merge($play->getEditorConfiguration()->getOptionFormConfig(), 
-	                       $play->getScoringConfiguration()->getOptionFormConfig());
 	}
 }

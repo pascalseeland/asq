@@ -36,10 +36,4 @@ class OrderingScoringConfiguration extends AbstractConfiguration {
     {
         return $this->points;
     }
-    /**
-     * @return array
-     */
-    public function getOptionFormConfig() : array {
-        return [AnswerOptionForm::OPTION_ORDER];
-    }
 }

@@ -5,6 +5,7 @@ namespace srag\asq\Questions\Ordering;
 
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
+use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
 
 /**
  * Class OrderingQuestionGUI
@@ -39,5 +40,9 @@ class OrderingQuestionGUI extends QuestionFormGUI {
         foreach (OrderingScoring::generateFields($play->getScoringConfiguration()) as $field) {
             $this->addItem($field);
         }
+    }
+    
+    protected function getAnswerOptionConfiguration() {
+        return [ AnswerOptionForm::OPTION_ORDER => true ];
     }
 }
