@@ -127,4 +127,14 @@ class SetupDatabase
             OrderingTextQuestionGUI::class
         );
     }
+    
+    public function uninstall() : void{
+        global $DIC;
+        
+        $DIC->database()->dropTable(QuestionEventStoreAr::STORAGE_NAME, false);
+        $DIC->database()->dropTable(QuestionListItemAr::STORAGE_NAME, false);
+        $DIC->database()->dropTable(QuestionAr::STORAGE_NAME, false);
+        $DIC->database()->dropTable(SimpleStoredAnswer::STORAGE_NAME, false);
+        $DIC->database()->dropTable(QuestionType::STORAGE_NAME, false);
+    }
 }
