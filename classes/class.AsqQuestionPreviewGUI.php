@@ -5,6 +5,7 @@ use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
+use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 
 /**
  * Class AsqQuestionPreviewGUI
@@ -23,6 +24,7 @@ class AsqQuestionPreviewGUI
     const CMD_SHOW_PREVIEW = 'showPreview';
     const CMD_SHOW_FEEDBACK = 'showFeedback';
     const CMD_SHOW_HINTS = 'showHints';
+    const CMD_SHOW_SCORE = 'showScore';
     const PARAM_REVISON_NAME = 'revisionName';
     
     /**
@@ -44,6 +46,11 @@ class AsqQuestionPreviewGUI
      * @var bool
      */
     private $show_hints;
+    
+    /**
+     * @var bool
+     */
+    private $show_score;
     
     public function __construct(
         DomainObjectId $question_id
@@ -71,19 +78,16 @@ class AsqQuestionPreviewGUI
                 switch ($DIC->ctrl()->getCmd()) {
                     case self::CMD_SHOW_HINTS:
                         $this->show_hints = true;
-                        
-                        $this->showQuestion();
                         break;
                     case self::CMD_SHOW_FEEDBACK:
                         $this->show_feedback = true;
-                        
-                        $this->showQuestion();
                         break;
-                    case self::CMD_SHOW_PREVIEW:
-                    default:
-                        $this->showQuestion();
+                    case self::CMD_SHOW_SCORE:
+                        $this->show_score = true;
                         break;
                 }
+                
+                $this->showQuestion();
         }
     }
 
@@ -111,7 +115,14 @@ class AsqQuestionPreviewGUI
             $hint_component = new HintComponent($question_dto->getQuestionHints());
             $question_tpl->setVariable('HINTS', $hint_component->getHtml());
         }
+        
+        if ($this->show_score) {
+            $score_component = new ScoringComponent($question_dto, $question_component->readAnswer());
+            $question_tpl->setVariable('SCORE', $score_component->getHtml());
+        }
 
+        $question_tpl->setVariable('SCORE_BUTTON_TITLE', $DIC->language()->txt('asq_score_button_title'));
+        
         if ($question_dto->hasFeedback()) {
             $question_tpl->setCurrentBlock('feedback_button');
             $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
