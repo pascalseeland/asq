@@ -46,7 +46,7 @@ class AnswerOptionForm extends AsqTableInput {
 		                    self::VAR_POST,
 		                    !is_null($options) ? $this->getRawOptionValue($options->getOptions()) : [],
 		                    $definitions,
-		                    $form_configuration);
+		                    $form_configuration ?? []);
 		
 		$this->options = $options;
 	}
