@@ -44,13 +44,16 @@ abstract class ChoiceQuestionGUI extends QuestionFormGUI {
         if (!$question->getPlayConfiguration()->getEditorConfiguration()->isSingleLine()) {
             // remove from question
             $stripped_options = AnswerOptions::create(
-                function($option) {
-                    return AnswerOption::create(
-                        $option->getOptionId(),
-                        ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
-                        $option->getScoringDefinition());
-                }, 
-                $question->getAnswerOptions()->getOptions());
+                array_map(
+                    function($option) {
+                        return AnswerOption::create(
+                            $option->getOptionId(),
+                            ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
+                            $option->getScoringDefinition());
+                    }, 
+                    $question->getAnswerOptions()->getOptions()
+                )
+            );
             
             $question->setAnswerOptions($stripped_options);
             $this->option_form->setAnswerOptions($stripped_options);

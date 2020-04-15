@@ -1,29 +1,27 @@
 const asqAuthoring = (function () {
     let hasTiny;
     let tinySettings;
-    
-    function removeTinyFromRow(index, item) {
-        const element = $(item);
-        if (!element.attr('id')) {
-            return;
-        }
 
-        const editor = tinymce.get(element.attr('id'));
-        if (!editor) {
-            return;
-        }
-
-        element.val(editor.getContent());
-        element.show();
-
-        tinymce.EditorManager.remove(editor);
-
-        element.siblings('.mceEditor').remove();
-    }
-
-    function clearTiny(table) {
+    function clearTiny(selector = null) {
         tinySettings = tinymce.EditorManager.editors[0].settings;
-        table.find('textarea, input[type=text]').each(removeTinyFromRow);
+
+        let i;
+        const editors = tinymce.editors.map((x) => x);
+        for (i = 0; i < editors.length; i += 1) {
+            const editor = editors[i];
+            const element = $(editor.getElement());
+
+            if (selector && !element.is(selector)) {
+                continue;
+            }
+
+            element.val(editor.getContent());
+            element.show();
+
+            tinymce.EditorManager.remove(editor);
+
+            element.siblings('.mceEditor').remove();
+        }
     }
 
     function clearRow(row) {
@@ -98,7 +96,7 @@ const asqAuthoring = (function () {
         const table = $(this).parents('.aot_table').children('tbody');
 
         if (hasTiny) {
-            clearTiny(table);
+            clearTiny();
         }
 
         let newRow = row.clone();
@@ -133,7 +131,7 @@ const asqAuthoring = (function () {
         const table = $(this).parents('.aot_table').children('tbody');
 
         if (hasTiny) {
-            clearTiny(table);
+            clearTiny();
         }
 
         if (table.children().length > 1) {
@@ -172,5 +170,7 @@ const asqAuthoring = (function () {
     $(document).on('click', '.js_down', downRow);
     $(document).on('submit', 'form', saveTiny);
 
-    return { clearTiny, clearRow, setInputIds, processItem, processRow };
+    return {
+        clearTiny, clearRow, setInputIds, processItem, processRow,
+    };
 }());

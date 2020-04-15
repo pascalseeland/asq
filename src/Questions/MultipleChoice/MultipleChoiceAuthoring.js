@@ -2,15 +2,11 @@
     let imageHeader = '';
 
     function showMultilineEditor() {
-        // wait for tiny to load
-        if (tinymce.EditorManager.editors.length < 1) {
-            setTimeout(showMultilineEditor, 250);
-            return;
-        }
-
         const tinySettings = tinymce.EditorManager.editors[0].settings;
+        asqAuthoring.clearTiny();
+
         tinySettings.mode = '';
-        tinySettings.selector = 'input[id$=mcdd_text]';
+        tinySettings.selector = '#question, input[id$=mcdd_text]';
         tinymce.init(tinySettings);
 
         $('input[id$=mcdd_image]').each((index, item) => {
@@ -26,7 +22,7 @@
     }
 
     function hideMultilineEditor() {
-        asqAuthoring.clearTiny($('.aot_table tbody'));
+        asqAuthoring.clearTiny('input[id$=mcdd_text]');
 
         $('input[id$=mcdd_image').each((index, item) => {
             const td = $(item).parents('td');
@@ -42,6 +38,12 @@
 
     function updateEditor() {
         if (typeof (tinymce) === 'undefined') {
+            return;
+        }
+
+        // wait for tiny to load
+        if (tinymce.EditorManager.editors.length < 1) {
+            setTimeout(updateEditor, 250);
             return;
         }
 
