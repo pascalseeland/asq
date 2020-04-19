@@ -61,4 +61,13 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent {
 	public function restoreEventBody(string $json_data) : void {
 		$this->feedback = Feedback::deserialize($json_data);
 	}
+	
+	/**
+	 * @return int
+	 */
+	public static function getEventVersion(): int
+	{
+	    // initial version 1
+	    return 1;
+	}
 }
