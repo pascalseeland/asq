@@ -37,6 +37,11 @@ abstract class AbstractScoring
     protected $max_score;
 
     /**
+     * @var float
+     */
+    protected $min_score;
+    
+    /**
      * AbstractScoring constructor.
      *
      * @param QuestionDto $question
@@ -76,6 +81,9 @@ abstract class AbstractScoring
      */
     abstract function score(Answer $answer) : float;
 
+    /**
+     * @return float
+     */
     public function getMaxScore() : float {
         if (is_null($this->max_score)) {
             $this->max_score = $this->calculateMaxScore();
@@ -84,7 +92,42 @@ abstract class AbstractScoring
         return $this->max_score;
     }
     
+    /**
+     * @return float
+     */
     protected abstract function calculateMaxScore() : float;
+    
+    /**
+     * @return float
+     */
+    public function getMinScore() : float {
+        if (is_null($this->max_score)) {
+            $this->max_score = $this->calculateMinScore();
+        }
+        
+        return $this->max_score;
+    }
+    
+    /**
+     * @return float
+     */
+    protected function calculateMinScore() : float
+    {
+        
+    }
+    
+    /**
+     * @return float
+     */
+    protected function calculateMaxHintDeduction() : float {
+        if ($this->question->hasHints()) {
+            return array_reduce($this->question->getQuestionHints()->getHints(), function($sum, $hint) {
+                return $sum += $hint->getPointDeduction();
+            }, 0.0);
+        } else {
+            return 0.0;
+        }
+    }
     
     /**
      * @param float $reached_points

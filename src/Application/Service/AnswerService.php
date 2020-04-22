@@ -44,6 +44,17 @@ class AnswerService extends ASQService {
     
     /**
      * @param QuestionDto $question
+     * @return float
+     */
+    public function getMinScore(QuestionDto $question) : float {
+        $scoring_class = $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        /** @var $scoring AbstractScoring */
+        $scoring = new $scoring_class($question);
+        return $scoring->getMinScore();
+    }
+    
+    /**
+     * @param QuestionDto $question
      * @return Answer
      */
     public function getBestAnswer(QuestionDto $question) : Answer {
