@@ -113,7 +113,7 @@ abstract class AbstractScoring
      */
     protected function calculateMinScore() : float
     {
-        
+        return $this->calculateMaxHintDeduction();
     }
     
     /**
