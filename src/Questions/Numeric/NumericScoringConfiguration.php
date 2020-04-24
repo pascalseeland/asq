@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Numeric;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\AbstractConfiguration;
 
 /**
@@ -17,7 +16,7 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  */
 class NumericScoringConfiguration extends AbstractConfiguration {
     /**
-     * @var ?int
+     * @var ?float
      */
     protected $points;
     /**
@@ -29,8 +28,16 @@ class NumericScoringConfiguration extends AbstractConfiguration {
      */
     protected $upper_bound;
 
-
-    static function create(?int $points = null, ?float $lower_bound = null, ?float $upper_bound = null) : NumericScoringConfiguration
+    /**
+     * @param int $points
+     * @param float $lower_bound
+     * @param float $upper_bound
+     * @return NumericScoringConfiguration
+     */
+    static function create(
+        ?float $points = null,
+        ?float $lower_bound = null,
+        ?float $upper_bound = null) : NumericScoringConfiguration
     {
         $object = new NumericScoringConfiguration();
         $object->points = $points;
@@ -40,37 +47,26 @@ class NumericScoringConfiguration extends AbstractConfiguration {
     }
 
     /**
-     * @return int
+     * @return float|NULL
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->points;
     }
 
-
     /**
-     * @return float
+     * @return float|NULL
      */
-    public function getLowerBound()
+    public function getLowerBound() : ?float
     {
         return $this->lower_bound;
     }
 
-
     /**
-     * @return float
+     * @return float|NULL
      */
-    public function getUpperBound()
+    public function getUpperBound() : ?float
     {
         return $this->upper_bound;
-    }
-
-    public function equals(AbstractValueObject $other): bool
-    {
-        /** @var NumericScoringConfiguration $other */
-        return get_class($this) === get_class($other) &&
-               abs($this->lower_bound - $other->lower_bound) < PHP_FLOAT_EPSILON &&
-               abs($this->upper_bound - $other->upper_bound) < PHP_FLOAT_EPSILON &&
-               $this->points === $other->points;
     }
 }

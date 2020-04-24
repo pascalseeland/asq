@@ -13,6 +13,7 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class NumericEditor
@@ -32,9 +33,13 @@ class NumericEditor extends AbstractEditor {
      */
     private $configuration;
 
-    public function __construct(QuestionDto $question) {
+    /**
+     * @param QuestionDto $question
+     */
+    public function __construct(QuestionDto $question)
+    {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
-        
+
         parent::__construct($question);
     }
 
@@ -66,15 +71,19 @@ class NumericEditor extends AbstractEditor {
         return NumericAnswer::create(floatval($_POST[$this->question->getId()]));
     }
 
-    public static function generateFields(?AbstractConfiguration $config): ?array {
+    /**
+     * @param AbstractConfiguration $config
+     * @return array|NULL
+     */
+    public static function generateFields(?AbstractConfiguration $config) : ?array
+    {
         /** @var NumericEditorConfiguration $config */
         global $DIC;
-        
+
         $fields = [];
 
         $max_chars = new ilNumberInputGUI($DIC->language()->txt('asq_label_max_nr_of_chars'), self::VAR_MAX_NR_OF_CHARS);
         $max_chars->setInfo($DIC->language()->txt('asq_description_max_nr_chars'));
-        $max_chars->setRequired(true);
         $max_chars->setSize(6);
         $fields[self::VAR_MAX_NR_OF_CHARS] = $max_chars;
 
@@ -88,15 +97,24 @@ class NumericEditor extends AbstractEditor {
     /**
      * @return AbstractConfiguration|null
      */
-    public static function readConfig() : ?AbstractConfiguration {
-        return NumericEditorConfiguration::create(intval($_POST[self::VAR_MAX_NR_OF_CHARS]));
+    public static function readConfig() : ?AbstractConfiguration
+    {
+        return NumericEditorConfiguration::create(InputHelper::readInt(self::VAR_MAX_NR_OF_CHARS));
     }
-    
-    static function getDisplayDefinitionClass(): string {
+
+    /**
+     * @return string
+     */
+    static function getDisplayDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
-    
-    public static function isComplete(Question $question): bool
+
+    /**
+     * @param Question $question
+     * @return bool
+     */
+    public static function isComplete(Question $question) : bool
     {
         //numeric editor always works
         return true;

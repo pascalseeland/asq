@@ -11,6 +11,7 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class NumericScoring
@@ -27,6 +28,10 @@ class NumericScoring extends AbstractScoring
     const VAR_LOWER_BOUND = 'ns_lower_bound';
     const VAR_UPPER_BOUND = 'ns_upper_bound';
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
+     */
     function score(Answer $answer) : float
     {
         $reached_points = 0;
@@ -45,19 +50,27 @@ class NumericScoring extends AbstractScoring
         return $reached_points;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
-    
-    public function getBestAnswer(): Answer
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
+     */
+    public function getBestAnswer() : Answer
     {
         /** @var NumericScoringConfiguration $conf */
         $conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
-        
+
         return NumericAnswer::create(($conf->getUpperBound() + $conf->getLowerBound()) / 2);
     }
-    
+
     /**
      * @param AbstractConfiguration|null $config
      *
@@ -66,7 +79,7 @@ class NumericScoring extends AbstractScoring
     public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array {
         /** @var NumericScoringConfiguration $config */
         global $DIC;
-        
+
         $fields = [];
 
         $points = new ilNumberInputGUI($DIC->language()->txt('asq_label_points'), self::VAR_POINTS);
@@ -77,7 +90,7 @@ class NumericScoring extends AbstractScoring
         $spacer = new ilFormSectionHeaderGUI();
         $spacer->setTitle($DIC->language()->txt('asq_range'));
         $fields[] = $spacer;
-        
+
         $lower_bound = new ilNumberInputGUI($DIC->language()->txt('asq_label_lower_bound'), self::VAR_LOWER_BOUND);
         $lower_bound->setRequired(true);
         $lower_bound->allowDecimals(true);
@@ -99,33 +112,40 @@ class NumericScoring extends AbstractScoring
         return $fields;
     }
 
-    public static function readConfig()
+    /**
+     * @return NumericScoringConfiguration
+     */
+    public static function readConfig() : NumericScoringConfiguration
     {
         return NumericScoringConfiguration::create(
-            intval($_POST[self::VAR_POINTS]),
-            floatval($_POST[self::VAR_LOWER_BOUND]),
-            floatval($_POST[self::VAR_UPPER_BOUND]));
+            InputHelper::readFloat(self::VAR_POINTS),
+            InputHelper::readFloat(self::VAR_LOWER_BOUND),
+            InputHelper::readFloat(self::VAR_UPPER_BOUND));
     }
-    
+
     /**
      * @return string
      */
     public static function getScoringDefinitionClass(): string {
         return EmptyDefinition::class;
     }
-    
+
+    /**
+     * @param Question $question
+     * @return bool
+     */
     public static function isComplete(Question $question): bool
     {
         /** @var NumericScoringConfiguration $config */
         $config = $question->getPlayConfiguration()->getScoringConfiguration();
-        
+
         if (empty($config->getPoints()) ||
             empty($config->getLowerBound() ||
-            empty($config->getUpperBound()))) 
+            empty($config->getUpperBound())))
         {
             return false;
         }
-        
+
         return true;
     }
 }
