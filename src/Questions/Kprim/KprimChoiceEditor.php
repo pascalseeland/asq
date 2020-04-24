@@ -18,6 +18,8 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class KprimChoiceEditor
@@ -63,7 +65,8 @@ class KprimChoiceEditor extends AbstractEditor {
      */
     private $configuration;
     
-    public function __construct(QuestionDto $question) {
+    public function __construct(QuestionDto $question) 
+    {
         $this->answer_options = $question->getAnswerOptions()->getOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         
@@ -160,7 +163,8 @@ class KprimChoiceEditor extends AbstractEditor {
         return $tpl->get();
     }
 
-    private function showFeedBackForAnswerOption(AnswerOption $option) : bool {
+    private function showFeedBackForAnswerOption(AnswerOption $option) : bool 
+    {
         switch ($this->question->getFeedback()->getAnswerOptionFeedbackMode()) {
             case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL:
                 return true;
@@ -177,7 +181,8 @@ class KprimChoiceEditor extends AbstractEditor {
      * @param string $id
      * @return string
      */
-    private function getPostName(string $id) {
+    private function getPostName(string $id) 
+    {
         return $this->question->getId() . $id;
     }
     
@@ -186,14 +191,15 @@ class KprimChoiceEditor extends AbstractEditor {
      * @param AbstractConfiguration $config
      * @return array|NULL
      */
-    public static function generateFields(?AbstractConfiguration $config): ?array {
+    public static function generateFields(?AbstractConfiguration $config): ?array 
+    {
         /** @var KprimChoiceEditorConfiguration $config */
         global $DIC;
         
         $fields = [];
         
         $shuffle = new ilCheckboxInputGUI($DIC->language()->txt('asq_label_shuffle'), self::VAR_SHUFFLE_ANSWERS);
-        $shuffle->setValue(1);
+        $shuffle->setValue(self::STR_TRUE);
         $fields[self::VAR_SHUFFLE_ANSWERS] = $shuffle;
 
         $thumb_size = new ilNumberInputGUI(
@@ -318,17 +324,15 @@ class KprimChoiceEditor extends AbstractEditor {
                 $label_false = self::STR_NOT_ADEQUATE;
                 break;
             case self::LABEL_CUSTOM:
-                $label_true = $_POST[self::VAR_LABEL_TRUE];
-                $label_false = $_POST[self::VAR_LABEL_FALSE];
+                $label_true = AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_LABEL_TRUE]);
+                $label_false = AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_LABEL_FALSE]);
                 break;
         }
         
-        $thumbsize = empty($_POST[self::VAR_THUMBNAIL_SIZE]) ? 
-                        null :
-                        intval($_POST[self::VAR_THUMBNAIL_SIZE]);
+        $thumbsize = InputHelper::readInt(self::VAR_THUMBNAIL_SIZE);
         
         return KprimChoiceEditorConfiguration::create(
-            boolval($_POST[self::VAR_SHUFFLE_ANSWERS]),
+            $_POST[self::VAR_SHUFFLE_ANSWERS] === self::STR_TRUE,
             $_POST[self::VAR_SINGLE_LINE] === self::STR_TRUE,
             $thumbsize,
             $label_true,
@@ -342,7 +346,11 @@ class KprimChoiceEditor extends AbstractEditor {
         return ImageAndTextDisplayDefinition::class;
     }
     
-    public static function isComplete(Question $question): bool
+    /**
+     * @param Question $question
+     * @return bool
+     */
+    public static function isComplete(Question $question) : bool
     {
         /** @var KprimChoiceEditorConfiguration $config */
         $config = $question->getPlayConfiguration()->getEditorConfiguration();

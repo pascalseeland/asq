@@ -28,10 +28,6 @@ class KprimChoiceQuestionGUI extends QuestionFormGUI {
      * @param QuestionDto $question
      */
     public function __construct($question) {
-        while (count($question->getAnswerOptions()->getOptions()) < 4) {
-            $question->getAnswerOptions()->addOption(null);
-        }
-        
         parent::__construct($question);
         
         $this->option_form->setInfo($this->lang->txt('asq_kprim_information'));
@@ -74,6 +70,7 @@ class KprimChoiceQuestionGUI extends QuestionFormGUI {
     protected function getAnswerOptionConfiguration() {
         return [
             AnswerOptionForm::OPTION_ORDER => true,
-            AnswerOptionForm::OPTION_HIDE_ADD_REMOVE => true
+            AnswerOptionForm::OPTION_HIDE_ADD_REMOVE => true,
+            AnswerOptionForm::OPTION_MIN_ROWS => 4
         ];
     }}

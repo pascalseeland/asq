@@ -9,6 +9,7 @@ use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class KprimChoiceScoring
@@ -111,8 +112,9 @@ class KprimChoiceScoring extends AbstractScoring {
      */
     public static function readConfig() : ?AbstractConfiguration {        
         return KprimChoiceScoringConfiguration::create(
-            floatval($_POST[self::VAR_POINTS]),
-            array_key_exists(self::VAR_HALF_POINTS, $_POST) ? intval($_POST[self::VAR_HALF_POINTS]) : null);
+            InputHelper::readFloat(self::VAR_POINTS),
+            InputHelper::readInt(self::VAR_HALF_POINTS)
+        );
     }
     
     public static function isComplete(Question $question): bool
@@ -120,7 +122,7 @@ class KprimChoiceScoring extends AbstractScoring {
         /** @var KprimChoiceScoringConfiguration $config */
         $config = $question->getPlayConfiguration()->getScoringConfiguration();
         
-        if (empty($config->getPoints())) {
+        if (is_null($config->getPoints())) {
             return false;
         }
         
@@ -132,7 +134,7 @@ class KprimChoiceScoring extends AbstractScoring {
             /** @var KprimChoiceScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
             
-            if (empty($option_config->isCorrectValue()))
+            if (is_null($option_config->isCorrectValue()))
             {
                 return false;
             }
