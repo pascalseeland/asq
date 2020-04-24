@@ -36,7 +36,7 @@ class MultipleChoiceScoring extends AbstractScoring
         }
         return $reached_points;
     }
-
+    
     protected function calculateMaxScore() : float
     {
         return $this->score($this->getBestAnswer());
@@ -65,6 +65,19 @@ class MultipleChoiceScoring extends AbstractScoring
         return MultipleChoiceAnswer::create($answers);
     }
 
+    protected function calculateMinScore() : float {
+        $min = 0.0;
+        
+        /** @var AnswerOption $answer_option */
+        foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
+            /** @var MultipleChoiceScoringDefinition $score */
+            $score = $answer_option->getScoringDefinition();
+            $min += min($score->getPointsSelected(), $score->getPointsUnselected());
+        }
+        
+        return $this->calculateMaxHintDeduction() + $min;
+    }
+    
     public static function readConfig()
     {
         return MultipleChoiceScoringConfiguration::create();
@@ -80,8 +93,8 @@ class MultipleChoiceScoring extends AbstractScoring
             /** @var MultipleChoiceScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 
-            if (empty($option_config->getPointsSelected()) &&
-                empty($option_config->getPointsUnselected()))
+            if (is_null($option_config->getPointsSelected()) ||
+                is_null($option_config->getPointsUnselected()))
             {
                 return false;
             }
