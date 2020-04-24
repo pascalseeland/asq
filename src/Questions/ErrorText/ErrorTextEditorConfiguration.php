@@ -55,6 +55,9 @@ class ErrorTextEditorConfiguration extends AbstractConfiguration
         return $this->error_text;
     }
     
+    /**
+     * @return string
+     */
     public function getSanitizedErrorText() : string {
         if ($this->error_text === null) {
             return '';

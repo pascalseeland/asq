@@ -50,6 +50,16 @@
         return errors;
     }
 
+    function storeErrors(errors) {
+        $('.aot_table tbody').children().each((i, rrow) => {
+            const error = errors[i];
+            const row = $(rrow);
+
+            row.find(`#${i + 1}_answer_options_etsd_word_index`).val(error.start);
+            row.find(`#${i + 1}_answer_options_etsd_word_length`).val(error.length);
+        });
+    }
+
     function displayErrors(errors, text) {
         $('.aot_table tbody').children().each((i, rrow) => {
             const error = errors[i];
@@ -58,8 +68,6 @@
             label = label.replace('((', '').replace('))', '').replace('#', '');
 
             row.find('.etsd_wrong_text').text(label);
-            row.find(`#${i + 1}_answer_options_etsd_word_index`).val(error.start);
-            row.find(`#${i + 1}_answer_options_etsd_word_length`).val(error.length);
         });
     }
 
@@ -74,8 +82,17 @@
             $('.aot_table_div').hide();
         }
 
+        storeErrors(errors);
         displayErrors(errors, text);
     }
 
     $(document).on('click', '#process_error_text', processErrorText);
+
+    $(document).ready(() => {
+        const text = $('#ete_error_text').val().split(' ');
+
+        const errors = findErrors(text);
+
+        displayErrors(errors, text);
+    });
 }(jQuery));

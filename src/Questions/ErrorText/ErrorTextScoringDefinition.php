@@ -7,6 +7,7 @@ use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class ErrorTextScoringDefinition
@@ -23,29 +24,29 @@ class ErrorTextScoringDefinition extends AnswerDefinition {
     const VAR_WORD_LENGTH = 'etsd_word_length';
     const VAR_CORRECT_TEXT = 'etsd_correct_text' ;
     const VAR_POINTS = 'etsd_points';
-    
+
     /**
-     * @var int
+     * @var ?int
      */
     protected $wrong_word_index;
     /**
-     * @var int
+     * @var ?int
      */
     protected $wrong_word_length;
     /**
-     * @var string
+     * @var ?string
      */
     protected $correct_text;
     /**
-     * @var float
+     * @var ?float
      */
     protected $points;
-    
+
     /**
      * @var array
      */
     private static $error_text_words;
-    
+
     /**
      * @param int $wrong_word_index
      * @param int $wrong_word_length
@@ -53,7 +54,7 @@ class ErrorTextScoringDefinition extends AnswerDefinition {
      * @param float $points
      * @return \srag\asq\Questions\ErrorText\ErrorTextScoringDefinition
      */
-    public static function create(int $wrong_word_index, int $wrong_word_length, ?string $correct_text, float $points)
+    public static function create(?int $wrong_word_index, ?int $wrong_word_length, ?string $correct_text, ?float $points)
     {
         $object = new ErrorTextScoringDefinition();
         $object->wrong_word_index = $wrong_word_index;
@@ -62,109 +63,101 @@ class ErrorTextScoringDefinition extends AnswerDefinition {
         $object->points = $points;
         return $object;
     }
-    
+
     /**
      * @return int
      */
-    public function getWrongWordIndex()
+    public function getWrongWordIndex() : ?int
     {
         return $this->wrong_word_index;
     }
-    
+
     /**
      * @return int
      */
-    public function getWrongWordLength()
+    public function getWrongWordLength() : ?int
     {
         return $this->wrong_word_length;
     }
-    
+
     /**
      * @return string
      */
-    public function getCorrectText()
+    public function getCorrectText() : ?string
     {
         return $this->correct_text;
     }
-    
+
     /**
      * @return number
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->points;
     }
-    
-    public static function getFields(QuestionPlayConfiguration $play): array {
+
+    /**
+     * @param QuestionPlayConfiguration $play
+     * @return array
+     */
+    public static function getFields(QuestionPlayConfiguration $play) : array
+    {
         global $DIC;
-        
+
         self::$error_text_words = explode(' ', $play->getEditorConfiguration()->getSanitizedErrorText());
-        
+
         $fields = [];
         $fields[] = new AsqTableInputFieldDefinition(
             $DIC->language()->txt('asq_label_wrong_text'),
             AsqTableInputFieldDefinition::TYPE_LABEL,
             self::VAR_WRONG_TEXT);
-        
+
         $fields[] = new AsqTableInputFieldDefinition(
             '',
             AsqTableInputFieldDefinition::TYPE_HIDDEN,
             self::VAR_WORD_INDEX);
-        
+
         $fields[] = new AsqTableInputFieldDefinition(
             '',
             AsqTableInputFieldDefinition::TYPE_HIDDEN,
             self::VAR_WORD_LENGTH);
-            
+
         $fields[] = new AsqTableInputFieldDefinition(
             $DIC->language()->txt('asq_label_correct_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
             self::VAR_CORRECT_TEXT);
-        
+
         $fields[] = new AsqTableInputFieldDefinition(
             $DIC->language()->txt('asq_label_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
             self::VAR_POINTS);
-        
+
         return $fields;
     }
-    
-    private static function storeErrorText(?string $error_text) {
-        if (is_null($error_text)) {
-            return;
-        }
-        
-        $error_text = str_replace('#', '', $error_text);
-        $error_text = str_replace('((', '', $error_text);
-        $error_text = str_replace('))', '', $error_text);
-        self::$error_text_words = explode(' ', $error_text);
-    }
-    
-    public static function getValueFromPost(string $index) {
+
+    /**
+     * @param string $index
+     * @return \srag\asq\Questions\ErrorText\ErrorTextScoringDefinition
+     */
+    public static function getValueFromPost(string $index) : ErrorTextScoringDefinition
+    {
         return ErrorTextScoringDefinition::create(
-            intval($_POST[self::getPostKey($index, self::VAR_WORD_INDEX)]),
-            intval($_POST[self::getPostKey($index, self::VAR_WORD_LENGTH)]),
+            InputHelper::readInt(self::getPostKey($index, self::VAR_WORD_INDEX)),
+            InputHelper::readInt(self::getPostKey($index, self::VAR_WORD_LENGTH)),
             AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_CORRECT_TEXT)]),
-            floatval($_POST[self::getPostKey($index, self::VAR_POINTS)]));
+            InputHelper::readFloat(self::getPostKey($index, self::VAR_POINTS))
+        );
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Answer\Option\AnswerDefinition::getValues()
+     */
     public function getValues(): array {
-        return [self::VAR_WRONG_TEXT => $this->calculateErrorText($this->wrong_word_index, 
-                                                                  $this->wrong_word_length),
-                self::VAR_WORD_INDEX => $this->wrong_word_index,
+        return [self::VAR_WORD_INDEX => $this->wrong_word_index,
                 self::VAR_WORD_LENGTH => $this->wrong_word_length,
                 self::VAR_CORRECT_TEXT => $this->correct_text,
                 self::VAR_POINTS => $this->points
         ];
-    }
-    
-    private function calculateErrorText(int $index, int $length) {
-        $text = '';
-        
-        for ($i = $index; $i < $index + $length; $i++) {
-            $text .= self::$error_text_words[$i] . ' ';
-        }
-        
-        return $text;
     }
 }
