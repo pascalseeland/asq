@@ -220,3 +220,5 @@ revision_created#:#Version wurde erstellt
 version_title#:#Versionen
 range#:#Bereich
 score_button_title#:#Punkte Anzeigen
+label_btn_delete_gap#:#Lücke Löschen
+no_preview_of incomplete_questions#:#Vorschau nur mit Kompletter Frage möglich

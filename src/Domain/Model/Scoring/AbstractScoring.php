@@ -60,10 +60,8 @@ abstract class AbstractScoring
         return [];
     }
 
-
     public static abstract function readConfig();
-
-
+    
     /**
      * @return string
      */

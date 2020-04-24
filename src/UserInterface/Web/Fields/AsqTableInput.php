@@ -23,9 +23,11 @@ use srag\asq\UserInterface\Web\AsqHtmlPurifier;
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
 class AsqTableInput extends ilTextInputGUI {
-    const OPTION_ORDER = 'AnswerOptionOrder';
-    const OPTION_HIDE_ADD_REMOVE = 'AnswerOptionHideAddRemove';
-    const OPTION_HIDE_EMPTY = 'AnswerOptionHideEmpty';
+    const OPTION_ORDER = 'TableInputOrder';
+    const OPTION_HIDE_ADD_REMOVE = 'TableInputHideAddRemove';
+    const OPTION_HIDE_EMPTY = 'TableInputHideEmpty';
+    const OPTION_MIN_ROWS = 'TableInputMinRows';
+    const DEFAULT_MIN_ROWS = 1;
     
     /**
      * @var AsqTableInputFieldDefinition[]
@@ -40,6 +42,13 @@ class AsqTableInput extends ilTextInputGUI {
      */
     private $form_configuration;
     
+    /**
+     * @param string $title
+     * @param string $post_var
+     * @param array $values
+     * @param array $definitions
+     * @param array $form_configuration
+     */
     public function __construct(string $title,
         string $post_var,
         array $values = [],
@@ -56,6 +65,15 @@ class AsqTableInput extends ilTextInputGUI {
         } else {
             $this->values = $values;
         }
+    }
+    
+    public function getMinRows() : int 
+    {
+        if(array_key_exists(self::OPTION_MIN_ROWS, $this->form_configuration)) {
+            return $this->form_configuration[self::OPTION_MIN_ROWS];
+        }
+        
+        return self::DEFAULT_MIN_ROWS;
     }
     
     /**
@@ -86,7 +104,7 @@ class AsqTableInput extends ilTextInputGUI {
         
         $empty = false;
         //add dummy object if no options are defined so that one empty line will be printed
-        if (count($this->values) === 0) {
+        while (count($this->values) < $this->getMinRows()) {
             $this->values[] = null;
             $empty = true;
         }

@@ -3,14 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\EventStore;
 
-use ILIAS\UI\NotImplementedException;
-use srag\CQRS\Aggregate\DomainObjectId;
-use srag\CQRS\Event\AbstractDomainEvent;
-use srag\CQRS\Event\DomainEvents;
-use srag\CQRS\Event\EventID;
 use srag\CQRS\Event\EventStore;
-use srag\asq\Application\Exception\AsqException;
-use ilDateTime;
 
 /**
  * Class QuestionEventStore

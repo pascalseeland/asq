@@ -19,7 +19,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput;
  */
 class AnswerOptionForm extends AsqTableInput {
     const VAR_POST = 'answer_options';
-    
+
     /**
      * @var ?AnswerOptions
      */
@@ -28,65 +28,65 @@ class AnswerOptionForm extends AsqTableInput {
      * @var QuestionPlayConfiguration
      */
     private $configuration;
-    
-	public function __construct(string $title, 
-	                            ?QuestionPlayConfiguration $configuration, 
-	                            ?AnswerOptions $options, 
+
+	public function __construct(string $title,
+	                            ?QuestionPlayConfiguration $configuration,
+	                            ?AnswerOptions $options,
 	                            ?array $definitions = null,
-	                            ?array $form_configuration = null) 
+	                            ?array $form_configuration = null)
 	{
 	    $this->setRequired(true);
 	    $this->configuration = $configuration;
-	    
+
 	    if(is_null($definitions) && !is_null($configuration)) {
 	        $definitions = $this->collectFields($configuration);
 	    }
-	    
-		parent::__construct($title, 
+
+		parent::__construct($title,
 		                    self::VAR_POST,
 		                    !is_null($options) ? $this->getRawOptionValue($options->getOptions()) : [],
 		                    $definitions,
 		                    $form_configuration ?? []);
-		
+
 		$this->options = $options;
 	}
-	
+
 	public function setAnswerOptions(AnswerOptions $options) {
 	    $this->setValues($this->getRawOptionValue($options->getOptions()));
 	}
-	
+
 	private function getRawOptionValue(array $options) {
 	    return array_map(function($option) {
 	       return !is_null($option) ? $option->rawValues() : null;
 	    }, $options);
 	}
-	
+
 	/**
 	 * @param QuestionPlayConfiguration $configuration
 	 */
 	public function setConfiguration(QuestionPlayConfiguration $configuration) {
 	    $this->configuration = $configuration;
 	}
-	
+
 	/**
 	 * @return bool
 	 */
-	public function checkInput() : bool {    
+	public function checkInput() : bool {
 	    $count = intval($_POST[Answeroptionform::VAR_POST]);
-	    
+
 	    $sd_class = $this->configuration->getScoringConfiguration()->configurationFor()::getScoringDefinitionClass();
 	    $dd_class = $this->configuration->getEditorConfiguration()->configurationFor()::getDisplayDefinitionClass();
-	    
+
         if(!$dd_class::checkInput($count)) {
             $this->setAlert($dd_class::getErrorMessage());
             return false;
         }
-        
+
         if(!$sd_class::checkInput($count)) {
             $this->setAlert($sd_class::getErrorMessage());
             return false;
         }
-	    
+
 	    return true;
 	}
 
@@ -97,20 +97,22 @@ class AnswerOptionForm extends AsqTableInput {
 	 */
 	public function readAnswerOptions() {
 	    $this->readValues();
-	    
+
 	    $sd_class = $this->configuration->getScoringConfiguration()->configurationFor()::getScoringDefinitionClass();
 	    $dd_class = $this->configuration->getEditorConfiguration()->configurationFor()::getDisplayDefinitionClass();
-	    
+
 	    $count = intval($_POST[Answeroptionform::VAR_POST]);
 
 	    $options = [];
 	    for ($i = 1; $i <= $count; $i++) {
+	        $str_i = strval($i);
+
 	        $options[] = AnswerOption::create(
-	                strval($i),
-	                $dd_class::getValueFromPost(strval($i)),
-	                $sd_class::getValueFromPost(strval($i)));
+	            $str_i,
+	            $dd_class::getValueFromPost($str_i),
+	            $sd_class::getValueFromPost($str_i));
 	    }
-	    
+
 	    $this->options = AnswerOptions::create($options);
 	    $this->values = $this->getRawOptionValue($options);
 	}
@@ -118,7 +120,7 @@ class AnswerOptionForm extends AsqTableInput {
 	public function getAnswerOptions() : AnswerOptions {
 	    return $this->options;
 	}
-	
+
 	/**
 	 * @param QuestionPlayConfiguration $play
 	 *
@@ -127,8 +129,8 @@ class AnswerOptionForm extends AsqTableInput {
 	private function collectFields(?QuestionPlayConfiguration $play) : array {
 	    $sd_class = $play->getScoringConfiguration()->configurationFor()::getScoringDefinitionClass();
 	    $dd_class = $play->getEditorConfiguration()->configurationFor()::getDisplayDefinitionClass();
-	    
-	    
+
+
 	    return array_merge($dd_class::getFields($play), $sd_class::getFields($play));
 	}
 }
