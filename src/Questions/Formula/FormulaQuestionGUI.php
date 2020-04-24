@@ -17,48 +17,74 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
 class FormulaQuestionGUI extends QuestionFormGUI {
-    protected function createDefaultPlayConfiguration(): QuestionPlayConfiguration
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::createDefaultPlayConfiguration()
+     */
+    protected function createDefaultPlayConfiguration() : QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create(
             FormulaEditorConfiguration::create(),
             FormulaScoringConfiguration::create());
     }
-    
-    protected function readPlayConfiguration(): QuestionPlayConfiguration
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::readPlayConfiguration()
+     */
+    protected function readPlayConfiguration() : QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create(
             FormulaEditor::readConfig(),
             FormulaScoring::readConfig());
     }
-    
-    protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play): void
-    {        
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::initiatePlayConfiguration()
+     */
+    protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play) : void
+    {
         foreach (FormulaEditor::generateFields($play->getEditorConfiguration()) as $field) {
             $this->addItem($field);
         }
-        
+
         foreach (FormulaScoring::generateFields($play->getScoringConfiguration()) as $field) {
             $this->addItem($field);
         }
     }
-    
-    protected function postInit() {
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::postInit()
+     */
+    protected function postInit()
+    {
         global $DIC;
         $question_text = $this->getItemByPostVar(QuestionFormGUI::VAR_QUESTION);
         $question_text->setInfo($DIC->language()->txt('asq_info_question') . $this->getParsebutton());
         $question_text->setUseRte(false);
-        
+
         $this->option_form->setInfo($DIC->language()->txt('asq_info_results'));
-        
+
         $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Formula/FormulaAuthoring.js');
     }
-    
-    private function getParseButton() : string {
+
+    /**
+     * @return string
+     */
+    private function getParseButton() : string
+    {
         global $DIC;
         return '<br /><input type="button" value="' . $DIC->language()->txt('asq_parse_question') . '" class="js_parse_question btn btn-default" />';
     }
-    
-    protected function getAnswerOptionConfiguration() {
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::getAnswerOptionConfiguration()
+     */
+    protected function getAnswerOptionConfiguration() : array
+    {
         return [AsqTableInput::OPTION_HIDE_ADD_REMOVE => true];
     }
 }

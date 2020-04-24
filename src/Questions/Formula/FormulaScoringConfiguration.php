@@ -14,87 +14,111 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaScoringConfiguration extends AbstractConfiguration {    
+class FormulaScoringConfiguration extends AbstractConfiguration {
     /**
-     * @var string
+     * @var ?string
      */
     protected $units;
-    
+
     /**
-     * @var int
+     * @var ?int
      */
     protected $precision;
-    
+
     /**
-     * @var float
+     * @var ?float
      */
     protected $tolerance;
-    
+
     /**
-     * @var int
+     * @var ?int
      */
     protected $result_type;
-    
+
     /**
      * @var FormulaScoringVariable[]
      */
     protected $variables = [];
-    
+
     const TYPE_ALL = 1;
     const TYPE_DECIMAL = 2;
     const TYPE_FRACTION = 3;
     const TYPE_COPRIME_FRACTION = 4;
-    
-    public static function create(string $units = null,
-                                  int $precision = null,
-                                  float $tolerance = null,
-                                  int $result_type = null,
-                                  array $variables = []) : FormulaScoringConfiguration {
-        
+
+    /**
+     * @param string $units
+     * @param int $precision
+     * @param float $tolerance
+     * @param int $result_type
+     * @param array $variables
+     * @return FormulaScoringConfiguration
+     */
+    public static function create(?string $units = null,
+                                  ?int $precision = null,
+                                  ?float $tolerance = null,
+                                  ?int $result_type = null,
+                                  ?array $variables = []) : FormulaScoringConfiguration
+    {
         $object = new FormulaScoringConfiguration();
-        
         $object->units = $units;
         $object->precision = $precision;
         $object->tolerance = $tolerance;
         $object->result_type = $result_type;
         $object->variables = $variables;
-        
         return $object;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getUnits()
+    public function getUnits() : ?array
+    {
+        if (is_null($this->units)) {
+            return null;
+        }
+
+        return array_map(function($unit) {
+            return trim($unit);
+        }, explode(',', $this->units));
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getUnitString() : ?string
     {
         return $this->units;
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getPrecision()
+    public function getPrecision() : ?int
     {
         return $this->precision;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTolerance()
+    public function getTolerance() : ?float
     {
         return $this->tolerance;
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getResultType()
+    public function getResultType() : ?int
     {
         return $this->result_type;
     }
-    
-    public function getVariables() {
+
+    /**
+     * @return ?FormulaScoringVariable[]
+     */
+    public function getVariables() : ?array
+    {
         return $this->variables;
     }
 
@@ -103,11 +127,38 @@ class FormulaScoringConfiguration extends AbstractConfiguration {
      */
     public function getVariablesArray(): array {
         $var_array = [];
-        
+
         foreach($this->variables as $variable) {
             $var_array[] = $variable->getAsArray();
         }
-        
+
         return $var_array;
+    }
+
+    /**
+     * @param FormulaScoringVariable $def
+     * @return string
+     */
+    public function generateVariableValue(FormulaScoringVariable $def) : string
+    {
+        $exp = 10 ** $this->getPrecision();
+
+        $min = intval($def->getMin() * $exp);
+        $max = intval($def->getMax() * $exp);
+        $number = mt_rand($min, $max);
+
+        if (!is_null($def->getMultipleOf())) {
+            $mult_of = $def->getMultipleOf() * $exp;
+
+            $number -= $number % $mult_of;
+
+            if ($number < $min) {
+                $number += $mult_of;
+            }
+        }
+
+        $number /= $exp;
+
+        return sprintf('%.' . $this->getPrecision() . 'F', $number);
     }
 }

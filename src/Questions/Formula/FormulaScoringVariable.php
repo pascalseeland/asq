@@ -21,37 +21,37 @@ class FormulaScoringVariable extends AbstractValueObject {
     const VAR_MULTIPLE_OF = 'fsv_multiple_of';
 
     /**
-     * @var float
+     * @var ?float
      */
     protected $min;
-    
+
     /**
-     * @var float
+     * @var ?float
      */
     protected $max;
-    
+
     /**
-     * @var string
+     * @var ?string
      */
     protected $unit;
-    
+
     /**
      * @var ?float
      */
     protected $multiple_of;
-    
+
     /**
-     * @param float $min
-     * @param float $max
-     * @param string $unit
-     * @param float $divisor
+     * @param ?float $min
+     * @param ?float $max
+     * @param ?string $unit
+     * @param ?float $divisor
      * @return FormulaScoringVariable
      */
-    public static function create(float $min,
-                                  float $max,
-                                  string $unit,
-                                  ?float $multiple_of) : 
-                                  FormulaScoringVariable {
+    public static function create(?float $min,
+                                  ?float $max,
+                                  ?string $unit,
+                                  ?float $multiple_of) :  FormulaScoringVariable
+    {
         $object = new FormulaScoringVariable();
         $object->min = $min;
         $object->max = $max;
@@ -59,27 +59,27 @@ class FormulaScoringVariable extends AbstractValueObject {
         $object->multiple_of = $multiple_of;
         return $object;
     }
-    
+
     /**
-     * @return float
+     * @return ?float
      */
-    public function getMin()
+    public function getMin() : ?float
     {
         return $this->min;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getMax()
+    public function getMax() : ?float
     {
         return $this->max;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnit()
+    public function getUnit() : ?string
     {
         return $this->unit;
     }
@@ -87,17 +87,31 @@ class FormulaScoringVariable extends AbstractValueObject {
     /**
      * @return ?float
      */
-    public function getMultipleOf()
+    public function getMultipleOf() : ?float
     {
         return $this->multiple_of;
     }
 
-    public function getAsArray(): array {
+    /**
+     * @return array
+     */
+    public function getAsArray() : array {
         return [
             self::VAR_MIN => $this->min,
             self::VAR_MAX => $this->max,
             self::VAR_UNIT => $this->unit,
             self::VAR_MULTIPLE_OF => $this->multiple_of
         ];
+    }
+
+    /**
+     * @param array $units
+     * @return bool
+     */
+    public function isComplete() : bool
+    {
+        return ! is_null($this->getMax()) &&
+               ! is_null($this->getMin()) &&
+               ! is_null($this->getMultipleOf());
     }
 }

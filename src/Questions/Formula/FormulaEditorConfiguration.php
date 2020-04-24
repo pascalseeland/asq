@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Formula;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\AbstractConfiguration;
 
 /**
@@ -17,15 +16,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  */
 class FormulaEditorConfiguration extends AbstractConfiguration {
 
-    public static function create() : FormulaEditorConfiguration {
-        return new FormulaEditorConfiguration();
-    }
-    
-    // Empty class as Formulaquestion has no clear divide between editor and display
-    // So all data is stored in Scoring
-    
-    public function equals(AbstractValueObject $other): bool
+    public static function create() : FormulaEditorConfiguration
     {
-        return get_class($this) === get_class($other);
+        return new FormulaEditorConfiguration();
     }
 }

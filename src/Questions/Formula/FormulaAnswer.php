@@ -19,13 +19,20 @@ class FormulaAnswer extends Answer {
      * @var ?array
      */
     protected $values;
-    
+
+    /**
+     * @param array $values
+     * @return FormulaAnswer
+     */
     public static function create(?array $values = null) : FormulaAnswer {
         $object = new FormulaAnswer();
         $object->values = $values;
         return $object;
     }
-    
+
+    /**
+     * @return array|NULL
+     */
     public function getValues(): ?array {
         return $this->values;
     }
