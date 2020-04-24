@@ -17,23 +17,23 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 class ClozeGapItem extends AbstractValueObject {
     const VAR_TEXT = 'cgi_text';
     const VAR_POINTS = 'cgi_points';
-    
+
     /**
-     * @var string
+     * @var ?string
      */
     protected $text;
-    
+
     /**
-     * @var float
+     * @var ?float
      */
     protected $points;
-    
+
     /**
-     * @param string $text
-     * @param int $points
+     * @param ?string $text
+     * @param ?float $points
      * @return ClozeGapItem
      */
-    public static function create(string $text, float $points) : ClozeGapItem {
+    public static function create(?string $text, ?float $points) : ClozeGapItem {
         $item = new ClozeGapItem();
         $item->text = $text;
         $item->points = $points;
@@ -43,31 +43,35 @@ class ClozeGapItem extends AbstractValueObject {
     /**
      * @return string
      */
-    public function getText()
+    public function getText() : ?string
     {
         return $this->text;
     }
 
     /**
-     * @return number
+     * @return float
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->points;
     }
 
+    /**
+     * @return array
+     */
     public function getAsArray() : array {
         return [
             self::VAR_TEXT => $this->text,
             self::VAR_POINTS => $this->points
         ];
     }
-    
-    public function equals(AbstractValueObject $other): bool
+
+    /**
+     * @return bool
+     */
+    public function isComplete(): bool
     {
-        /** @var ClozeGapItem $other */
-        return get_class($this) === get_class($other) &&
-               $this->text === $other->text &&
-               $this->points === $other->points;
+        return ! is_null($this->getText()) &&
+               ! is_null($this->getPoints());
     }
 }

@@ -19,13 +19,20 @@ class ClozeAnswer extends Answer {
      * @var ?array
      */
     protected $answers;
-    
+
+    /**
+     * @param array $answers
+     * @return ClozeAnswer
+     */
     public static function create(?array $answers = []) : ClozeAnswer {
         $object = new ClozeAnswer();
         $object->answers = $answers;
         return $object;
     }
-    
+
+    /**
+     * @return array|NULL
+     */
     public function getAnswers() : ?array {
         return $this->answers;
     }

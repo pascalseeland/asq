@@ -17,28 +17,42 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
      * @var ?float
      */
     protected $value;
-    
+
     /**
      * @var ?float
      */
     protected $upper;
-    
+
     /**
      * @var ?float
      */
     protected $lower;
-    
+
     /**
      * @var ?float
      */
     protected $points;
-    
+
     /**
-     * @var int
+     * @var ?int
      */
     protected $field_length;
-    
-    public static function Create(?float $value = null, ?float $upper = null, ?float $lower = null, ?float $points = null, int $field_length = 80) {
+
+    /**
+     * @param float $value
+     * @param float $upper
+     * @param float $lower
+     * @param float $points
+     * @param int $field_length
+     * @return NumericGapConfiguration
+     */
+    public static function Create(
+        ?float $value = null,
+        ?float $upper = null,
+        ?float $lower = null,
+        ?float $points = null,
+        ?int $field_length = null) : NumericGapConfiguration
+    {
         $object = new NumericGapConfiguration();
         $object->value = $value;
         $object->upper = $upper;
@@ -47,7 +61,7 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
         $object->field_length = $field_length;
         return $object;
     }
-    
+
     /**
      * @return ?float
      */
@@ -55,7 +69,7 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
     {
         return $this->value;
     }
-    
+
     /**
      * @return ?float
      */
@@ -63,7 +77,7 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
     {
         return $this->upper;
     }
-    
+
     /**
      * @return ?float
      */
@@ -71,7 +85,7 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
     {
         return $this->lower;
     }
-    
+
     /**
      * @return ?int
      */
@@ -79,17 +93,31 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
     {
         return $this->points;
     }
-    
+
     /**
-     * @return int
+     * @return ?int
      */
     public function getFieldLength() : int
     {
-        return $this->field_length;
+        return $this->field_length ?? self::DEFAULT_FIELD_LENGTH;
     }
-    
-    public function getMaxPoints(): float
+
+    /**
+     * @return ?float
+     */
+    public function getMaxPoints(): ?float
     {
         return $this->points;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isComplete(): bool
+    {
+        return ! is_null($this->getPoints()) &&
+               ! is_null($this->getLower()) &&
+               ! is_null($this->getUpper()) &&
+               ! is_null($this->getValue());
     }
 }

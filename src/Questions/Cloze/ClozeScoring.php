@@ -25,28 +25,32 @@ class ClozeScoring extends AbstractScoring {
      * @var ClozeEditorConfiguration
      */
     protected $configuration;
-    
+
     /**
      * @param QuestionDto $question
      */
-    public function __construct($question) {
+    public function __construct($question)
+    {
         parent::__construct($question);
-        
+
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
     }
-    
+
+    /**
+     * @var float
+     */
     private $reached_points;
-    
+
     public function score(Answer $answer): float
     {
         $given_answer = $answer->getAnswers();
-        
+
         $this->reached_points = 0.0;
-        
+
         for ($i = 1; $i <= count($this->configuration->getGaps()); $i += 1) {
-            
+
             $gap_configuration = $this->configuration->getGaps()[$i - 1];
-            
+
             if (get_class($gap_configuration) === SelectGapConfiguration::class) {
                 $this->scoreSelectGap($given_answer[$i], $gap_configuration);
             }
@@ -57,10 +61,10 @@ class ClozeScoring extends AbstractScoring {
                 $this->scoreNumericGap(floatval($given_answer[$i]), $gap_configuration);
             }
         }
-        
+
         return $this->reached_points;
     }
-    
+
     /**
      * @param string $answer
      * @param SelectGapConfiguration $gap_configuration
@@ -88,45 +92,57 @@ class ClozeScoring extends AbstractScoring {
             }
         }
     }
-    
+
     /**
      * @param float $answer
      * @param NumericGapConfiguration $gap_configuration
      */
-    private function scoreNumericGap(float $answer, NumericGapConfiguration $gap_configuration) {
+    private function scoreNumericGap(float $answer, NumericGapConfiguration $gap_configuration)
+    {
         if ($gap_configuration->getUpper() >= $answer &&
             $gap_configuration->getLower() <= $answer) {
             $this->reached_points += $gap_configuration->getPoints();
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         $max_score = 0.0;
-        
+
         foreach ($this->configuration->getGaps() as $gap_configuration) {
             $max_score += $gap_configuration->getMaxPoints();
         }
-        
+
         return $max_score;
     }
-    
-    public function getBestAnswer(): Answer
+
+    public function getBestAnswer() : Answer
     {
         //TODO implement me
         throw new NotImplementedException("Needs to implement ClozeScoring->getBestAnswer()");
     }
-    
-    public static function readConfig()
+
+    /**
+     * @return ClozeScoringConfiguration
+     */
+    public static function readConfig() : ClozeScoringConfiguration
     {
         return ClozeScoringConfiguration::create();
     }
 
-    public static function isComplete(Question $question): bool
+    /**
+     * @param Question $question
+     * @return bool
+     */
+    public static function isComplete(Question $question) : bool
     {
         return true;
     }
-    
+
     /**
      * @return string
      */
