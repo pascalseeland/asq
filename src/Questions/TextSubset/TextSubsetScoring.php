@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Application\Exception\AsqException;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class TextSubsetScoring
@@ -27,14 +28,12 @@ class TextSubsetScoring extends AbstractScoring
      * @var Answer
      */
     protected $answer;
-    
+
     const VAR_TEXT_MATCHING = 'tss_text_matching';
-    
+
     /**
-     * 
-     * @param Answer $answer
-     * @throws AsqException
-     * @return float
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
     public function score(Answer $answer) : float
     {
@@ -42,7 +41,7 @@ class TextSubsetScoring extends AbstractScoring
 
         /** @var TextSubsetScoringConfiguration $scoring_conf */
         $scoring_conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
-        
+
         switch ($scoring_conf->getTextMatching()) {
             case TextScoring::TM_CASE_INSENSITIVE:
                 return $this->caseInsensitiveScoring();
@@ -59,45 +58,53 @@ class TextSubsetScoring extends AbstractScoring
             case TextScoring::TM_LEVENSHTEIN_5:
                 return $this->levenshteinScoring(5);
         }
-        
+
         throw new AsqException("Unknown Test Subset Scoring Method found");
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
+     */
     public function getBestAnswer(): Answer
     {
         $answers = [];
-        
+
         foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             $answers[] = $option->getScoringDefinition()->getText();
         }
-        
+
         return TextSubsetAnswer::create($answers);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         $amount = $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers();
-        
+
         if(empty($amount)) {
             return 0;
         }
-        
+
         $points = array_map(function($option) {
             return $option->getScoringDefinition()->getPoints();
         }, $this->question->getAnswerOptions()->getOptions());
-            
+
         rsort($points);
-        
+
         return array_sum(array_slice($points, 0, $amount));
     }
-    
+
     /**
      * @param array $answer_arr
      * @return int
      */
     private function caseInsensitiveScoring() : float {
         $reached_points = 0;
-        
+
         foreach ($this->getAnswers() as $result) {
             foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
                 if (strtoupper($correct->getScoringDefinition()->getText()) === strtoupper($result)) {
@@ -109,14 +116,14 @@ class TextSubsetScoring extends AbstractScoring
 
         return $reached_points;
     }
-    
+
     /**
      * @param array $answer_arr
      * @return int
      */
     private function caseSensitiveScoring() : float {
         $reached_points = 0;
- 
+
         foreach ($this->getAnswers() as $result) {
             foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
                 if ($correct->getScoringDefinition()->getText() === $result) {
@@ -128,7 +135,7 @@ class TextSubsetScoring extends AbstractScoring
 
         return $reached_points;
     }
-    
+
     /**
      * @param array $answer_arr
      * @param int $distance
@@ -148,15 +155,18 @@ class TextSubsetScoring extends AbstractScoring
 
         return $reached_points;
     }
-    
+
+    /**
+     * @return array
+     */
     private function getAnswers() : array {
         return array_unique($this->answer->getAnswers());
     }
-    
+
     /**
      * @param AbstractConfiguration|null $config
      *
-     * @return array|null
+     * @return ?array
      */
     public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array {
         /** @var TextSubsetScoringConfiguration $config */
@@ -165,40 +175,47 @@ class TextSubsetScoring extends AbstractScoring
 
         $text_matching = TextScoring::getScoringTypeSelectionField(self::VAR_TEXT_MATCHING);
         $fields[self::VAR_TEXT_MATCHING] = $text_matching;
-        
+
         if ($config !== null) {
             $text_matching->setValue($config->getTextMatching());
         }
-        
+
         return $fields;
     }
-    
-    public static function readConfig()
+
+    /**
+     * @return TextSubsetScoringConfiguration
+     */
+    public static function readConfig() : TextSubsetScoringConfiguration
     {
         return TextSubsetScoringConfiguration::create(
-            intval($_POST[self::VAR_TEXT_MATCHING]));
+            InputHelper::readInt(self::VAR_TEXT_MATCHING));
     }
-    
+
+    /**
+     * @param Question $question
+     * @return bool
+     */
     public static function isComplete(Question $question): bool
     {
         /** @var TextSubsetScoringConfiguration $config */
         $config = $question->getPlayConfiguration()->getScoringConfiguration();
-        
+
         if (empty($config->getTextMatching())) {
             return false;
         }
-        
+
         foreach ($question->getAnswerOptions()->getOptions() as $option) {
             /** @var TextSubsetScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
-            
+
             if (empty($option_config->getText()) ||
                 empty($option_config->getPoints()))
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

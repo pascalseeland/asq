@@ -20,26 +20,23 @@ class TextSubsetScoringConfiguration extends AbstractConfiguration {
      * @var ?int
      */
     protected $text_matching;
-    
+
+    /**
+     * @param int $text_matching
+     * @return TextSubsetScoringConfiguration
+     */
     static function create(?int $text_matching = null) : TextSubsetScoringConfiguration
     {
         $object = new TextSubsetScoringConfiguration();
         $object->text_matching = $text_matching;
         return $object;
     }
-    
+
     /**
      * @return ?int
      */
     public function getTextMatching() : ?int
     {
         return $this->text_matching;
-    }
-    
-    public function equals(AbstractValueObject $other): bool
-    {
-        /** @var TextSubsetScoringConfiguration $other */
-        return get_class($this) === get_class($other) &&
-               $this->text_matching === $other->text_matching;
     }
 }

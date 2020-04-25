@@ -89,6 +89,7 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->setValuesByPost();
+            $this->post_question = $this->readQuestionFromPost();
         }
 
         $this->showQuestionState($question);
@@ -192,17 +193,13 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
      * @return QuestionDto
      */
     public function getQuestion() : QuestionDto {
-        if(is_null($this->post_question)) {
-            $this->post_question = $this->readQuestionFromPost();
-        }
-
-        return $this->post_question;
+        return $this->post_question ?? $this->initial_question;
     }
 
     /**
-     *
+     * @return QuestionDto
      */
-    private function readQuestionFromPost()
+    private function readQuestionFromPost() : QuestionDto
     {
         $question = new QuestionDto();
         $question->setId($_POST[self::VAR_AGGREGATE_ID]);

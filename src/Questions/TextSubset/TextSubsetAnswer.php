@@ -1,32 +1,40 @@
 <?php
-declare(strict_types=1);
-
+declare(strict_types = 1);
 namespace srag\asq\Questions\TextSubset;
 
 use srag\asq\Domain\Model\Answer\Answer;
 
 /**
  * Class TextSubsetAnswer
- *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
- *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class TextSubsetAnswer extends Answer {
+class TextSubsetAnswer extends Answer
+{
+
     /**
      * @var ?int[]
      */
     protected $answers;
-    
-    public static function create(?array $answers = null) {
+
+    /**
+     * @param array $answers
+     * @return TextSubsetAnswer
+     */
+    public static function create(?array $answers = null) : TextSubsetAnswer
+    {
         $object = new TextSubsetAnswer();
         $object->answers = $answers;
         return $object;
     }
-    
-    public function getAnswers() : ?array {
+
+    /**
+     * @return ?array
+     */
+    public function getAnswers() : ?array
+    {
         return $this->answers;
     }
 }
