@@ -20,16 +20,20 @@ class OrderingEditorConfiguration extends AbstractConfiguration
      * @var ?bool
      */
     protected $vertical;
-    
+
+    /**
+     * @param bool $vertical
+     * @return OrderingEditorConfiguration
+     */
     public static function create(?bool $vertical = null) : OrderingEditorConfiguration
     {
         $object = new OrderingEditorConfiguration();
         $object->vertical = $vertical;
         return $object;
     }
-    
+
     /**
-     * @return boolean
+     * @return ?bool
      */
     public function isVertical() : ?bool
     {

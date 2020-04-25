@@ -1,6 +1,5 @@
 <?php
-declare(strict_types=1);
-
+declare(strict_types = 1);
 namespace srag\asq\Questions\Ordering;
 
 use ilNumberInputGUI;
@@ -15,86 +14,106 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 
 /**
  * Class OrderingQuestionGUI
- *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
- *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class OrderingTextQuestionGUI extends QuestionFormGUI {
+class OrderingTextQuestionGUI extends QuestionFormGUI
+{
+
     const VAR_ORDERING_TEXT = 'otq_text';
-    
-    protected function canDisplayAnswerOptions() {
+
+    /**
+     * {@inheritdoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::canDisplayAnswerOptions()
+     */
+    protected function canDisplayAnswerOptions() : bool
+    {
         return false;
     }
-    
-    protected function createDefaultPlayConfiguration(): QuestionPlayConfiguration
+
+    /**
+     * {@inheritdoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::createDefaultPlayConfiguration()
+     */
+    protected function createDefaultPlayConfiguration() : QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create();
     }
-    
-    protected function readPlayConfiguration(): QuestionPlayConfiguration
+
+    /**
+     * {@inheritdoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::readPlayConfiguration()
+     */
+    protected function readPlayConfiguration() : QuestionPlayConfiguration
     {
-        return QuestionPlayConfiguration::create(
-            OrderingEditorConfiguration::create(false, 
-                                                !empty($_POST[OrderingEditor::VAR_MINIMUM_SIZE]) ? 
-                                                    intval($_POST[OrderingEditor::VAR_MINIMUM_SIZE]) : 
-                                                    null),
-            OrderingScoring::readConfig());
+        return QuestionPlayConfiguration::create(OrderingEditorConfiguration::create(false, ! empty($_POST[OrderingEditor::VAR_MINIMUM_SIZE]) ? intval($_POST[OrderingEditor::VAR_MINIMUM_SIZE]) : null), OrderingScoring::readConfig());
     }
-    
-    protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play): void
+
+    /**
+     * {@inheritdoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::initiatePlayConfiguration()
+     */
+    protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play) : void
     {
         global $DIC;
-        
+
         $text = new ilTextAreaInputGUI($DIC->language()->txt('asq_ordering_text'), self::VAR_ORDERING_TEXT);
         $this->addItem($text);
-        
+
         $minimum_size = new ilNumberInputGUI($DIC->language()->txt('asq_label_min_size'), OrderingEditor::VAR_MINIMUM_SIZE);
-        $minimum_size->setInfo($DIC->language()->txt('asq_description_min_size'));
+        $minimum_size->setInfo($DIC->language()
+            ->txt('asq_description_min_size'));
         $minimum_size->setSize(6);
         $this->addItem($minimum_size);
-        
+
         $config = $play->getEditorConfiguration();
-        if (!$config == null) {
+        if (! $config == null) {
             $minimum_size->setValue($config->getMinimumSize());
         }
-        
-        if (count($this->initial_question->getAnswerOptions()->getOptions())) {
+
+        if (! is_null($this->initial_question->getAnswerOptions()) &&
+            count($this->initial_question->getAnswerOptions()->getOptions())) {
             $question_text = [];
-            
+
             foreach ($this->initial_question->getAnswerOptions()->getOptions() as $option) {
                 $question_text[] = $option->getDisplayDefinition()->getText();
             }
-            
+
             $text->setValue(implode(' ', $question_text));
         }
-        
+
         foreach (OrderingScoring::generateFields($play->getScoringConfiguration()) as $field) {
             $this->addItem($field);
         }
     }
-    
-    protected function readAnswerOptions(QuestionDto $question) : AnswerOptions {
+
+    /**
+     * {@inheritdoc}
+     * @see \srag\asq\UserInterface\Web\Form\QuestionFormGUI::readAnswerOptions()
+     */
+    protected function readAnswerOptions(QuestionDto $question) : AnswerOptions
+    {
         $text_input = $_POST[self::VAR_ORDERING_TEXT];
 
         $options = [];
-        
+
         $i = 1;
-        if (!empty($text_input)) {
+        if (! empty($text_input)) {
             $words = explode(' ', $text_input);
-            
-            foreach($words as $word) {
+
+            foreach ($words as $word) {
                 $options[] = AnswerOption::create(
                     strval($i),
                     ImageAndTextDisplayDefinition::create($word, ''),
-                    EmptyDefinition::create());
-                
+                    EmptyDefinition::create()
+                );
+
                 $i += 1;
             }
         }
-        
+
         return Answeroptions::create($options);
     }
 }

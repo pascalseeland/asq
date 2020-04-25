@@ -19,17 +19,20 @@ class OrderingScoringConfiguration extends AbstractConfiguration {
      * @var ?float
      */
     protected $points;
-    
-    
+
+    /**
+     * @param float $points
+     * @return OrderingScoringConfiguration
+     */
     static function create(?float $points = null) : OrderingScoringConfiguration
     {
         $object = new OrderingScoringConfiguration();
         $object->points = $points;
         return $object;
     }
-    
+
     /**
-     * @return int
+     * @return ?float
      */
     public function getPoints(): ?float
     {

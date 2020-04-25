@@ -19,14 +19,23 @@ class OrderingAnswer extends Answer {
      * @var ?int[]
      */
     protected $selected_order;
-    
-    public static function create(?array $selected_order = null) : OrderingAnswer {
+
+    /**
+     * @param array $selected_order
+     * @return OrderingAnswer
+     */
+    public static function create(?array $selected_order = null) : OrderingAnswer
+    {
         $object = new OrderingAnswer();
         $object->selected_order = $selected_order;
         return $object;
     }
-    
-    public function getSelectedOrder() {
+
+    /**
+     * @return \srag\asq\Questions\Ordering\?int[]
+     */
+    public function getSelectedOrder() : ?array
+    {
         return $this->selected_order;
     }
 }

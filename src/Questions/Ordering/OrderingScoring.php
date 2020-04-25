@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class OrderingScoring
@@ -25,10 +26,13 @@ class OrderingScoring extends AbstractScoring
 
     const VAR_POINTS = 'os_points';
 
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
+     */
     function score(Answer $answer) : float
     {
-        $reached_points = 0.0; 
+        $reached_points = 0.0;
 
         /** @var OrderingScoringConfiguration $scoring_conf */
         $scoring_conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
@@ -46,15 +50,23 @@ class OrderingScoring extends AbstractScoring
                 $reached_points = 0.0;
             }
         }
-        
+
         return $reached_points;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
+     */
     public function getBestAnswer() : Answer
     {
         $answers = [];
@@ -65,7 +77,6 @@ class OrderingScoring extends AbstractScoring
 
         return OrderingAnswer::create($answers);
     }
-
 
     /**
      * @param AbstractConfiguration|null $config
@@ -91,13 +102,15 @@ class OrderingScoring extends AbstractScoring
         return $fields;
     }
 
-
-    public static function readConfig()
+    /**
+     * @return OrderingScoringConfiguration
+     */
+    public static function readConfig() : OrderingScoringConfiguration
     {
         return OrderingScoringConfiguration::create(
-            floatval($_POST[self::VAR_POINTS]));
+            InputHelper::readFloat(self::VAR_POINTS)
+        );
     }
-
 
     /**
      * @return string
@@ -107,16 +120,19 @@ class OrderingScoring extends AbstractScoring
         return EmptyDefinition::class;
     }
 
-
+    /**
+     * @param Question $question
+     * @return bool
+     */
     public static function isComplete(Question $question) : bool
     {
         /** @var OrderingScoringConfiguration $config */
         $config = $question->getPlayConfiguration()->getScoringConfiguration();
-        
+
         if (empty($config->getPoints())) {
             return false;
         }
-        
+
         return true;
     }
 }
