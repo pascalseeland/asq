@@ -19,14 +19,22 @@ class MatchingScoringConfiguration extends AbstractConfiguration {
      * @var ?float
      */
     protected $wrong_deduction;
-    
-    public static function create(?float $wrong_deduction = null) : MatchingScoringConfiguration {
+
+    /**
+     * @param float $wrong_deduction
+     * @return MatchingScoringConfiguration
+     */
+    public static function create(?float $wrong_deduction = null) : MatchingScoringConfiguration
+    {
         $object = new MatchingScoringConfiguration();
         $object->wrong_deduction = $wrong_deduction;
         return $object;
     }
-        
-    public function getWrongDeduction(): ?float {
-        return $this->wrong_deduction;
+
+    /**
+     * @return float
+     */
+    public function getWrongDeduction() : float {
+        return $this->wrong_deduction ?? 0.0;
     }
 }

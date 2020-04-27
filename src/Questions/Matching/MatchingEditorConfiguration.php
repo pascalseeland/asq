@@ -20,41 +20,50 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
     const SHUFFLE_DEFINITIONS = 1;
     const SHUFFLE_TERMS = 2;
     const SHUFFLE_BOTH = 3;
-  
+
     /**
-     * @var int
+     * @var ?int
      */
     protected $shuffle;
 
     /**
-     * @var int
+     * @var ?int
      */
     protected $thumbnail_size;
-    
+
     const MATCHING_ONE_TO_ONE = 0;
     const MATCHING_MANY_TO_ONE = 1;
     const MATCHING_MANY_TO_MANY = 2;
-    
+
     /**
-     * @var int
+     * @var ?int
      */
     protected $matching_mode;
-    
+
     /**
-     * @var array
+     * @var ?array
      */
     protected $definitions;
-    
+
     /**
-     * @var array
+     * @var ?array
      */
     protected $terms;
-    
+
     /**
-     * @var array
+     * @var ?array
      */
     protected $matches;
-    
+
+    /**
+     * @param int $shuffle
+     * @param int $thumbnail_size
+     * @param int $matching_mode
+     * @param array $definitions
+     * @param array $terms
+     * @param array $matches
+     * @return MatchingEditorConfiguration
+     */
     public static function create(
             int $shuffle = self::SHUFFLE_NONE,
             int $thumbnail_size = 100,
@@ -73,61 +82,69 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
         $object->matches = $matches;
         return $object;
     }
-    
+
     /**
-     * @return int
+     * @return ?int
      */
-    public function getShuffle()
+    public function getShuffle() : ?int
     {
         return $this->shuffle;
     }
-    
-    public function isShuffleDefinitions() {
+
+    /**
+     * @return bool
+     */
+    public function isShuffleDefinitions() : bool
+    {
         return $this->shuffle === self::SHUFFLE_DEFINITIONS ||
                $this->shuffle === self::SHUFFLE_BOTH;
     }
 
-    public function isShuffleTerms() {
+    /**
+     * @return bool
+     */
+    public function isShuffleTerms() : bool
+    {
         return $this->shuffle === self::SHUFFLE_TERMS ||
                $this->shuffle === self::SHUFFLE_BOTH;
     }
-    
+
     /**
-     * @return int
+     * @return ?int
      */
-    public function getThumbnailSize()
+    public function getThumbnailSize() : ?int
     {
         return $this->thumbnail_size;
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getMatchingMode()
+    public function getMatchingMode() : ?int
     {
         return $this->matching_mode;
     }
 
     /**
-     * @return array
+     * @return ?array
      */
-    public function getDefinitions()
+    public function getDefinitions() : ?array
     {
         return $this->definitions;
     }
 
     /**
-     * @return array
+     * @return ?array
      */
-    public function getTerms()
+    public function getTerms() : ?array
     {
         return $this->terms;
     }
 
     /**
-     * @return array
+     * @return ?array
      */
-    public function getMatches()
+    public function getMatches() : ?array
     {
         return $this->matches;
     }

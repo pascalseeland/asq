@@ -16,6 +16,7 @@ use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class MatchingEditor
@@ -36,25 +37,25 @@ class MatchingEditor extends AbstractEditor
     const VAR_MATCHING_MODE = 'me_matching';
 
     const VAR_DEFINITIONS = 'me_definitions';
-    
+
     const VAR_DEFINITION_TEXT = 'me_definition_text';
 
     const VAR_DEFINITION_IMAGE = 'me_definition_image';
 
     const VAR_TERMS = 'me_terms';
-    
+
     const VAR_TERM_TEXT = 'me_term_text';
 
     const VAR_TERM_IMAGE = 'me_term_image';
 
     const VAR_MATCHES = 'me_matches';
-    
+
     const VAR_MATCH_DEFINITION = 'me_match_definition';
 
     const VAR_MATCH_TERM = 'me_match_term';
 
     const VAR_MATCH_POINTS = 'me_match_points';
-    
+
     /**
      * @var AsqTableInput
      */
@@ -67,36 +68,45 @@ class MatchingEditor extends AbstractEditor
      * @var AsqTableInput
      */
     private static $matches;
-    
-    public function readAnswer(): AbstractValueObject
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
+     */
+    public function readAnswer() : AbstractValueObject
     {
         $matches = explode(';', $_POST[$this->question->getId()]);
-        
+
         $matches = array_diff($matches, ['']);
-        
+
         return MatchingAnswer::create($matches);
     }
 
-    public function generateHtml(): string
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::generateHtml()
+     */
+    public function generateHtml() : string
     {
         global $DIC;
-        
+
         /** @var MatchingEditorConfiguration $config */
         $config = $this->question->getPlayConfiguration()->getEditorConfiguration();
-        
+
         $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.MatchingEditor.html', true, true);
         $tpl->setVariable('QUESTION_ID', $this->question->getId());
         $tpl->setVariable('ANSWER', is_null($this->answer) ? '' :$this->answer->getAnswerString());
         $tpl->setVariable('MATCHING_TYPE', $config->getMatchingMode());
-        
+
         $this->renderDefinitions($config, $tpl);
-        
+
         $this->renderTerms($config, $tpl);
-        
+
         $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Matching/MatchingEditor.js');
-        
+
         return $tpl->get();
     }
+
     /**
      * @param config
      * @param tpl
@@ -106,10 +116,10 @@ class MatchingEditor extends AbstractEditor
         $term_order = $this->getOrder(
             count($config->getTerms()),
             $config->isShuffleTerms());
-        
+
         foreach ($term_order as $id) {
             $term = $config->getTerms()[$id];
-            
+
             if (!empty($term[self::VAR_DEFINITION_IMAGE])) {
                 $tpl->setCurrentBlock('term_picture');
                 $tpl->setVariable('TERM', $term[self::VAR_TERM_TEXT]);
@@ -134,12 +144,12 @@ class MatchingEditor extends AbstractEditor
     private function renderDefinitions($config, $tpl)
     {
         $definition_order = $this->getOrder(
-            count($config->getDefinitions()), 
+            count($config->getDefinitions()),
             $config->isShuffleDefinitions());
-        
+
         foreach ($definition_order as $id) {
             $definition = $config->getDefinitions()[$id];
-            
+
             if (!empty($definition[self::VAR_DEFINITION_IMAGE])) {
                 $tpl->setCurrentBlock('definition_picture');
                 $tpl->setVariable('DEFINITION', $definition[self::VAR_DEFINITION_TEXT]);
@@ -158,21 +168,26 @@ class MatchingEditor extends AbstractEditor
     }
 
 
-    private function getOrder(int $count, bool $shuffle) {
+    /**
+     * @param int $count
+     * @param bool $shuffle
+     * @return int[]
+     */
+    private function getOrder(int $count, bool $shuffle) : array
+    {
         $range = range(0, $count - 1);
-        
+
         if ($shuffle) {
             shuffle($range);
         }
-        
+
         return $range;
     }
-    
+
     /**
+     * @param ?AbstractConfiguration $config
      *
-     * @param AbstractConfiguration|null $config
-     *
-     * @return array|null
+     * @return ?array
      */
     public static function generateFields(?AbstractConfiguration $config): ?array
     {
@@ -211,83 +226,92 @@ class MatchingEditor extends AbstractEditor
             $shuffle_answers->setValue($config->getShuffle());
             $thumbnail->setValue($config->getThumbnailSize());
             $matching_mode->setValue($config->getMatchingMode());
-        } 
-        
+        }
+
         self::createDefinitionsTable($config);
         $fields[] = self::$definitions;
-        
+
         self::createTermsTable($config);
         $fields[] = self::$terms;
-        
+
         self::createMatchTable($config);
         $fields[] = self::$matches;
 
         return $fields;
     }
 
+    /**
+     * @param MatchingEditorConfiguration $config
+     */
     private static function createDefinitionsTable(?MatchingEditorConfiguration $config)
     {
         global $DIC;
 
         $columns = [];
 
-        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_definition_text'), 
-            AsqTableInputFieldDefinition::TYPE_TEXT, 
+        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_definition_text'),
+            AsqTableInputFieldDefinition::TYPE_TEXT,
             self::VAR_DEFINITION_TEXT);
 
-        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_definition_image'), 
-            AsqTableInputFieldDefinition::TYPE_IMAGE, 
+        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_definition_image'),
+            AsqTableInputFieldDefinition::TYPE_IMAGE,
             self::VAR_DEFINITION_IMAGE);
 
-        self::$definitions = new AsqTableInput($DIC->language()->txt('asq_label_definitions'), 
+        self::$definitions = new AsqTableInput($DIC->language()->txt('asq_label_definitions'),
             self::VAR_DEFINITIONS,
-            !is_null($config) ? $config->getDefinitions() : [], 
+            !is_null($config) ? $config->getDefinitions() : [],
             $columns);
     }
 
+    /**
+     * @param MatchingEditorConfiguration $config
+     */
     private static function createTermsTable(?MatchingEditorConfiguration $config)
     {
         global $DIC;
 
         $columns = [];
 
-        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_term_text'), 
-            AsqTableInputFieldDefinition::TYPE_TEXT, 
+        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_term_text'),
+            AsqTableInputFieldDefinition::TYPE_TEXT,
             self::VAR_TERM_TEXT);
 
-        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_term_image'), 
-            AsqTableInputFieldDefinition::TYPE_IMAGE, 
+        $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_term_image'),
+            AsqTableInputFieldDefinition::TYPE_IMAGE,
             self::VAR_TERM_IMAGE);
 
-        self::$terms = new AsqTableInput($DIC->language()->txt('asq_label_terms'), 
+        self::$terms = new AsqTableInput($DIC->language()->txt('asq_label_terms'),
             self::VAR_TERMS,
-            !is_null($config) ? $config->getTerms() : [], 
+            !is_null($config) ? $config->getTerms() : [],
             $columns);
     }
 
+    /**
+     * @param MatchingEditorConfiguration $config
+     */
     private static function createMatchTable(?MatchingEditorConfiguration $config)
     {
         global $DIC;
-        
+
         $columns = [];
-        
+
         $defs = [];
-        
+
         foreach ($config->getDefinitions() as $key=>$value) {
             $defs[$key] = $value[self::VAR_DEFINITION_TEXT];
         }
-        
+
         $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_matches_definition'),
             AsqTableInputFieldDefinition::TYPE_DROPDOWN,
-            self::VAR_MATCH_DEFINITION, 
+            self::VAR_MATCH_DEFINITION,
             $defs);
-        
+
         $terms = [];
-        
+
         foreach ($config->getTerms() as $key=>$value) {
             $terms[$key] = $value[self::VAR_TERM_TEXT];
         }
-        
+
         $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_matches_term'),
             AsqTableInputFieldDefinition::TYPE_DROPDOWN,
             self::VAR_MATCH_TERM,
@@ -296,49 +320,55 @@ class MatchingEditor extends AbstractEditor
         $columns[] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_header_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
             self::VAR_MATCH_POINTS);
-        
+
         self::$matches = new AsqTableInput($DIC->language()->txt('asq_label_matches'),
             self::VAR_MATCHES,
             !is_null($config) ? $config->getMatches() : [],
             $columns);
     }
-    
-    public static function readConfig()
+
+    /**
+     * @return MatchingEditorConfiguration
+     */
+    public static function readConfig() : MatchingEditorConfiguration
     {
         $def = !empty(self::$definitions) ? self::$definitions->readValues() : [];
         $term = !empty(self::$terms) ? self::$terms->readValues() : [];
         $match = !empty(self::$matches) ? self::$matches->readValues() : [];
-        
+
         return MatchingEditorConfiguration::create(
-            intval($_POST[self::VAR_SHUFFLE]), 
-            intval($_POST[self::VAR_THUMBNAIL]), 
-            intval($_POST[self::VAR_MATCHING_MODE]),
+            InputHelper::readInt(self::VAR_SHUFFLE),
+            InputHelper::readInt(self::VAR_THUMBNAIL),
+            InputHelper::readInt(self::VAR_MATCHING_MODE),
             $def,
             $term,
             $match);
     }
 
     /**
-     *
      * @return string
      */
-    static function getDisplayDefinitionClass(): string
+    static function getDisplayDefinitionClass() : string
     {
         return EmptyDefinition::class;
     }
-    
-    public static function isComplete(Question $question): bool
+
+    /**
+     * @param Question $question
+     * @return bool
+     */
+    public static function isComplete(Question $question) : bool
     {
         /** @var MatchingEditorConfiguration $config */
         $config = $question->getPlayConfiguration()->getEditorConfiguration();
-        
+
         if (count($config->getDefinitions()) < 1 ||
             count($config->getTerms()) < 1 ||
-            count($config->getMatches()) < 1) 
+            count($config->getMatches()) < 1)
         {
             return false;
         }
-        
+
         return true;
     }
 }
