@@ -5,12 +5,13 @@
 
     function updateCounts() {
         if (typeof (tinymce) === 'undefined') {
-            return;
+            textLength = $('js_essay').val().length;
         }
-
-        const body = tinymce.editors[0].getBody();
-        const text = tinymce.trim(body.innerText || body.textContent);
-        textLength = text.length;
+        else {
+            const body = tinymce.editors[0].getBody();
+            const text = tinymce.trim(body.innerText || body.textContent);
+            textLength = text.length;            
+        }
 
         $('.js_letter_count').html(textLength);
     }

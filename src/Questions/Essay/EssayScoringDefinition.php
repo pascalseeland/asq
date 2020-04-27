@@ -6,6 +6,7 @@ namespace srag\asq\Questions\Essay;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class EssayScoringDefinition
@@ -19,17 +20,17 @@ use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 class EssayScoringDefinition extends AnswerDefinition {
     const VAR_POINTS = 'esd_points';
     const VAR_TEXT = 'esd_text';
-    
+
     /**
      * @var ?float
      */
     protected $points;
-    
+
     /**
      * @var ?string;
      */
     protected $text;
-    
+
     /**
      * @param string $text
      * @param float $points
@@ -42,23 +43,37 @@ class EssayScoringDefinition extends AnswerDefinition {
         return $object;
     }
 
+    /**
+     * @return float|NULL
+     */
     public function getPoints() : ?float
     {
         return $this->points;
     }
-    
+
+    /**
+     * @return string|NULL
+     */
     public function getText()  : ?string
     {
         return $this->text;
     }
 
-    public static function getFields(QuestionPlayConfiguration $play): array
+    /**
+     * @param QuestionPlayConfiguration $play
+     * @return array
+     */
+    public static function getFields(QuestionPlayConfiguration $play) : array
     {
         // point values will be set by essayscoring directly
         return [];
     }
 
-    public function getValues(): array
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Answer\Option\AnswerDefinition::getValues()
+     */
+    public function getValues() : array
     {
         return [
             self::VAR_POINTS => $this->points,
@@ -66,12 +81,17 @@ class EssayScoringDefinition extends AnswerDefinition {
         ];
     }
 
+    /**
+     * @param string $index
+     * @return EssayScoringDefinition
+     */
     public static function getValueFromPost(string $index)
     {
         $pointkey = self::getPostKey($index, self::VAR_POINTS);
-        
+
         return EssayScoringDefinition::create(
             AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_TEXT)]),
-            array_key_exists($pointkey, $_POST) ? floatval($_POST[$pointkey]) : 0);            
+            InputHelper::readFloat($pointkey)
+        );
     }
 }

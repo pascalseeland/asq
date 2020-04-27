@@ -17,17 +17,26 @@ use srag\asq\Domain\Model\Answer\Answer;
  */
 class EssayAnswer extends Answer {
     /**
-     * @var string
+     * @var ?string
      */
     protected $text;
-    
-    public static function create(?string $text = null) : EssayAnswer {
+
+    /**
+     * @param string $text
+     * @return EssayAnswer
+     */
+    public static function create(?string $text = null) : EssayAnswer
+    {
         $object = new EssayAnswer();
         $object->text = $text;
         return $object;
     }
-    
-    public function getText() : ?string {
+
+    /**
+     * @return ?string
+     */
+    public function getText() : ?string
+    {
         return $this->text;
     }
 }

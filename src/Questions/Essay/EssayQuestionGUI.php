@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
+use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class EssayQuestionGUI
@@ -27,19 +28,19 @@ class EssayQuestionGUI extends QuestionFormGUI {
             EssayEditorConfiguration::create(),
             EssayScoringConfiguration::create());
     }
-    
+
     protected function readPlayConfiguration(): QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create(
             EssayEditor::readConfig(),
             EssayScoring::readConfig());
     }
-    
+
     protected function readAnswerOptions(QuestionDto $question) : AnswerOptions {
         $selected = intval($_POST[EssayScoring::VAR_SCORING_MODE]);
-        
+
         $options = [];
-        
+
         if ($selected !== EssayScoring::SCORING_MANUAL) {
             if ($selected === EssayScoring::SCORING_AUTOMATIC_ALL) {
                 $prefix = EssayScoring::VAR_ANSWERS_ALL;
@@ -50,36 +51,46 @@ class EssayQuestionGUI extends QuestionFormGUI {
             else if ($selected === EssayScoring::SCORING_AUTOMATIC_ONE) {
                 $prefix = EssayScoring::VAR_ANSWERS_ONE;
             }
-            
-            $i = 1; 
-            
+
+            $i = 1;
+
             while (array_key_exists($this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_TEXT), $_POST)) {
+                $istr = strval($i);
+
                 $options[] = AnswerOption::create(
-                        strval($i),
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create(
-                            AsqHtmlPurifier::getInstance()->purify($_POST[$this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_TEXT)]),
-                            array_key_exists($this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_POINTS), $_POST) ? 
-                                intval($_POST[$this->getPostKey($i, $prefix, EssayScoringDefinition::VAR_POINTS)]) : null));
+                    $istr,
+                    EmptyDefinition::create(),
+                    EssayScoringDefinition::create(
+                        AsqHtmlPurifier::getInstance()->purify($_POST[$this->getPostKey($istr, $prefix, EssayScoringDefinition::VAR_TEXT)]),
+                        InputHelper::readInt($this->getPostKey($istr, $prefix, EssayScoringDefinition::VAR_POINTS))
+                     )
+                );
                 $i += 1;
             }
         }
-    
+
         return Answeroptions::create($options);
     }
-    
-    private function getPostKey($i, $prefix, $suffix) {
+
+    /**
+     * @param string $i
+     * @param string $prefix
+     * @param string $suffix
+     * @return string
+     */
+    private function getPostKey($i, $prefix, $suffix) : string
+    {
         return sprintf('%s_%s_%s', $i, $prefix, $suffix);
     }
-    
+
     protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play): void
     {
         foreach (EssayEditor::generateFields($play->getEditorConfiguration()) as $field) {
             $this->addItem($field);
         }
-        
+
         foreach (EssayScoring::generateFields(
-                     $play->getScoringConfiguration(), 
+                     $play->getScoringConfiguration(),
                      $this->initial_question->getAnswerOptions()) as $field) {
             $this->addItem($field);
         }

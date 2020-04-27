@@ -20,15 +20,20 @@ class EssayEditorConfiguration extends AbstractConfiguration
      * @var ?int
      */
     protected $max_length;
-    
-    public static function create(?int $max_length = null) {
+
+    /**
+     * @param int $max_length
+     * @return EssayEditorConfiguration
+     */
+    public static function create(?int $max_length = null) : EssayEditorConfiguration
+    {
         $object = new EssayEditorConfiguration();
         $object->max_length = $max_length;
         return $object;
     }
-    
+
     /**
-     * @return int
+     * @return ?int
      */
     public function getMaxLength() : ?int
     {
