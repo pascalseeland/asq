@@ -10,13 +10,12 @@ use ilSelectInputGUI;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
+use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class MatchingEditor
@@ -354,13 +353,12 @@ class MatchingEditor extends AbstractEditor
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
         /** @var MatchingEditorConfiguration $config */
-        $config = $question->getPlayConfiguration()->getEditorConfiguration();
+        $config = $this->question->getPlayConfiguration()->getEditorConfiguration();
 
         if (count($config->getDefinitions()) < 1 ||
             count($config->getTerms()) < 1 ||

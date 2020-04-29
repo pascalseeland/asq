@@ -5,7 +5,6 @@ namespace srag\asq\Questions\Formula;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
@@ -186,18 +185,10 @@ class FormulaEditor extends AbstractEditor {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
-        /** @var FormulaEditorConfiguration $config */
-        $config = $question->getPlayConfiguration()->getEditorConfiguration();
-
-        if (false) {
-            return false;
-        }
-
         return true;
     }
 }

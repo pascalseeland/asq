@@ -8,7 +8,6 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
@@ -127,10 +126,9 @@ class EssayEditor extends AbstractEditor {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
         // no necessary values
         return true;

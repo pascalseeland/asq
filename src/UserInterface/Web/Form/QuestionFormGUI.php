@@ -92,7 +92,7 @@ abstract class QuestionFormGUI extends ilPropertyFormGUI {
             $this->post_question = $this->readQuestionFromPost();
         }
 
-        $this->showQuestionState($question);
+        $this->showQuestionState($this->post_question ?? $question);
 
         $this->addRevisionForm();
 

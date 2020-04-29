@@ -5,7 +5,6 @@ namespace srag\asq\Questions\Ordering;
 
 use ilNumberInputGUI;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
@@ -121,13 +120,12 @@ class OrderingScoring extends AbstractScoring
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
         /** @var OrderingScoringConfiguration $config */
-        $config = $question->getPlayConfiguration()->getScoringConfiguration();
+        $config = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
         if (empty($config->getPoints())) {
             return false;

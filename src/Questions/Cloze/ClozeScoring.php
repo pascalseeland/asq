@@ -5,7 +5,6 @@ namespace srag\asq\Questions\Cloze;
 
 use ILIAS\UI\NotImplementedException;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
@@ -135,10 +134,9 @@ class ClozeScoring extends AbstractScoring {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
         return true;
     }

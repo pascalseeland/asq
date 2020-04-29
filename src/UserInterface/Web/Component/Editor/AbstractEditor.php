@@ -33,7 +33,7 @@ abstract class AbstractEditor {
 	 * @var bool
 	 */
 	protected $render_feedback;
-	
+
 	/**
 	 * AbstractEditor constructor.
 	 *
@@ -42,7 +42,7 @@ abstract class AbstractEditor {
 	 */
 	public function __construct(QuestionDto $question) {
 		$this->question = $question;
-		
+
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		    $this->setAnswer($this->readAnswer());
 		}
@@ -51,7 +51,7 @@ abstract class AbstractEditor {
 	public function setRenderFeedback(bool $render_feedback) {
 	   $this->render_feedback = $render_feedback;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -79,8 +79,8 @@ abstract class AbstractEditor {
 	}
 
 	public static abstract function readConfig();
-	
-	public static abstract function isComplete(Question $question): bool;
+
+	public abstract function isComplete() : bool;
 	/**
 	 * @return string
 	 */

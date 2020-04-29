@@ -31,7 +31,7 @@ use srag\asq\Domain\Model\Hint\QuestionHints;
 class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
 {
     const VAR_TYPE = 'question_type';
-    
+
     /**
      * @var QuestionTypeDefinition
      */
@@ -154,7 +154,7 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
         $feedback = $event->getFeedback();
         $this->feedback = $feedback;
     }
-    
+
     /**
      * @return int
      */
@@ -228,12 +228,12 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
         if (! Answeroptions::isNullableEqual($options, $this->getAnswerOptions())) {
             $this->ExecuteEvent(
                 new QuestionAnswerOptionsSetEvent(
-                    $this->getAggregateId(), 
-                    new ilDateTime(time(), IL_CAL_UNIX), 
-                    $creator_id, 
+                    $this->getAggregateId(),
+                    new ilDateTime(time(), IL_CAL_UNIX),
+                    $creator_id,
                     $options));
         }
-        
+
     }
 
 
@@ -324,19 +324,5 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
             new ilDateTime(time(), IL_CAL_UNIX),
             $user_id,
             $id));
-    }
-    
-    public function isQuestionComplete() : bool {
-        //TODO as soon as presenter gets meat, check for presence of presenter
-        if (is_null($this->data) ||
-            is_null($this->play_configuration) ||
-            is_null($this->play_configuration->getEditorConfiguration()) ||
-            is_null($this->play_configuration->getScoringConfiguration())) 
-        {
-            return false;        
-        }
-
-        return $this->data->isComplete() &&
-               QuestionPlayConfiguration::isComplete($this);
     }
 }

@@ -11,15 +11,14 @@ use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\MultipleChoice\MultipleChoiceAnswer;
 use srag\asq\UserInterface\Web\ImageUploader;
+use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class ImageMapEditor
@@ -261,25 +260,21 @@ class ImageMapEditor extends AbstractEditor {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question): bool
+    public function isComplete(): bool
     {
-        /** @var ImageMapEditorConfiguration $config */
-        $config = $question->getPlayConfiguration()->getEditorConfiguration();
-
-        if (empty($config->getImage())) {
+        if (empty($this->configuration->getImage())) {
             return false;
         }
 
-        if (is_null($question->getAnswerOptions()) ||
-            count($question->getAnswerOptions()->getOptions()) < 2)
+        if (is_null($this->question->getAnswerOptions()) ||
+            count($this->question->getAnswerOptions()->getOptions()) < 2)
         {
             return false;
         }
 
-        foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var ImageMapEditorDisplayDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 

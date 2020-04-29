@@ -88,24 +88,16 @@ class QuestionPlayConfiguration extends AbstractValueObject {
                	    $this->getScoringConfiguration(),
                     $other->getScoringConfiguration());
     }
-    
+
     public function hasAnswerOptions(): bool {
         if (is_null($this->getScoringConfiguration()) || is_null($this->getEditorConfiguration())) {
-            return false;    
+            return false;
         }
-        
+
         $sd_class = $this->getScoringConfiguration()->configurationFor()::getScoringDefinitionClass();
         $dd_class = $this->getEditorConfiguration()->configurationFor()::getDisplayDefinitionClass();
-        
-        
+
+
         return (count($dd_class::getFields($this)) + count($sd_class::getFields($this))) > 0;
-    }
-    
-    /**
-     * @param Question $question
-     */
-    public static function isComplete(Question $question) : bool{
-        return $question->getPlayConfiguration()->getEditorConfiguration()->configurationFor()::isComplete($question) &&
-               $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor()::isComplete($question);
     }
 }

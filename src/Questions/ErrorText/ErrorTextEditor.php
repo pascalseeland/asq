@@ -9,13 +9,12 @@ use ilTextAreaInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class ErrorTextEditor
@@ -171,15 +170,12 @@ class ErrorTextEditor extends AbstractEditor {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question): bool
+    public function isComplete() : bool
     {
-        /** @var ErrorTextEditorConfiguration $config */
-        $config = $question->getPlayConfiguration()->getEditorConfiguration();
-
-        if (empty($config->getErrorText())) {
+        if (empty($this->configuration->getErrorText()))
+        {
             return false;
         }
 

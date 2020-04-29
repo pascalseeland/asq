@@ -9,14 +9,13 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
+use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class EssayScoring
@@ -353,31 +352,26 @@ class EssayScoring extends AbstractScoring {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
-        /** @var EssayScoringConfiguration $config */
-        $config = $question->getPlayConfiguration()->getScoringConfiguration();
-
-        if (empty($config->getScoringMode())) {
+        if (empty($this->configuration->getScoringMode())) {
             return false;
         }
 
-        if ($config->getScoringMode() !== self::SCORING_MANUAL) {
-            foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        if ($this->configuration->getScoringMode() !== self::SCORING_MANUAL) {
+            foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
                 /** @var EssayScoringDefinition $option_config */
                 $option_config = $option->getScoringDefinition();
 
                 if (empty($option_config->getText()) ||
-                    ($config->getScoringMode() === self::SCORING_AUTOMATIC_ANY && empty($option_config->getPoints())))
+                    ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY && empty($option_config->getPoints())))
                 {
                     return false;
                 }
             }
         }
-
 
         return true;
     }

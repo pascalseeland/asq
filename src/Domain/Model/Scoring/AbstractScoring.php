@@ -23,9 +23,9 @@ abstract class AbstractScoring
     const ANSWER_CORRECT = 1;
     const ANSWER_INCORRECT = 2;
     const ANSWER_CORRECTNESS_NOT_DETERMINABLLE = 3;
-    
+
     const SCORING_DEFINITION_SUFFIX = 'Definition';
-    
+
     /**
      * @var QuestionDto
      */
@@ -40,7 +40,7 @@ abstract class AbstractScoring
      * @var float
      */
     protected $min_score;
-    
+
     /**
      * AbstractScoring constructor.
      *
@@ -61,7 +61,7 @@ abstract class AbstractScoring
     }
 
     public static abstract function readConfig();
-    
+
     /**
      * @return string
      */
@@ -71,7 +71,7 @@ abstract class AbstractScoring
     }
 
 
-    public static abstract function isComplete(Question $question) : bool;
+    public abstract function isComplete() : bool;
 
     /**
      * @param Answer $answer
@@ -86,15 +86,15 @@ abstract class AbstractScoring
         if (is_null($this->max_score)) {
             $this->max_score = $this->calculateMaxScore();
         }
-        
+
         return $this->max_score;
     }
-    
+
     /**
      * @return float
      */
     protected abstract function calculateMaxScore() : float;
-    
+
     /**
      * @return float
      */
@@ -102,10 +102,10 @@ abstract class AbstractScoring
         if (is_null($this->max_score)) {
             $this->max_score = $this->calculateMinScore();
         }
-        
+
         return $this->max_score;
     }
-    
+
     /**
      * @return float
      */
@@ -113,7 +113,7 @@ abstract class AbstractScoring
     {
         return $this->calculateMaxHintDeduction();
     }
-    
+
     /**
      * @return float
      */
@@ -126,7 +126,7 @@ abstract class AbstractScoring
             return 0.0;
         }
     }
-    
+
     /**
      * @param float $reached_points
      * @param float $max_points
@@ -145,6 +145,6 @@ abstract class AbstractScoring
             return self::ANSWER_INCORRECT;
         }
     }
-    
+
     public abstract function getBestAnswer() : Answer;
 }

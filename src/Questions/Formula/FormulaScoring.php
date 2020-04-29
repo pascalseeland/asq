@@ -12,14 +12,13 @@ use ilRadioOption;
 use ilTextInputGUI;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
+use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class FormulaScoring
@@ -274,39 +273,35 @@ class FormulaScoring extends AbstractScoring {
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
-        /** @var FormulaScoringConfiguration $config */
-        $config = $question->getPlayConfiguration()->getScoringConfiguration();
-
-        if (is_null($config->getPrecision()) ||
-            is_null($config->getResultType())) {
+        if (is_null($this->configuration->getPrecision()) ||
+            is_null($this->configuration->getResultType())) {
             return false;
         }
 
-        foreach ($config->getVariables() as $var) {
+        foreach ($this->configuration->getVariables() as $var) {
             if (! $var->isComplete()) {
                 return false;
             }
 
-            if (! self::isVarValid($var, $config)) {
+            if (! $this->isVarValid($var)) {
                 return false;
             }
         }
 
-        foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var FormulaScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 
-            if (! $option_config->isComplete($config))
+            if (! $option_config->isComplete($this->configuration))
             {
                 return false;
             }
 
-            if (! self::isResultValid($option_config, $config)) {
+            if (! $this->isResultValid($option_config)) {
                 return false;
             }
         }
@@ -318,17 +313,17 @@ class FormulaScoring extends AbstractScoring {
      * @param FormulaScoringVariable $var
      * @return bool
      */
-    private static function isVarValid(FormulaScoringVariable $var, FormulaScoringConfiguration $config) : bool
+    private function isVarValid(FormulaScoringVariable $var) : bool
     {
-        if (! self::inPrecision($var->getMax(), $config->getPrecision()) ||
-            ! self::inPrecision($var->getMin(), $config->getPrecision()) ||
-            ! self::inPrecision($var->getMultipleOf(), $config->getPrecision()))
+        if (! $this->inPrecision($var->getMax(), $this->configuration->getPrecision()) ||
+            ! $this->inPrecision($var->getMin(), $this->configuration->getPrecision()) ||
+            ! $this->inPrecision($var->getMultipleOf(), $this->configuration->getPrecision()))
         {
             return false;
         }
 
         if (! is_null($var->getUnit()) &&
-            ! in_array($var->getUnit(), $config->getUnits()))
+            ! in_array($var->getUnit(), $this->configuration->getUnits()))
         {
             return false;
         }
@@ -341,7 +336,7 @@ class FormulaScoring extends AbstractScoring {
      * @param float $number
      * @return bool
      */
-    private static function inPrecision(float $number, int $precision) : bool
+    private function inPrecision(float $number, int $precision) : bool
     {
         $mult = $number * (10 ** $precision);
 
@@ -353,10 +348,10 @@ class FormulaScoring extends AbstractScoring {
      * @param FormulaScoringConfiguration $config
      * @return bool
      */
-    private static function isResultValid(FormulaScoringDefinition $result, FormulaScoringConfiguration $config) : bool
+    private function isResultValid(FormulaScoringDefinition $result) : bool
     {
         if (! is_null($result->getUnit()) &&
-            ! in_array($result->getUnit(), $config->getUnits()))
+            ! in_array($result->getUnit(), $this->configuration->getUnits()))
         {
             return false;
         }
@@ -364,9 +359,9 @@ class FormulaScoring extends AbstractScoring {
         $variables = [];
 
         $i = 0;
-        foreach ($config->getVariables() as $var) {
+        foreach ($this->configuration->getVariables() as $var) {
             $i += 1;
-            $variables['$v' . $i] = $config->generateVariableValue($var);
+            $variables['$v' . $i] = $this->configuration->generateVariableValue($var);
         }
 
         $formula = $result->getFormula();

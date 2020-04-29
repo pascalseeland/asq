@@ -12,12 +12,11 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Feedback;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
+use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class MultipleChoiceEditor
@@ -80,9 +79,9 @@ class MultipleChoiceEditor extends AbstractEditor
         if ($this->isMultipleChoice()) {
             $tpl->setCurrentBlock('selection_limit_hint');
             $tpl->setVariable(
-                'SELECTION_LIMIT_HINT', 
-                sprintf("Please select %d of %d answers!", 
-                    $this->configuration->getMaxAnswers(), 
+                'SELECTION_LIMIT_HINT',
+                sprintf("Please select %d of %d answers!",
+                    $this->configuration->getMaxAnswers(),
                     count($this->answer_options)));
 
             $tpl->setVariable('MAX_ANSWERS', $this->configuration->getMaxAnswers());
@@ -99,18 +98,18 @@ class MultipleChoiceEditor extends AbstractEditor
                 $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
                 $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
                 $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
-                $tpl->setVariable('THUMB_SIZE', 
-                    is_null($this->configuration->getThumbnailSize()) ? 
-                        '' : 
+                $tpl->setVariable('THUMB_SIZE',
+                    is_null($this->configuration->getThumbnailSize()) ?
+                        '' :
                         sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize()));
                 $tpl->parseCurrentBlock();
             }
 
-            if ($this->render_feedback && 
-                ! is_null($this->answer) && 
-                ! is_null($this->question->getFeedback()) && 
-                ! is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId())) && 
-                $this->showFeedbackForAnswerOption($answer_option)) 
+            if ($this->render_feedback &&
+                ! is_null($this->answer) &&
+                ! is_null($this->question->getFeedback()) &&
+                ! is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId())) &&
+                $this->showFeedbackForAnswerOption($answer_option))
             {
                 $tpl->setCurrentBlock('feedback');
                 $tpl->setVariable('FEEDBACK', $this->question->getFeedback()
@@ -174,8 +173,8 @@ class MultipleChoiceEditor extends AbstractEditor
      */
     private function getPostName(string $answer_id = null) : string
     {
-        return $this->isMultipleChoice() ? 
-            self::VAR_MC_POSTNAME . $this->question->getId() . '_' . $answer_id : 
+        return $this->isMultipleChoice() ?
+            self::VAR_MC_POSTNAME . $this->question->getId() . '_' . $answer_id :
             self::VAR_MC_POSTNAME . $this->question->getId();
     }
 
@@ -264,9 +263,9 @@ class MultipleChoiceEditor extends AbstractEditor
     public static function readConfig() : ?AbstractConfiguration
     {
         return MultipleChoiceEditorConfiguration::create(
-            $_POST[self::VAR_MCE_SHUFFLE] === self::STR_TRUE, 
-            InputHelper::readInt(self::VAR_MCE_MAX_ANSWERS), 
-            InputHelper::readInt(self::VAR_MCE_THUMB_SIZE), 
+            $_POST[self::VAR_MCE_SHUFFLE] === self::STR_TRUE,
+            InputHelper::readInt(self::VAR_MCE_MAX_ANSWERS),
+            InputHelper::readInt(self::VAR_MCE_THUMB_SIZE),
             $_POST[self::VAR_MCE_IS_SINGLELINE] === self::STR_TRUE);
     }
 
@@ -282,8 +281,8 @@ class MultipleChoiceEditor extends AbstractEditor
         }
 
         return MultipleChoiceEditorConfiguration::create(
-            $input->shuffle_answers, 
-            $input->max_answers, 
+            $input->shuffle_answers,
+            $input->max_answers,
             $input->thumbnail_size);
     }
 
@@ -296,18 +295,17 @@ class MultipleChoiceEditor extends AbstractEditor
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
-        if (is_null($question->getPlayConfiguration()
+        if (is_null($this->question->getPlayConfiguration()
             ->getEditorConfiguration()
             ->getMaxAnswers())) {
             return false;
         }
 
-        foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var ImageAndTextDisplayDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 

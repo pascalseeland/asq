@@ -4,7 +4,6 @@ namespace srag\asq\Questions\ErrorText;
 
 use ilNumberInputGUI;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
@@ -144,27 +143,29 @@ class ErrorTextScoring extends AbstractScoring
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question) : bool
+    public function isComplete() : bool
     {
         /** @var ErrorTextScoringConfiguration $config */
-        $config = $question->getPlayConfiguration()->getScoringConfiguration();
+        $config = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
         if (empty($config->getPointsWrong())) {
             return false;
         }
 
-        if (count($question->getAnswerOptions()->getOptions()) < 1) {
+        if (count($this->question->getAnswerOptions()->getOptions()) < 1) {
             return false;
         }
 
-        foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var ErrorTextScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 
-            if (empty($option_config->getPoints()) || empty($option_config->getWrongWordIndex() || empty($option_config->getWrongWordLength()))) {
+            if (empty($option_config->getPoints()) ||
+                empty($option_config->getWrongWordIndex() ||
+                empty($option_config->getWrongWordLength())))
+            {
                 return false;
             }
         }

@@ -8,7 +8,6 @@ use ilCheckboxInputGUI;
 use ilNumberInputGUI;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
@@ -26,23 +25,23 @@ use srag\asq\Domain\Model\Scoring\AbstractScoring;
 class FileUploadScoring extends AbstractScoring {
     const VAR_POINTS = 'fus_points';
     const VAR_COMPLETED_ON_UPLOAD = 'fus_completed_on_upload';
-    
+
     const CHECKED = 'checked';
-    
+
     /**
      * @var FileUploadScoringConfiguration
      */
     protected $configuration;
-    
+
     /**
      * @param QuestionDto $question
      */
     public function __construct($question) {
         parent::__construct($question);
-        
+
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
-    
+
     function score(Answer $answer) : float {
         $reached_points = 0;
 
@@ -55,12 +54,12 @@ class FileUploadScoring extends AbstractScoring {
 
         return $reached_points;
     }
-    
+
     protected function calculateMaxScore() : float
     {
         return $this->configuration->getPoints();
     }
-    
+
     /**
      * Implementation of best answer for upload not possible
      */
@@ -68,34 +67,34 @@ class FileUploadScoring extends AbstractScoring {
     {
         throw new Exception("Best Answer for File Upload Impossible");
     }
-    
+
     /**
      * @return array|null
      */
     public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array {
         global $DIC;
-        
+
         $fields = [];
-        
+
         $points = new ilNumberInputGUI($DIC->language()->txt('asq_label_points'), self::VAR_POINTS);
         $points->setRequired(true);
         $points->setSize(2);
         $fields[self::VAR_POINTS] = $points;
-        
+
         $completed_by_submition = new ilCheckboxInputGUI($DIC->language()->txt('asq_label_completed_by_submition'),
             self::VAR_COMPLETED_ON_UPLOAD);
         $completed_by_submition->setInfo($DIC->language()->txt('asq_description_completed_by_submition'));
         $completed_by_submition->setValue(self::CHECKED);
         $fields[self::VAR_COMPLETED_ON_UPLOAD] = $completed_by_submition;
-        
+
         if ($config !== null) {
             $points->setValue($config->getPoints());
             $completed_by_submition->setChecked($config->isCompletedBySubmition());
         }
-        
+
         return $fields;
     }
-    
+
     /**
      * @return ?AbstractConfiguration|null
      */
@@ -104,15 +103,15 @@ class FileUploadScoring extends AbstractScoring {
             floatval($_POST[self::VAR_POINTS]),
             $_POST[self::VAR_COMPLETED_ON_UPLOAD] === self::CHECKED);
     }
-    
+
     /**
      * @return string
      */
     public static function getScoringDefinitionClass(): string {
         return EmptyDefinition::class;
     }
-    
-    public static function isComplete(Question $question): bool
+
+    public function isComplete(): bool
     {
         // file upload can roll with all values
         return true;

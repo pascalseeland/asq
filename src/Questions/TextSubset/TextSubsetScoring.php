@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace srag\asq\Questions\TextSubset;
 
 use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
@@ -193,19 +192,18 @@ class TextSubsetScoring extends AbstractScoring
     }
 
     /**
-     * @param Question $question
      * @return bool
      */
-    public static function isComplete(Question $question): bool
+    public function isComplete() : bool
     {
         /** @var TextSubsetScoringConfiguration $config */
-        $config = $question->getPlayConfiguration()->getScoringConfiguration();
+        $config = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
         if (empty($config->getTextMatching())) {
             return false;
         }
 
-        foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var TextSubsetScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 

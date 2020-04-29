@@ -62,17 +62,6 @@ class OrderingTextQuestionGUI extends QuestionFormGUI
         $text = new ilTextAreaInputGUI($DIC->language()->txt('asq_ordering_text'), self::VAR_ORDERING_TEXT);
         $this->addItem($text);
 
-        $minimum_size = new ilNumberInputGUI($DIC->language()->txt('asq_label_min_size'), OrderingEditor::VAR_MINIMUM_SIZE);
-        $minimum_size->setInfo($DIC->language()
-            ->txt('asq_description_min_size'));
-        $minimum_size->setSize(6);
-        $this->addItem($minimum_size);
-
-        $config = $play->getEditorConfiguration();
-        if (! $config == null) {
-            $minimum_size->setValue($config->getMinimumSize());
-        }
-
         if (! is_null($this->initial_question->getAnswerOptions()) &&
             count($this->initial_question->getAnswerOptions()->getOptions())) {
             $question_text = [];
