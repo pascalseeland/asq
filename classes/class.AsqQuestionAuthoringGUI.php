@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class AsqQuestionAuthoringGUI
@@ -35,7 +35,7 @@ class AsqQuestionAuthoringGUI
     const TAB_ID_RECAPITULATION = 'qst_recapitulation_tab';
     const TAB_ID_STATISTIC = 'qst_statistic_tab';
     const TAB_ID_VERSIONS = 'qst_versions_tab';
-    
+
     const VAR_QUESTION_ID = "question_id";
 
     const CMD_REDRAW_HEADER_ACTION_ASYNC = '';
@@ -45,7 +45,7 @@ class AsqQuestionAuthoringGUI
      */
 	protected $authoring_context_container;
     /**
-     * @var DomainObjectId
+     * @var string
      */
     protected $question_id;
     /**
@@ -67,23 +67,11 @@ class AsqQuestionAuthoringGUI
 	    //we could use this in future in constructer
 	    $this->lng_key = $DIC->language()->getDefaultLanguage();
 
-        $this->question_id = $this->currentOrNewQuestionId();
-        
-        $DIC->language()->loadLanguageModule('asq');
-    }
+	    if (isset($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID])) {
+	        $this->question_id = $_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID];
+	    }
 
-    /**
-     * Returns the current question_uuid or a new one if no current exists
-     *
-     * @return DomainObjectId
-     */
-    private function currentOrNewQuestionId() : DomainObjectId
-    {
-        if (isset($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID])) {
-            return new DomainObjectId($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID]);
-        }
-        
-        return new DomainObjectId();
+        $DIC->language()->loadLanguageModule('asq');
     }
 
     /**
@@ -179,16 +167,16 @@ class AsqQuestionAuthoringGUI
                 break;
 
             case strtolower(AsqQuestionVersionGUI::class):
-                
+
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
                 $DIC->tabs()->activateTab(self::TAB_ID_VERSIONS);
-                
+
                 $gui = new AsqQuestionVersionGUI($this->question_id->getId());
                 $DIC->ctrl()->forwardCommand($gui);
-                
+
                 break;
-                
+
             case strtolower(ilCommonActionDispatcherGUI::class):
 
                 $gui = ilCommonActionDispatcherGUI::getInstanceFromAjaxCall();
@@ -281,7 +269,7 @@ class AsqQuestionAuthoringGUI
         $page_link = AsqGateway::get()->link()->getEditPageLink($this->question_id->getId());
         $DIC->tabs()->addTab(self::TAB_ID_PAGEVIEW, $page_link->getLabel(), $page_link->getAction());
         */
-        
+
         $preview_link = AsqGateway::get()->link()->getPreviewLink($this->question_id->getId());
         $DIC->tabs()->addTab(self::TAB_ID_PREVIEW, $preview_link->getLabel(), $preview_link->getAction());
 
@@ -293,7 +281,7 @@ class AsqQuestionAuthoringGUI
 
         $hint_link = AsqGateway::get()->link()->getEditHintsLink($this->question_id->getId());
         $DIC->tabs()->addTab(self::TAB_ID_HINTS, $hint_link->getLabel(), $hint_link->getAction());
-        
+
         $revisions_link = AsqGateway::get()->link()->getRevisionsLink($this->question_id->getId());
         $DIC->tabs()->addTab(self::TAB_ID_VERSIONS, $revisions_link->getLabel(), $revisions_link->getAction());
     }

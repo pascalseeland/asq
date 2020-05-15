@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Command\CommandBus;
 use srag\CQRS\Command\CommandConfiguration;
 use srag\CQRS\Command\Access\OpenAccess;
@@ -16,10 +15,10 @@ use srag\asq\Application\Command\SaveQuestionCommandHandler;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\QuestionRepository;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\QuestionTypeDefinition;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class QuestionService
@@ -36,38 +35,38 @@ class QuestionService extends ASQService
      * @var CommandBus
      */
     private $command_bus;
-    
+
     private function getCommandBus() : CommandBus {
         if (is_null($this->command_bus)) {
             $this->command_bus = new CommandBus();
-            
+
             $this->command_bus->registerCommand(new CommandConfiguration(
                 CreateQuestionCommand::class,
                 new CreateQuestionCommandHandler(),
                 new OpenAccess()));
-            
+
             $this->command_bus->registerCommand(new CommandConfiguration(
                 CreateQuestionRevisionCommand::class,
                 new CreateQuestionRevisionCommandHandler(),
                 new OpenAccess()));
-            
+
             $this->command_bus->registerCommand(new CommandConfiguration(
                 SaveQuestionCommand::class,
                 new SaveQuestionCommandHandler(),
                 new OpenAccess()));
         }
-        
+
         return $this->command_bus;
     }
-    
+
     /**
      * @param string $id
      * @throws AsqException
      * @return QuestionDto
      */
     public function getQuestionByQuestionId(string $id) : QuestionDto {
-        $question = QuestionRepository::getInstance()->getAggregateRootById(new DomainObjectId($id));
-        
+        $question = QuestionRepository::getInstance()->getAggregateRootById($id);
+
         if(is_object($question->getAggregateId())) {
             return QuestionDto::CreateFromQuestion($question);
         }
@@ -76,7 +75,7 @@ class QuestionService extends ASQService
             throw new AsqException(sprintf("Question with id %s does not exist", $id));
         }
     }
-    
+
     /**
      * @param string $id
      * @param string $name
@@ -86,7 +85,7 @@ class QuestionService extends ASQService
         $repo = new PublishedQuestionRepository();
         return $repo->getQuestionRevision($id, $name);
     }
-    
+
     /**
      * @param string $id
      * @return array
@@ -112,15 +111,17 @@ class QuestionService extends ASQService
      */
     public function createQuestion(QuestionTypeDefinition $type, int $container_id): QuestionDto
     {
-        $id = new DomainObjectId();
+        $uuid_factory = new Factory();
+
+        $id = $uuid_factory->uuid4AsString();
 
         $this->getCommandBus()->handle(
             new CreateQuestionCommand(
                 $id,
-                $type, 
-                $this->getActiveUser(), 
+                $type,
+                $this->getActiveUser(),
                 $container_id));
-        
+
         return $this->getQuestionByQuestionId($id->getId());
     }
 
@@ -130,9 +131,8 @@ class QuestionService extends ASQService
     public function saveQuestion(QuestionDto $question_dto)
     {
         // check changes and trigger them on question if there are any
-        /** @var Question $question */
-        $question = QuestionRepository::getInstance()->getAggregateRootById(new DomainObjectId($question_dto->getId()));
-        
+        $question = QuestionRepository::getInstance()->getAggregateRootById($question_dto->getId());
+
         $question->setData($question_dto->getData(), $this->getActiveUser());
         $question->setPlayConfiguration($question_dto->getPlayConfiguration(), $this->getActiveUser());
         $question->setAnswerOptions($question_dto->getAnswerOptions(), $this->getActiveUser());
@@ -144,7 +144,7 @@ class QuestionService extends ASQService
             $this->getCommandBus()->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
         }
     }
-    
+
     /**
      * @return QuestionTypeDefinition[]
      */
@@ -153,7 +153,7 @@ class QuestionService extends ASQService
             return QuestionTypeDefinition::create($type);
         }, QuestionType::get());
     }
-    
+
     /**
      * @param string $title_key
      * @param string $form_class
@@ -162,7 +162,7 @@ class QuestionService extends ASQService
         $type = QuestionType::createNew($title_key, $form_class);
         $type->create();
     }
-    
+
     /**
      * @param string $form_class
      */

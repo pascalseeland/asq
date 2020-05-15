@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Event;
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use ilDateTime;
@@ -24,33 +23,33 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent {
 	protected $answer_options;
 
     /**
-     * @param DomainObjectId $aggregate_id
+     * @param string $aggregate_id
      * @param ilDateTime $occured_on
      * @param int $initiating_user_id
      * @param int $question_int_id
      * @param AnswerOptions $options
      */
-	public function __construct(DomainObjectId $aggregate_id, 
-	                            ilDateTime $occured_on, 
-	                            int $initiating_user_id, 
+	public function __construct(string $aggregate_id,
+	                            ilDateTime $occured_on,
+	                            int $initiating_user_id,
 	                            AnswerOptions $options = null)
 	{
 	    parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
-	    
+
 		$this->answer_options = $options;
 	}
 
 	/**
 	 * @return AnswerOptions
 	 */
-	public function getAnswerOptions(): AnswerOptions {
+	public function getAnswerOptions() : AnswerOptions {
 		return $this->answer_options;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getEventBody(): string {
+	public function getEventBody() : string {
 		return json_encode($this->answer_options);
 	}
 
@@ -60,11 +59,11 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent {
 	public function restoreEventBody(string $json_data) : void {
         $this->answer_options = AnswerOptions::deserialize($json_data);
 	}
-	
+
 	/**
 	 * @return int
 	 */
-	public static function getEventVersion(): int
+	public static function getEventVersion() : int
 	{
 	    // initial version 1
 	    return 1;

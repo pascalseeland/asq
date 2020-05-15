@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Event;
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use ilDateTime;
@@ -27,31 +26,32 @@ class QuestionHintsSetEvent extends AbstractDomainEvent {
     /**
      * QuestionHintsSetEvent constructor.
      *
-     * @param DomainObjectId     $id
+     * @param string             $id
      * @param int                $container_obj_id
      * @param int                $initiating_user_id
      * @param QuestionHints|null $hints
      *
      * @throws \ilDateTimeException
      */
-    public function __construct(DomainObjectId $aggregate_id,
+    public function __construct(
+        string $aggregate_id,
         ilDateTime $occured_on,
-        int $initiating_user_id, 
+        int $initiating_user_id,
         ?QuestionHints $hints = null)
     {
         parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
-        
+
         $this->hints = $hints;
     }
 
     /**
      * @return QuestionHints
      */
-    public function getHints(): ?QuestionHints {
+    public function getHints() : ?QuestionHints {
         return $this->hints;
     }
 
-    public function getEventBody(): string {
+    public function getEventBody() : string {
         return json_encode($this->hints);
     }
 
@@ -61,11 +61,11 @@ class QuestionHintsSetEvent extends AbstractDomainEvent {
     public function restoreEventBody(string $json_data) : void {
         $this->hints = QuestionHints::deserialize($json_data);
     }
-    
+
     /**
      * @return int
      */
-    public static function getEventVersion(): int
+    public static function getEventVersion() : int
     {
         // initial version 1
         return 1;

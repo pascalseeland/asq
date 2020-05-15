@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\Ordering;
 
-use ilNumberInputGUI;
 use ilTextAreaInputGUI;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;

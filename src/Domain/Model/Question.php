@@ -5,7 +5,6 @@ namespace srag\asq\Domain\Model;
 
 use ilDateTime;
 use srag\CQRS\Aggregate\AbstractEventSourcedAggregateRoot;
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Aggregate\IsRevisable;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\DomainEvent;
@@ -66,13 +65,13 @@ class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
     private $feedback;
 
     /**
-     * @param DomainObjectId $question_uuid
+     * @param string $question_uuid
      * @param int $initiating_user_id
      * @param QuestionTypeDefinition $question_type
      * @return Question
      */
     public static function createNewQuestion(
-        DomainObjectId $question_uuid,
+        string $question_uuid,
         int $initiating_user_id,
         QuestionTypeDefinition $question_type
     ) : Question {

@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
@@ -35,15 +34,15 @@ class AsqQuestionConfigEditorGUI
      * @var QuestionDto
      */
     private $question;
-    
+
     /**
      *
      * @param AuthoringContextContainer $contextContainer
      */
-    public function __construct(AuthoringContextContainer $contextContainer, DomainObjectId $questionId)
+    public function __construct(AuthoringContextContainer $contextContainer, string $questionId)
     {
         $this->contextContainer = $contextContainer;
-        $this->question = AsqGateway::get()->question()->getQuestionByQuestionId($questionId->getId());
+        $this->question = AsqGateway::get()->question()->getQuestionByQuestionId($questionId);
     }
 
 
@@ -87,9 +86,9 @@ class AsqQuestionConfigEditorGUI
         $form = $this->buildForm();
 
         $this->saveQuestion($form);
-        
+
         ilutil::sendInfo("Question Saved", true);
-        
+
         $form->checkInput();
         $this->showForm($form);
     }
@@ -100,11 +99,11 @@ class AsqQuestionConfigEditorGUI
     protected function saveAndReturn()
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
-        
+
         $form = $this->buildForm();
-        
+
         $this->saveQuestion($form);
-        
+
         if( !$form->checkInput() )
         {
             $this->showForm($form);
@@ -123,7 +122,7 @@ class AsqQuestionConfigEditorGUI
         $this->question->setAnswerOptions($changes->getAnswerOptions());
         AsqGateway::get()->question()->saveQuestion($this->question);
     }
-    
+
     /**
      * @return QuestionFormGUI
      * @throws Exception
@@ -139,14 +138,14 @@ class AsqQuestionConfigEditorGUI
 
         return $form;
     }
-    
+
     private function createRevision() {
         global $DIC;
-        
+
         $form = $this->buildForm();
-        
+
         $rev_name = $_POST[QuestionFormGUI::VAR_REVISION_NAME];
-        
+
         if (empty($rev_name)) {
             ilutil::sendInfo($DIC->language()->txt('asq_missing_revision_name'));
         } else {
@@ -157,7 +156,7 @@ class AsqQuestionConfigEditorGUI
                 ilutil::sendFailure($e->getMessage());
             }
         }
-        
+
         $this->showForm($form);
     }
 }

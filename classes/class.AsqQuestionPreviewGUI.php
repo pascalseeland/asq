@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\PathHelper;
@@ -29,7 +28,7 @@ class AsqQuestionPreviewGUI
     const PARAM_REVISON_NAME = 'revisionName';
 
     /**
-     * @var DomainObjectId
+     * @var string
      */
     protected $question_id;
 
@@ -54,7 +53,7 @@ class AsqQuestionPreviewGUI
     private $show_score;
 
     public function __construct(
-        DomainObjectId $question_id
+        string $question_id
     ) {
         global $DIC;
 
