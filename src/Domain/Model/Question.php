@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model;
 
 use ilDateTime;
-use srag\CQRS\Aggregate\AbstractEventSourcedAggregateRoot;
+use srag\CQRS\Aggregate\AbstractAggregateRoot;
 use srag\CQRS\Aggregate\IsRevisable;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\DomainEvent;
@@ -27,7 +27,7 @@ use srag\asq\Domain\Model\Hint\QuestionHints;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class Question extends AbstractEventSourcedAggregateRoot implements IsRevisable
+class Question extends AbstractAggregateRoot implements IsRevisable
 {
     const VAR_TYPE = 'question_type';
 

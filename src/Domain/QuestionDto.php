@@ -84,7 +84,7 @@ class QuestionDto implements JsonSerializable
     {
         $dto = new QuestionDto();
 
-        $dto->id = $question->getAggregateId()->getId();
+        $dto->id = $question->getAggregateId();
         $dto->type = $question->getType();
 
         $dto->revision_id = $question->getRevisionId();

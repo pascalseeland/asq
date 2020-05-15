@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain;
 
-use srag\CQRS\Aggregate\AbstractEventSourcedAggregateRepository;
-use srag\CQRS\Aggregate\AggregateRoot;
+use srag\CQRS\Aggregate\AbstractAggregateRepository;
+use srag\CQRS\Aggregate\AbstractAggregateRoot;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventStore;
 use srag\asq\Domain\Model\Question;
@@ -19,7 +19,7 @@ use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionRepository extends AbstractEventSourcedAggregateRepository {
+class QuestionRepository extends AbstractAggregateRepository {
 
 	/**
 	 * @var QuestionEventStore
@@ -44,22 +44,22 @@ class QuestionRepository extends AbstractEventSourcedAggregateRepository {
     /**
      * @param DomainEvents $event_history
      *
-     * @return AggregateRoot
+     * @return AbstractAggregateRoot
      */
-	protected function reconstituteAggregate(DomainEvents $event_history): AggregateRoot {
+	protected function reconstituteAggregate(DomainEvents $event_history): AbstractAggregateRoot {
 		return Question::reconstitute($event_history);
 	}
-	
+
 	/**
 	 * @return int
 	 */
 	public function getNextId() : int {
 	    return $this->event_store->getNextId();
 	}
-	
+
 	public function getAggregateByIliasId(int $id) : Question {
 	    $aggregate_id = $this->event_store->getAggregateIdOfIliasId($id);
-	    
+
 	    return $this->getAggregateRootById($aggregate_id);
 	}
 }

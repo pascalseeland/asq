@@ -67,13 +67,7 @@ class QuestionService extends ASQService
     public function getQuestionByQuestionId(string $id) : QuestionDto {
         $question = QuestionRepository::getInstance()->getAggregateRootById($id);
 
-        if(is_object($question->getAggregateId())) {
-            return QuestionDto::CreateFromQuestion($question);
-        }
-        else {
-            //TODO translate?
-            throw new AsqException(sprintf("Question with id %s does not exist", $id));
-        }
+        return QuestionDto::CreateFromQuestion($question);
     }
 
     /**
@@ -122,7 +116,7 @@ class QuestionService extends ASQService
                 $this->getActiveUser(),
                 $container_id));
 
-        return $this->getQuestionByQuestionId($id->getId());
+        return $this->getQuestionByQuestionId($id);
     }
 
     /**

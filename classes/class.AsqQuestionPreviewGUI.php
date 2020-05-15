@@ -96,9 +96,9 @@ class AsqQuestionPreviewGUI
         global $DIC;
 
         if (is_null($this->revision_name)) {
-            $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id->getId());
+            $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id);
         } else {
-            $question_dto = AsqGateway::get()->question()->getQuestionRevision($this->question_id->getId(), $this->revision_name);
+            $question_dto = AsqGateway::get()->question()->getQuestionRevision($this->question_id, $this->revision_name);
         }
 
         if (! $question_dto->isComplete()) {
