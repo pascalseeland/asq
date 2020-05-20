@@ -8,6 +8,9 @@ use srag\asq\Domain\QuestionDto;
 /**
  * interface IAuthoringCaller
  *
+ * Interface Asq authoring calling objects have to implement,
+ * so they can be notified about question creation
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -16,5 +19,5 @@ use srag\asq\Domain\QuestionDto;
  */
 interface IAuthoringCaller
 {
-    public function afterQuestionCreated(QuestionDto $question);
+    public function afterQuestionCreated(QuestionDto $question) : void;
 }

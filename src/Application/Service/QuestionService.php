@@ -23,6 +23,8 @@ use ILIAS\Data\UUID\Factory;
 /**
  * Class QuestionService
  *
+ * Main Question service, profiding methods for question manipulation
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -36,7 +38,11 @@ class QuestionService extends ASQService
      */
     private $command_bus;
 
-    private function getCommandBus() : CommandBus {
+    /**
+     * @return CommandBus
+     */
+    private function getCommandBus() : CommandBus
+    {
         if (is_null($this->command_bus)) {
             $this->command_bus = new CommandBus();
 
@@ -60,36 +66,47 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Gets question dto by question id
+     *
      * @param string $id
      * @throws AsqException
      * @return QuestionDto
      */
-    public function getQuestionByQuestionId(string $id) : QuestionDto {
+    public function getQuestionByQuestionId(string $id) : QuestionDto
+    {
         $question = QuestionRepository::getInstance()->getAggregateRootById($id);
 
         return QuestionDto::CreateFromQuestion($question);
     }
 
     /**
+     * Gets question revision by question id and revision name
+     *
      * @param string $id
      * @param string $name
      * @return QuestionDto
      */
-    public function getQuestionRevision(string $id, string $name) : QuestionDto {
+    public function getQuestionRevision(string $id, string $name) : QuestionDto
+    {
         $repo = new PublishedQuestionRepository();
         return $repo->getQuestionRevision($id, $name);
     }
 
     /**
+     * Gets list of all created revisions of a question
+     *
      * @param string $id
      * @return array
      */
-    public function getAllRevisionsOfQuestion(string $id) : array {
+    public function getAllRevisionsOfQuestion(string $id) : array
+    {
         $repo = new PublishedQuestionRepository();
         return $repo->getAllQuestionRevisions($id);
     }
 
     /**
+     * Create anew revision named $name for question with id $question_id
+     *
      * @param string $name
      * @param string $question_id
      */
@@ -98,12 +115,14 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Creates a new question with given type
+     *
      * @param int $type
-     * @param int $container_id
-     * @param string $content_editing_mode
+     * @param ?int $container_id
+     *
      * @return QuestionDto
      */
-    public function createQuestion(QuestionTypeDefinition $type, int $container_id): QuestionDto
+    public function createQuestion(QuestionTypeDefinition $type, ?int $container_id = null): QuestionDto
     {
         $uuid_factory = new Factory();
 
@@ -120,6 +139,8 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Saves changes to a question
+     *
      * @param QuestionDto $question_dto
      */
     public function saveQuestion(QuestionDto $question_dto)
@@ -140,6 +161,8 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Gets a list of all available question types
+     *
      * @return QuestionTypeDefinition[]
      */
     public function getAvailableQuestionTypes() : array {
@@ -149,6 +172,8 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Add a new question type
+     *
      * @param string $title_key
      * @param string $form_class
      */
@@ -158,6 +183,8 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Remova an existing question type
+     *
      * @param string $form_class
      */
     public function removeQuestionType(string $form_class) {

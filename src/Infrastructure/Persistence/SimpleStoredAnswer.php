@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence;
 
 use ActiveRecord;
-use srag\CQRS\Aggregate\Guid;
 use srag\asq\Domain\Model\Answer\Answer;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class SimpleStoredAnswer
@@ -18,7 +18,7 @@ use srag\asq\Domain\Model\Answer\Answer;
  */
 class SimpleStoredAnswer extends ActiveRecord {
     const STORAGE_NAME = "asq_stored_answer";
-    
+
     /**
      * @var int
      *
@@ -57,14 +57,20 @@ class SimpleStoredAnswer extends ActiveRecord {
      * @con_is_notnull true
      */
     protected $answer;
-   
+
 
     public static function createNew(Answer $answer, ?string $uuid = null) {
         $object = new SimpleStoredAnswer();
-        $object->uuid = $uuid ?? Guid::create();
-        
+
+        if (is_null($uuid)) {
+            $uuid_factory = new Factory();
+            $uuid = $uuid_factory->uuid4AsString();
+        }
+
+        $object->uuid = $uuid;
+
         $history = SimpleStoredAnswer::where(['uuid' => $object->uuid])->get();
-        
+
         if (count($history) > 0) {
             $object->version = array_reduce($history, function($max, SimpleStoredAnswer $item) {
                 return max($max, $item->getVersion() + 1);
@@ -73,12 +79,12 @@ class SimpleStoredAnswer extends ActiveRecord {
         else {
             $object->version = 1;
         }
-        
+
         $object->answer = json_encode($answer);
-        
+
         return $object;
     }
-    
+
     /**
      * @return string
      */
@@ -86,7 +92,7 @@ class SimpleStoredAnswer extends ActiveRecord {
     {
         return $this->uuid;
     }
-    
+
     /**
      * @return int
      */
@@ -94,7 +100,7 @@ class SimpleStoredAnswer extends ActiveRecord {
     {
         return $this->version;
     }
-    
+
     /**
      * @return Answer
      */
@@ -102,7 +108,7 @@ class SimpleStoredAnswer extends ActiveRecord {
     {
         return Answer::deserialize($this->answer);
     }
-    
+
     /**
      * @return string
      */

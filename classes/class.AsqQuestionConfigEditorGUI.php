@@ -2,14 +2,15 @@
 declare(strict_types=1);
 
 use srag\asq\AsqGateway;
+use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Application\Service\QuestionService;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
-use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class AsqQuestionConfigEditorGUI
+ *
+ * Displays Question configuration Form used to edit Question
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -46,7 +47,7 @@ class AsqQuestionConfigEditorGUI
     }
 
 
-    public function executeCommand()
+    public function executeCommand() : void
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 
@@ -65,7 +66,7 @@ class AsqQuestionConfigEditorGUI
      * @param ilPropertyFormGUI|null $form
      * @throws Exception
      */
-    protected function showForm(ilPropertyFormGUI $form = null)
+    protected function showForm(ilPropertyFormGUI $form = null) : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -81,7 +82,7 @@ class AsqQuestionConfigEditorGUI
     /**
      * @throws Exception
      */
-    protected function saveForm()
+    protected function saveForm() : void
     {
         $form = $this->buildForm();
 
@@ -96,7 +97,7 @@ class AsqQuestionConfigEditorGUI
     /**
      * @throws Exception
      */
-    protected function saveAndReturn()
+    protected function saveAndReturn() : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -115,7 +116,8 @@ class AsqQuestionConfigEditorGUI
         ));
     }
 
-    private function saveQuestion(QuestionFormGUI $form) {
+    private function saveQuestion(QuestionFormGUI $form) : void
+    {
         $changes = $form->getQuestion();
         $this->question->setData($changes->getData());
         $this->question->setPlayConfiguration($changes->getPlayConfiguration());
@@ -139,7 +141,8 @@ class AsqQuestionConfigEditorGUI
         return $form;
     }
 
-    private function createRevision() {
+    private function createRevision() : void
+    {
         global $DIC;
 
         $form = $this->buildForm();

@@ -8,6 +8,8 @@ use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 /**
  * Class AsqQuestionFeedbackEditorGUI
  *
+ * GUI for editing question Feedback
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -24,7 +26,7 @@ class AsqQuestionFeedbackEditorGUI
 
     const CMD_SHOW_FEEDBACK_FORM = 'showFeedbackForm';
     const CMD_SAVE_FEEDBACK = 'saveFeedback';
-    
+
     /**
      * @var QuestionDto
      */
@@ -33,9 +35,8 @@ class AsqQuestionFeedbackEditorGUI
     /**
      * @param QuestionDto $question_dto
      */
-    public function __construct(
-        QuestionDto $question_dto
-    ) {
+    public function __construct(QuestionDto $question_dto)
+    {
         $this->question_dto = $question_dto;
     }
 
@@ -43,7 +44,7 @@ class AsqQuestionFeedbackEditorGUI
     /**
      * @throws ilCtrlException
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         global $DIC;
 
@@ -51,24 +52,25 @@ class AsqQuestionFeedbackEditorGUI
         $this->{$cmd}();
     }
 
-    protected function saveFeedback() {
+    protected function saveFeedback() : void
+    {
         global $DIC;
-        
+
         $form = $this->createForm();
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
-            $form->checkInput()) 
+            $form->checkInput())
         {
             $new_feedback = $form->getFeedbackFromPost();
             $this->question_dto->setFeedback($new_feedback);
             AsqGateway::get()->question()->saveQuestion($this->question_dto);
             ilutil::sendSuccess("Question Saved", true);
         }
-            
+
         $DIC->ui()->mainTemplate()->setContent($form->getHTML());
     }
 
-    protected function showFeedbackForm()
+    protected function showFeedbackForm() : void
     {
         global $DIC;
 
@@ -77,7 +79,10 @@ class AsqQuestionFeedbackEditorGUI
         $DIC->ui()->mainTemplate()->setContent($form->getHTML());
     }
 
-    private function createForm()
+    /**
+     * @return QuestionFeedbackFormGUI
+     */
+    private function createForm() : QuestionFeedbackFormGUI
     {
         global $DIC;
         $form = new QuestionFeedbackFormGUI($this->question_dto);

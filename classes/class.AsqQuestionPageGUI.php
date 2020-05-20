@@ -7,6 +7,8 @@ use srag\asq\UserInterface\Web\Component\QuestionComponent;
 /**
  * Class AsqQuestionPageGUI
  *
+ * GUI for editing Question in ILIAS page editor
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -56,7 +58,7 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
         global $DIC;
 
         $this->createPageIfNotExists(self::PAGE_TYPE, $parent_int_id, $page_int_id);
-        
+
         parent::__construct(self::PAGE_TYPE, $page_int_id, 0, false);
 
         $this->page_back_title = $this->lng->txt("page");
@@ -78,7 +80,7 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
             $page->setParentType($page_type);
             $page->setParentId($parent_int_id);
             $page->setId($page_int_id);
-            
+
             $page->create();
         }
     }
@@ -138,7 +140,7 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
         $this->component = $component;
         $this->setQuestionHTML([$this->getId() => $component->renderHtml()]);
     }
-    
+
     function getQuestionComponent() : QuestionComponent {
         return $this->component;
     }

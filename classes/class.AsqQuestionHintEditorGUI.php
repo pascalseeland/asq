@@ -9,6 +9,8 @@ use srag\asq\AsqGateway;
 /**
  * Class AsqQuestionHintEditorGUI
  *
+ * GUI for editing Question Hints
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -20,7 +22,7 @@ use srag\asq\AsqGateway;
 class AsqQuestionHintEditorGUI
 {
     const CMD_SAVE = 'save';
-    
+
     /**
      * @var QuestionDto
      */
@@ -40,22 +42,23 @@ class AsqQuestionHintEditorGUI
     /**
      * @throws AsqException
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         $this->showHints();
     }
-    
-    private function showHints() {
+
+    private function showHints() : void
+    {
         global $DIC;
-        
+
         $form = new HintFormGUI($this->question_dto);
         $form->addCommandButton(self::CMD_SAVE, $DIC->language()->txt('save'));
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->question_dto->setQuestionHints($form->getHintsFromPost());
             AsqGateway::get()->question()->saveQuestion($this->question_dto);
         }
-        
+
         $DIC->ui()->mainTemplate()->setContent($form->getHTML());
     }
 }

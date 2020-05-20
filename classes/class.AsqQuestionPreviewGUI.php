@@ -10,6 +10,8 @@ use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 /**
  * Class AsqQuestionPreviewGUI
  *
+ * GUI displaying preview of Question
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -52,9 +54,11 @@ class AsqQuestionPreviewGUI
      */
     private $show_score;
 
-    public function __construct(
-        string $question_id
-    ) {
+    /**
+     * @param string $question_id
+     */
+    public function __construct(string $question_id)
+    {
         global $DIC;
 
         $this->question_id = $question_id;
@@ -68,7 +72,7 @@ class AsqQuestionPreviewGUI
         }
     }
 
-    public function executeCommand()
+    public function executeCommand() : void
     {
         global $DIC;
         /* @var ILIAS\DI\Container $DIC */
@@ -91,7 +95,7 @@ class AsqQuestionPreviewGUI
         }
     }
 
-    public function showQuestion()
+    public function showQuestion() : void
     {
         global $DIC;
 
@@ -152,5 +156,4 @@ class AsqQuestionPreviewGUI
 
         $DIC->ui()->mainTemplate()->setContent($question_tpl->get());
     }
-
 }

@@ -7,6 +7,9 @@ use srag\asq\Domain\Model\QuestionTypeDefinition;
 
 /**
  * Class CreateQuestionCommand
+ *
+ * Command to initiate Createion of new Question
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  * @package srag/asq

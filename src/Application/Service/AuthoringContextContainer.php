@@ -8,6 +8,8 @@ use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 /**
  * Class AuthoringContextContainer
  *
+ * Asq Authoring context stores information about the Calling object
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -42,20 +44,10 @@ class AuthoringContextContainer
     private $actorId;
 
     /**
-     * @var array
-     */
-    private $afterQuestionCreationCtrlClassPath;
-
-    /**
-     * @var string
-     */
-    private $afterQuestionCreationCtrlCommand;
-
-    /**
      * @var ?IAuthoringCaller
      */
     private $caller;
-    
+
     /**
      * AuthoringContextContainer constructor.
      *
@@ -127,8 +119,11 @@ class AuthoringContextContainer
     {
         return $this->actorId;
     }
-    
-    public function getCaller(): ?IAuthoringCaller
+
+    /**
+     * @return ?IAuthoringCaller
+     */
+    public function getCaller() : ?IAuthoringCaller
     {
         return $this->caller;
     }

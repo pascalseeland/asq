@@ -8,6 +8,8 @@ use srag\asq\UserInterface\Web\Form\QuestionTypeSelectForm;
 /**
  * Class AsqQuestionCreationGUI
  *
+ * Displays question creation Form to choose the type of the new question
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -42,7 +44,7 @@ class AsqQuestionCreationGUI
     /**
      * Execute Command
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 
@@ -57,6 +59,9 @@ class AsqQuestionCreationGUI
     }
 
 
+    /**
+     * @return QuestionTypeSelectForm
+     */
     protected function buildCreationForm() : QuestionTypeSelectForm
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
@@ -69,8 +74,10 @@ class AsqQuestionCreationGUI
         return $form;
     }
 
-
-    protected function showCreationForm(QuestionTypeSelectForm $form = null)
+    /**
+     * @param QuestionTypeSelectForm $form
+     */
+    protected function showCreationForm(QuestionTypeSelectForm $form = null) : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -86,7 +93,7 @@ class AsqQuestionCreationGUI
     /**
      * @throws Exception
      */
-    protected function createQuestion()
+    protected function createQuestion() : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -97,7 +104,7 @@ class AsqQuestionCreationGUI
             $this->showCreationForm($form);
             return;
         }
-        
+
         $new_question = AsqGateway::get()->question()->createQuestion(
             $form->getQuestionType(),
             $this->contextContainer->getObjId());
@@ -105,7 +112,7 @@ class AsqQuestionCreationGUI
         if (!is_null($this->contextContainer->getCaller())) {
             $this->contextContainer->getCaller()->afterQuestionCreated($new_question);
         }
-        
+
         $DIC->ctrl()->setParameterByClass(
             AsqQuestionConfigEditorGUI::class,
             AsqQuestionAuthoringGUI::VAR_QUESTION_ID,
@@ -118,8 +125,7 @@ class AsqQuestionCreationGUI
         );
     }
 
-
-    protected function cancelCreation()
+    protected function cancelCreation() : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 

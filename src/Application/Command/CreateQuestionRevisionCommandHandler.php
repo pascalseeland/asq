@@ -17,6 +17,8 @@ use ILIAS\Data\Result\Ok;
 /**
  * Class CreateQuestionRevisionCommandHandler
  *
+ * Command handler for revision creation
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -28,7 +30,8 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract {
     /**
      * @param CommandContract $command
      */
-	public function handle(CommandContract $command) :Result {
+	public function handle(CommandContract $command) : Result
+	{
 	    /** @var CreateQuestionRevisionCommand $command */
 	    $repository = new PublishedQuestionRepository();
 

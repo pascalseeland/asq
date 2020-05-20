@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
-use ILIAS\Data\UUID\Factory;
 
 /**
  * Class AsqQuestionAuthoringGUI
+ *
+ * Main Question Authoring GUI, draws Tabs and calls correct sub GUI
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -77,7 +78,7 @@ class AsqQuestionAuthoringGUI
     /**
      * @throws ilCtrlException
      */
-	public function executeCommand()
+	public function executeCommand() : void
 	{
 		global $DIC; /* @var ILIAS\DI\Container $DIC */
 
@@ -191,7 +192,7 @@ class AsqQuestionAuthoringGUI
 	}
 
 
-    protected function redrawHeaderAction()
+    protected function redrawHeaderAction() : void
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
         echo $this->getHeaderAction() . $DIC->ui()->mainTemplate()->getOnLoadCodeForAsynch();
@@ -199,7 +200,7 @@ class AsqQuestionAuthoringGUI
     }
 
 
-    protected function initHeaderAction()
+    protected function initHeaderAction() : void
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 
@@ -225,23 +226,12 @@ class AsqQuestionAuthoringGUI
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 
-        /**
-         * TODO: Get the old integer id of the question.
-         * We still need the former integer sequence id of the question,
-         * since several other services in ilias does only work with an int id.
-         */
-
-        //$integerQuestionId = $question->getLegacyIntegerId(); // or similar
-        $integerQuestionId = 0;
-
         $dispatcher = new ilCommonActionDispatcherGUI(
             ilCommonActionDispatcherGUI::TYPE_REPOSITORY, $DIC->access(),
             $this->authoring_context_container->getObjType(),
             $this->authoring_context_container->getRefId(),
             $this->authoring_context_container->getObjId()
         );
-
-        $dispatcher->setSubObject('quest', $integerQuestionId);
 
         $ha = $dispatcher->initHeaderAction();
         $ha->enableComments(true, false);
@@ -250,7 +240,7 @@ class AsqQuestionAuthoringGUI
     }
 
 
-    protected function initAuthoringTabs()
+    protected function initAuthoringTabs() : void
     {
         global $DIC; /* @var ILIAS\DI\Container $DIC */
 

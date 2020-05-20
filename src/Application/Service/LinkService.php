@@ -16,6 +16,8 @@ use AsqQuestionVersionGUI;
 /**
  * Class QuestionAuthoring
  *
+ * Service providing links to Asq GUIs
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -27,7 +29,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getCreationLink() :UiStandardLink
+    public function getCreationLink() : UiStandardLink
     {
         global $DIC;
 
@@ -41,7 +43,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getEditLink(string $question_id) :UiStandardLink
+    public function getEditLink(string $question_id) : UiStandardLink
     {
         global $DIC;
 
@@ -69,7 +71,7 @@ class LinkService
                 $revision_name
             );
         }
-        
+
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_preview'),
             $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class]));
@@ -127,16 +129,16 @@ class LinkService
             ])
         );
     }
-    
+
     /**
      * @return UiStandardLink
      */
     public function getRevisionsLink(string $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
-        
+
         self::setQuestionUidParameter($question_id);
-        
+
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_versions'),
             $DIC->ctrl()->getLinkTargetByClass([
@@ -147,8 +149,10 @@ class LinkService
 
     /**
      * sets the question uid parameter for the ctrl hub gui ilAsqQuestionAuthoringGUI
+     *
+     * @param $question_id string
      */
-    protected function setQuestionUidParameter(string $question_id)
+    protected function setQuestionUidParameter(string $question_id) : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 

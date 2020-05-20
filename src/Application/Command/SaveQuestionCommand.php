@@ -9,6 +9,8 @@ use srag\asq\Domain\Model\Question;
 /**
  * Class SaveQuestionCommand
  *
+ * Save Question command
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -28,16 +30,17 @@ class SaveQuestionCommand extends AbstractCommand {
      * @param Question $question
      * @param int      $issuing_user_id
      */
-	public function __construct(Question $question, int $issuing_user_id) {
+	public function __construct(Question $question, int $issuing_user_id)
+	{
 		parent::__construct($issuing_user_id);
 		$this->question = $question;
 	}
 
-
     /**
      * @return Question
      */
-	public function GetQuestion(): Question {
+	public function GetQuestion() : Question
+	{
 		return $this->question;
 	}
 }

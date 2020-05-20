@@ -8,6 +8,8 @@ use srag\CQRS\Command\AbstractCommand;
 /**
  * Class CreateQuestionRevisionCommand
  *
+ * Command to create new question Revision
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -26,7 +28,13 @@ class CreateQuestionRevisionCommand extends AbstractCommand {
 	 */
 	private $revision_name;
 
-	public function __construct(string $question_id, string $revision_name, int $issuer_id) {
+	/**
+	 * @param string $question_id
+	 * @param string $revision_name
+	 * @param int $issuer_id
+	 */
+	public function __construct(string $question_id, string $revision_name, int $issuer_id)
+	{
 		parent::__construct($issuer_id);
 		$this->question_id = $question_id;
 		$this->revision_name = $revision_name;
@@ -36,14 +44,14 @@ class CreateQuestionRevisionCommand extends AbstractCommand {
 	/**
 	 * @return string
 	 */
-	public function getQuestionId(): string {
+	public function getQuestionId() : string {
 		return $this->question_id;
 	}
-	
+
 	/**
 	 * @return string
 	 */
-	public function getRevisionName(): string {
+	public function getRevisionName() : string {
 	    return $this->revision_name;
 	}
 }
