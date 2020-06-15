@@ -10,7 +10,7 @@
 	"license" : "GPL v3",
 	"require" : {
 		"php" : ">=7.2",
-		"ramsey/uuid" : "~4.0"
+		"ramsey/uuid" : "^3.8"
 	},
 	"autoload" : {
 		"psr-4" : {
